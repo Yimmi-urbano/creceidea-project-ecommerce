@@ -54,10 +54,10 @@ export default function CardLogin() {
       <CardBody className="p-5">
         <form onSubmit={handleSubmit}>
           <article className="prose">
-            <h2 className="mb-5 text-xl font-bold">Iniciar Sesión</h2>
+            <h2 className="mb-5 mt-5 text-xl font-bold">Iniciar Sesión</h2>
           </article>
 
-          <div className="flex w-full flex-wrap lg:items-end md:flex-nowrap mb-6 md:mb-4 ">
+          <div className="flex w-full flex-wrap lg:items-end md:flex-nowrap mb-6 mt-5 md:mb-4 ">
             <Input
               type="email"
               label="Correo"
@@ -89,14 +89,18 @@ export default function CardLogin() {
 
           {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <Button type="submit" color="warning" className="mb-3 mt-3" isLoading={isLoading}>
+          <CardFooter className="flex flex-wrap gap-4">
+          <Button type="submit" color="warning" className="m-auto block w-[80%] rounded-3xl" isLoading={isLoading}>
             Iniciar sesión
           </Button>
-
-          <CardFooter>
-            <Link className="flex items-center gap-1 text-current" href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template">
+            <Link className="flex items-center text-center  w-full block text-current" href="#">
               <span className="text-sm">¿Olvidaste tu clave?</span>
             </Link>
+
+            <Link className="flex items-center text-center w-full block text-current" href="#">
+              <span className="text-sm">¿Aún no tienes cuenta? Registrarse</span>
+            </Link>
+
           </CardFooter>
         </form>
       </CardBody>
