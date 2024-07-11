@@ -50,7 +50,7 @@ export default function CardLogin() {
   };
 
   return (
-    <Card className="border-none bg-background/65 backdrop-blur w-full lg:w-[350px]" shadow="sm">
+    <Card className="border-none bg-background/65 backdrop-blur w-full lg:w-[350px] h-[450px] lg:h-auto bottom-[-10px] left-0 absolute lg:relative" shadow="sm">
       <CardBody className="p-5">
         <form onSubmit={handleSubmit}>
           <article className="prose">
