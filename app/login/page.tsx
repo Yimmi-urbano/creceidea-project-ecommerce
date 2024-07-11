@@ -90,9 +90,9 @@ export default function CardLogin() {
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           <CardFooter className="flex flex-wrap gap-4">
-          <Button type="submit" color="warning" className="m-auto block w-[80%] rounded-3xl" isLoading={isLoading}>
-            Iniciar sesión
-          </Button>
+            <Button type="submit" color="warning" className="m-auto block w-[80%] rounded-3xl" isLoading={isLoading}>
+              Iniciar sesión
+            </Button>
             <Link className="flex items-center text-center  w-full block text-current" href="#">
               <span className="text-sm">¿Olvidaste tu clave?</span>
             </Link>
