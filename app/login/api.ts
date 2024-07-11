@@ -1,8 +1,6 @@
-// services/api.ts
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL; // Utilizamos NEXT_PUBLIC_API_URL para las variables de entorno públicas en Next.js
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL_AUTH;
 const api = axios.create({
   baseURL: API_URL,
   headers: {
