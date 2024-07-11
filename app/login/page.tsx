@@ -12,6 +12,7 @@ export default function CardLogin() {
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // State for loading state
 
   useEffect(() => {
     document.body.classList.add("login-page");
@@ -25,6 +26,7 @@ export default function CardLogin() {
     setError(null);
     setEmailError(null);
     setPasswordError(null);
+    setIsLoading(true); // Set loading state to true
 
     try {
       const response = await login(email, password);
@@ -42,14 +44,14 @@ export default function CardLogin() {
       }
     } catch (error) {
       setError("Error de red. Inténtalo de nuevo más tarde.");
+    } finally {
+      setIsLoading(false); // Set loading state back to false after API call completes
     }
   };
-
 
   return (
     <Card className="border-none bg-background/65 backdrop-blur w-full lg:w-[350px]" shadow="sm">
       <CardBody className="p-5">
-
         <form onSubmit={handleSubmit}>
           <article className="prose">
             <h2 className="mb-5 text-xl font-bold">Iniciar Sesión</h2>
@@ -58,7 +60,7 @@ export default function CardLogin() {
           <div className="flex w-full flex-wrap lg:items-end md:flex-nowrap mb-6 md:mb-4 ">
             <Input
               type="email"
-              label="R.U.C"
+              label="Correo"
               variant="bordered"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -68,10 +70,9 @@ export default function CardLogin() {
               labelPlacement="outside"
               placeholder="Ingrese su correo"
             />
-
           </div>
-          <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-4 ">
 
+          <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-4 ">
             <Input
               type="password"
               label="Contraseña"
@@ -85,19 +86,18 @@ export default function CardLogin() {
               placeholder="Contraseña"
             />
           </div>
+
           {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <Button type="submit" color="warning" className="mb-3 mt-3" >Iniciar sesión</Button>
+          <Button type="submit" color="warning" className="mb-3 mt-3" isLoading={isLoading}>
+            Iniciar sesión
+          </Button>
+
           <CardFooter>
-          <Link
-             className="flex items-center gap-1 text-current"
-                href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
-          >
-          <span className="text-sm"> ¿Olvidaste tu clave?</span>
-         
-          </Link>
+            <Link className="flex items-center gap-1 text-current" href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template">
+              <span className="text-sm">¿Olvidaste tu clave?</span>
+            </Link>
           </CardFooter>
-         
         </form>
       </CardBody>
     </Card>
