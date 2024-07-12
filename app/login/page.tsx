@@ -5,6 +5,7 @@ import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import { login } from "./api";
 import { Link } from "@nextui-org/link";
+import { useRouter } from "next/navigation";
 
 export default function CardLogin() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,8 @@ export default function CardLogin() {
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // State for loading state
+  const [isLoading, setIsLoading] = useState(false); 
+  const router = useRouter();
 
   useEffect(() => {
     document.body.classList.add("login-page");
@@ -26,7 +28,7 @@ export default function CardLogin() {
     setError(null);
     setEmailError(null);
     setPasswordError(null);
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true);
 
     try {
       const response = await login(email, password);
@@ -41,11 +43,12 @@ export default function CardLogin() {
       } else {
         console.log("Login successful:", response);
         localStorage.setItem("token", response.data.token.value);
+        router.push("/dashboard");
       }
     } catch (error) {
       setError("Error de red. Inténtalo de nuevo más tarde.");
     } finally {
-      setIsLoading(false); // Set loading state back to false after API call completes
+      setIsLoading(false);
     }
   };
 
