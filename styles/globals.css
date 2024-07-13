@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-.login-page {
+body{
 
-    background-image: url('../public/background.webp');
+    background-image: url('https://media-static.creceidea.pe/images/background.webp');
     background-size: cover;
     background-position: top center;
 
 }
 
-.login-page:before {
+.login-page:before,body:before {
     content: "";
     position: absolute;
     width: 100%;
@@ -30,7 +30,11 @@
     top: 30px;
     left: 30px;
 }
-
+.logo-crece-dash{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
 .resizable {
     width: 16rem;
     /* Default width */
@@ -57,9 +61,18 @@
     margin: 15px;
     border-radius: 15px;
     overflow: hidden;
+    background-color: rgba(4, 87, 148, 0.4);
+    
+    backdrop-filter: blur(10px);
+}
+
+.card-login{
+    background-color: rgba(4, 87, 148, 0.4);
+    backdrop-filter: blur(10px);
 }
 
 .logo-sidebar{
     width: 230px;
     fill: #fff;
 }
+

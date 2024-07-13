@@ -7,6 +7,8 @@ import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
 import { GithubIcon } from "@/components/icons";
 
+// usa metadata y viewport según sea necesario
+
 export default function Home() {
   return (
     

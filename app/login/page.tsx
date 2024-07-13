@@ -13,7 +13,7 @@ export default function CardLogin() {
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function CardLogin() {
   };
 
   return (
-    <Card className="border-none bg-background/65 backdrop-blur w-full lg:w-[350px] h-[450px] lg:h-auto bottom-[-10px] left-0 absolute lg:relative" shadow="sm">
+    <Card className="border-none card-login  w-full lg:w-[350px] h-[450px] lg:h-auto bottom-[-10px] lg:right-[100px] absolute lg:relative" >
       <CardBody className="p-5">
         <form onSubmit={handleSubmit}>
           <article className="prose">
@@ -69,7 +69,7 @@ export default function CardLogin() {
               onChange={(e) => setEmail(e.target.value)}
               isInvalid={!!emailError}
               errorMessage={emailError}
-              className="max-w-xs  "
+              className="max-w-xs  border-100"
               labelPlacement="outside"
               placeholder="Ingrese su correo"
             />

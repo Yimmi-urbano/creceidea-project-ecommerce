@@ -1,13 +1,21 @@
+"use client"
+import { Logo } from "@/components/icons";
+import Sidebar from "@/components/sidebar";
+import { ThemeSwitch } from "@/components/theme-switch";
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-lg text-center justify-center">
-        {children}
-      </div>
-    </section>
+   
+       <div className="flex h-screen"> 
+        <div className="logo-crece-dash"><ThemeSwitch /></div> 
+         <Sidebar/>
+       <div className="flex-1 p-4">
+         {children}
+       </div>
+       </div>
   );
 }

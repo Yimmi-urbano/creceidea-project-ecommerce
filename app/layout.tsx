@@ -1,11 +1,9 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
-
 import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import Sidebar from "@/components/sidebar";
 
 
 export const metadata: Metadata = {
@@ -30,11 +28,12 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
+  
 }) {
- 
+
   return (
     
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="es">
       <head />
       <body
         className={clsx(
@@ -43,13 +42,11 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-        <div className="flex h-screen"> 
-          <Sidebar/>
-      
-    <div className="flex-1 p-4">
-      {children}
-    </div>
-    </div>
+          <div className="h-screen">
+
+            {children}
+
+          </div>
         </Providers>
       </body>
     </html>
