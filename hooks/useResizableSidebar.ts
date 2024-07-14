@@ -5,7 +5,7 @@ const useResizableSidebar = () => {
   const resizeHandleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return; // Salir si se está ejecutando en el servidor
+    if (typeof window === 'undefined') return; 
 
     const sidebar = sidebarRef.current;
     const resizeHandle = resizeHandleRef.current;

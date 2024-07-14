@@ -9,8 +9,15 @@ body{
     background-position: top center;
 
 }
-
-.login-page:before,body:before {
+.z-index{
+    z-index: 1;
+    position: relative;
+}
+.z-index-3{
+    z-index: 3;
+    position: relative;
+}
+.login-page:after,body:before {
     content: "";
     position: absolute;
     width: 100%;
@@ -36,9 +43,9 @@ body{
     right: 30px;
 }
 .resizable {
-    width: 16rem;
+    width: 12rem;
     /* Default width */
-    min-width: 8rem;
+    min-width: 5rem;
     /* Minimum width */
     max-width: 24rem;
     /* Maximum width */
@@ -72,7 +79,8 @@ body{
 }
 
 .logo-sidebar{
-    width: 230px;
+    width: 100%;
     fill: #fff;
+    
 }
 

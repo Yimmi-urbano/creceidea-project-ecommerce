@@ -42,7 +42,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="h-screen">
+          <div className="h-screen z-index">
 
             {children}
 

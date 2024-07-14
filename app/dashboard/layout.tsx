@@ -11,7 +11,7 @@ export default function DashboardLayout({
   return (
    
        <div className="flex h-screen"> 
-        <div className="logo-crece-dash"><ThemeSwitch /></div> 
+        <div className="logo-crece-dash z-index-3"><ThemeSwitch /></div> 
          <Sidebar/>
        <div className="flex-1 p-4">
          {children}

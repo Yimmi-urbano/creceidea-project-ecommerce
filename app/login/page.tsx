@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
-import { login } from "./api";
+import { getDomain, login } from "./api";
 import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
 
@@ -29,7 +29,6 @@ export default function CardLogin() {
     setEmailError(null);
     setPasswordError(null);
     setIsLoading(true);
-
     try {
       const response = await login(email, password);
       if (response.status === "error") {
@@ -41,15 +40,25 @@ export default function CardLogin() {
           setError("Error desconocido. Inténtalo de nuevo más tarde.");
         }
       } else {
-        console.log("Login successful:", response);
+        
         localStorage.setItem("token", response.data.token.value);
-        router.push("/dashboard");
+        
+        try {
+          const domainResponse = await getDomain();
+          localStorage.setItem("domainSelect", domainResponse[0].domain);
+          localStorage.setItem("domainAssigned", JSON.stringify(domainResponse));
+
+          router.push("/dashboard");
+        } catch (domainError) {
+          setError("Error al obtener los dominios. Inténtalo de nuevo más tarde.");
+        }
       }
     } catch (error) {
       setError("Error de red. Inténtalo de nuevo más tarde.");
     } finally {
       setIsLoading(false);
     }
+    
   };
 
   return (
