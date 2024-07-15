@@ -7,9 +7,9 @@ import {
   TooltipProps,
 } from 'recharts';
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
-import withPermission from "./withPermission"; // Asegúrate de ajustar la importación según la estructura de tu proyecto
+import withPermission from "./withPermission"; 
 
-// Datos de ejemplo
+
 const data = [
   { name: 'Enero', uv: 4000 },
   { name: 'Febrero', uv: 3000 },
@@ -20,7 +20,6 @@ const data = [
   { name: 'Julio', uv: 3490 },
 ];
 
-// Componente Tooltip personalizado
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
@@ -55,5 +54,5 @@ const AreaChartComponent: React.FC = () => {
 };
 
 
-export default withPermission(AreaChartComponent, 'areachart'); // Proteger el componente usando el HOC
+export default withPermission(AreaChartComponent, 'areachart'); 
 

@@ -42,6 +42,7 @@ export default function CardLogin() {
       } else {
         
         localStorage.setItem("token", response.data.token.value);
+        localStorage.setItem("permissions", JSON.stringify([response.data.user.components]));
 
         try {
           const domainResponse = await getDomain();

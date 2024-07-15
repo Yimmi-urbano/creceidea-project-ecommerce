@@ -13,12 +13,12 @@ const withPermission = (WrappedComponent: React.ComponentType, componentName: st
       if (componentPermission?.status) {
         setIsAllowed(true);
       } else {
-        setIsAllowed(false); // Establecer isAllowed como false si no tiene permisos
+        setIsAllowed(false);
       }
     }, [componentName]);
 
     if (!isAllowed) {
-      return null; // No renderizar el componente si no tiene permisos
+      return null;
     }
 
     return <WrappedComponent {...props} />;
