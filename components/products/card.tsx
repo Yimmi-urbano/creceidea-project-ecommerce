@@ -1,7 +1,7 @@
-"use client"
 import React, { useEffect, useState } from "react";
-import { Card, Link } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
 import { getProducts } from "@/hooks/fetchProducts";
+import withPermission from "../withPermission"; 
 
 interface Product {
   price: {
@@ -17,14 +17,14 @@ interface Product {
   description_short: string;
 }
 
-export default function CardProducts() {
+const CardProducts: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getProducts();
-        setProducts(response.products); // Acceder a la clave 'products' de la respuesta
+        setProducts(response.products); 
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -36,25 +36,21 @@ export default function CardProducts() {
   return (
     <div className="flex flex-wrap gap-4">
       {products.map((item) => (
-         <>
-       <div className="pl-1 w-96 h-20 bg-sky-500/[.06] rounded-lg shadow-md">
-      <div className="flex w-full h-full py-2 px-4 rounded-lg rounded-lg justify-between">
-      <div className="my-auto">
-        <img src={item.image_default} width={60} height={60}></img>
-      </div>
-        <div className="my-auto">
-          <p className="font-bold">{item.title}</p>
-          <p className="text-lg">S/ {item.price['regular']}</p>
-        </div>
-        <div className="my-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>                   
-        </div>
-      </div>
-    </div>
-         </>
+        <Card key={item._id} className="w-96 bg-sky-500/[.06] rounded-lg shadow-md">
+          <div className="flex items-center gap-4 p-4">
+            <img src={item.image_default} alt={item.title} width={60} height={60} />
+            <div>
+              <p className="font-bold text-xs">{item.title}</p>
+              <p className="text-xs">S/ {item.price.regular}</p>
+            </div>
+            <div>
+          
+            </div>
+          </div>
+        </Card>
       ))}
     </div>
   );
-}
+};
+
+export default withPermission(CardProducts, 'inventario'); // Proteger el componente usando el HOC

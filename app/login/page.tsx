@@ -42,11 +42,12 @@ export default function CardLogin() {
       } else {
         
         localStorage.setItem("token", response.data.token.value);
-        
+
         try {
           const domainResponse = await getDomain();
           localStorage.setItem("domainSelect", domainResponse[0].domain);
           localStorage.setItem("domainAssigned", JSON.stringify(domainResponse));
+
 
           router.push("/dashboard");
         } catch (domainError) {
