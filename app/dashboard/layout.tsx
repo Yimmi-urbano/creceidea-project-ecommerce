@@ -1,7 +1,6 @@
 "use client"
 import OptionsToolbar from "@/components/toolbar";
 import Sidebar from "@/components/sidebar";
-import { ThemeSwitch } from "@/components/theme-switch";
 import useIsMobile from "@/hooks/useIsMobile";
 import { HeadToolbar } from "@/components/headToolbar";
 

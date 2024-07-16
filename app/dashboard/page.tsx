@@ -1,4 +1,5 @@
 "use client"
+
 import AreaChartComponent from "@/components/areachart";
 import CardProgressViews from "@/components/countViewsSite";
 import CardProducts from "@/components/products/card";

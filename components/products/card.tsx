@@ -3,6 +3,7 @@ import { Card } from "@nextui-org/react";
 import { getProducts } from "@/hooks/fetchProducts";
 import withPermission from "../withPermission"; 
 
+
 interface Product {
   price: {
     regular: number;
