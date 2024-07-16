@@ -14,7 +14,7 @@ export default function DashboardLayout() {
           </CardBody>
         </Card>
       </div>
-      <div className="grid grid-cols-4 gap-4 h-[12rem]">
+      <div className="grid  grid-cols-2 md:grid-cols-4 gap-4 h-[12rem]">
         <Card isBlurred>
           <CardBody>
 
@@ -37,14 +37,14 @@ export default function DashboardLayout() {
         </Card>
 
       </div>
-      <div className="grid grid-cols-3 gap-4 ">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card isBlurred className="">
           <CardBody>
             <CardProducts />
           </CardBody>
         </Card>
 
-        <Card isBlurred className="col-span-2">
+        <Card isBlurred className="md:col-span-2">
           <CardBody>
 
           </CardBody>

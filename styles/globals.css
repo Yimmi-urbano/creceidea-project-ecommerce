@@ -2,22 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
 
     background-image: url('https://media-static.creceidea.pe/images/background.webp');
     background-size: cover;
     background-position: top center;
 
 }
-.z-index{
+
+.z-index {
     z-index: 1;
     position: relative;
 }
-.z-index-3{
+
+.z-index-3 {
     z-index: 3;
     position: relative;
 }
-.login-page:after,body:before {
+
+.login-page:after,
+body:before {
     content: "";
     position: absolute;
     width: 100%;
@@ -37,11 +41,13 @@ body{
     top: 30px;
     left: 30px;
 }
-.logo-crece-dash{
+
+.logo-crece-dash {
     position: absolute;
     top: 30px;
     right: 30px;
 }
+
 .resizable {
     width: 12rem;
     /* Default width */
@@ -69,18 +75,44 @@ body{
     border-radius: 15px;
     overflow: hidden;
     background-color: rgba(4, 87, 148, 0.4);
-    
+
     backdrop-filter: blur(10px);
 }
 
-.card-login{
+.card-login {
     background-color: rgba(4, 87, 148, 0.4);
     backdrop-filter: blur(10px);
 }
 
-.logo-sidebar{
+.logo-sidebar {
     width: 100%;
     fill: #fff;
-    
 }
 
+.toolbar-footer {
+    height: 70px;
+    position: fixed;
+    bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    z-index: 10;
+    width: 100%;
+}
+
+.toolbar-footer .toolbar-inner {
+    height: 70px;
+    background-color: rgba(4, 87, 148, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+.toolbar-footer .toolbar-inner svg {
+    margin: auto;
+}
+
+.item-wrap {
+    height: 100%;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
