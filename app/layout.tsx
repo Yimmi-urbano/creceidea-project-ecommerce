@@ -34,7 +34,6 @@ export default function RootLayout({
   return (
     
     <html suppressHydrationWarning lang="es">
-      
       <head />
       <body
         className={clsx(

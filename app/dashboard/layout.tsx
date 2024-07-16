@@ -1,8 +1,9 @@
 "use client"
-import OptionsToolbar  from "@/components/toolbar";
+import OptionsToolbar from "@/components/toolbar";
 import Sidebar from "@/components/sidebar";
 import { ThemeSwitch } from "@/components/theme-switch";
 import useIsMobile from "@/hooks/useIsMobile";
+import { HeadToolbar } from "@/components/headToolbar";
 
 export default function DashboardLayout({
   children,
@@ -11,14 +12,14 @@ export default function DashboardLayout({
 }) {
   const isMobile = useIsMobile();
   return (
-   
-       <div className="flex h-screen"> 
-        <div className="logo-crece-dash z-index-3"><ThemeSwitch /></div> 
-        {!isMobile && <Sidebar />}
-        {isMobile && <OptionsToolbar/> }
-       <div className="flex-1 p-4">
-         {children}
-       </div>
-       </div>
+
+    <div className="flex h-screen">
+      {!isMobile && <Sidebar />}
+      {isMobile && <OptionsToolbar />}
+      <div className="flex-1 p-4 gap-2 flex flex-wrap">
+        <div className="w-full"><HeadToolbar /></div>
+        <div className="w-full"> {children}</div>
+      </div>
+    </div>
   );
 }
