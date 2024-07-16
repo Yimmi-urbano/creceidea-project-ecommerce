@@ -1,5 +1,6 @@
 "use client"
 import AreaChartComponent from "@/components/areachart";
+import CardProgressViews from "@/components/countViewsSite";
 import CardProducts from "@/components/products/card";
 import { Card, CardBody } from "@nextui-org/react";
 
@@ -15,11 +16,7 @@ export default function DashboardLayout() {
         </Card>
       </div>
       <div className="grid  grid-cols-2 md:grid-cols-4 gap-4 h-[12rem]">
-        <Card isBlurred>
-          <CardBody>
-
-          </CardBody>
-        </Card>
+      <CardProgressViews/>
         <Card isBlurred>
           <CardBody className="p-0">
             <AreaChartComponent />
@@ -37,7 +34,7 @@ export default function DashboardLayout() {
         </Card>
 
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 h-[25rem]">
         <Card isBlurred className="">
           <CardBody>
             <CardProducts />
