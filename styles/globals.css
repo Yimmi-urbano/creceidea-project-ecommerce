@@ -20,7 +20,7 @@ body {
     position: relative;
 }
 
-.login-page:after,
+.login-page:before,
 body:before {
     content: "";
     position: absolute;
