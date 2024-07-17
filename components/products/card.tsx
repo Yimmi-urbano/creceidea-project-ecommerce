@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "@nextui-org/react";
+import { Card, Button } from "@nextui-org/react";
+import { MiniEyeIcon, MiniTrashIcon } from '../icons'; 
 import { getProducts } from "@/hooks/fetchProducts";
-import withPermission from "../withPermission"; 
-
+import withPermission from "../withPermission";
 
 interface Product {
   price: {
@@ -25,7 +25,7 @@ const CardProducts: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await getProducts();
-        setProducts(response.products); 
+        setProducts(response.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -34,24 +34,34 @@ const CardProducts: React.FC = () => {
     fetchData();
   }, []);
 
-  return (
-    <div className="flex flex-wrap gap-4">
-      {products.map((item) => (
-        <Card key={item._id} className="w-96 bg-sky-500/[.06] rounded-lg shadow-md">
-          <div className="flex items-center gap-4 p-4">
-            <img src={item.image_default} alt={item.title} width={60} height={60} />
-            <div>
-              <p className="font-bold text-xs">{item.title}</p>
-              <p className="text-xs">S/ {item.price.regular}</p>
-            </div>
-            <div>
-          
+return (
+  <div className="flex flex-wrap gap-4">
+    <h2 className="text-xl font-semibold text-gray-600 dark:text-white mb-4">Productos</h2>
+    {products.map((item) => (
+      <Card key={item._id} className="w-full bg-sky-500/[.06] rounded-lg shadow-md flex flex-row">
+        <div className="flex items-center gap-4 p-4 flex-grow">
+          <img src={item.image_default} alt={item.title} className="w-16 h-16" />
+          <div>
+            <h3 className="font-bold text-lg">{item.title}</h3>
+            <div className="flex items-baseline gap-1">
+              <p className="text-sm line-through text-red-500 dark:text-red-300">S/{item.price.regular}</p>
+              <p className="text-sm font-bold text-green-600 dark:text-green-300">S/{item.price.sale}</p>
             </div>
           </div>
-        </Card>
-      ))}
-    </div>
-  );
+        </div>
+        <div className="flex flex-col justify-center items-center gap-2 pr-4">
+          <button className="bg-transparent border-none cursor-pointer p-2" aria-label="Ver Detalles">
+            <MiniEyeIcon size={20} />
+          </button>
+          <button className="bg-transparent border-none cursor-pointer p-2" aria-label="Eliminar Producto">
+            <MiniTrashIcon size={20} />
+          </button>
+        </div>
+      </Card>
+    ))}
+  </div>
+);
+  
 };
 
 export default withPermission(CardProducts, 'inventario'); // Proteger el componente usando el HOC
