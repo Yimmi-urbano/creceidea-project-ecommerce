@@ -7,27 +7,27 @@ export const siteConfig = {
     {
       label: "Dashboard",
       href: "/dashboard",
-      icon: "MdHome"
+      icon: "DashboardIcon"
     },
     {
       label: "Categorías",
       href: "/dashboard/categories",
-      icon: "MdCategory"
+      icon: "CategoriesIcon"
     },
     {
       label: "Paginas   ",
       href: "/dashboard/pages",
-      icon: "MdOutlineFileCopy"
+      icon: "PagesIcon"
     },
     {
       label: "Productos",
       href: "/dashboard/products",
-      icon: "MdOutlineViewInAr"
+      icon: "ProductIcon"
     },
     {
       label: "Blog      ",
       href: "/dashboard/blog",
-      icon: "MdEditNote"
+      icon: "BlogIcon"
     }
   ],
   navMenuItems: [
