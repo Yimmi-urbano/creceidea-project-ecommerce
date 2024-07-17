@@ -1,34 +1,34 @@
 import React from "react";
 import { Link } from "@nextui-org/react";
 import { siteConfig } from "@/config/site";
-import * as Icons from 'react-icons/md';
+import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, BlogIcon } from './icons';
 
-// Definir un tipo para el objeto Icons, asumiendo que cada clave retorna un componente React.
-type IconType = {
-  [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-};
+type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "BlogIcon";
 
-const IconComponent: React.FC<{ iconName: string }> = ({ iconName }) => {
-  const Icon = (Icons as IconType)[iconName];
-  return Icon ? <Icon className="h-6 w-6 mr-3" /> : null;  // Ajustado el margen derecho a 12px
+const iconsMap: Record<IconKey, JSX.Element> = {
+  DashboardIcon: <DashboardIcon size={30} />,  // Aumentar tamaño aquí
+  CategoriesIcon: <CategoriesIcon size={30} />,
+  PagesIcon: <PagesIcon size={30} />,
+  ProductIcon: <ProductIcon size={30} />,
+  BlogIcon: <BlogIcon size={30} />,
 };
 
 export default function Options() {
   return (
-    <div className="flex flex-col items-center w-full mt-4">  
+    <div className="flex flex-col items-center w-full">
       {siteConfig.navItems.map((item) => (
         <Link 
           isBlock 
           size="md" 
-          className="flex items-center w-11/12 mb-4 justify-start text-white"  // Margen inferior aumentado a 16px
-          href={item.href} 
-          color="foreground"
+          className="flex items-center w-full mb-3 justify-start text-white"  // Cambia el color del texto aquí
+          href={item.href}
         >
-          <IconComponent iconName={item.icon} />
-          {item.label}
+          {iconsMap[item.icon as IconKey]}
+          <span className="ml-4"> 
+            {item.label}
+          </span>
         </Link>
       ))}
     </div>
   );
 }
-
