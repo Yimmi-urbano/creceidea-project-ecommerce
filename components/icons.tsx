@@ -92,6 +92,18 @@ export const MiniTrashIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) =
   </svg>
 );
 
+export const EyeIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+  <svg height={size} width={size} viewBox="0 0 24 24" {...props}>
+    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2.243 10.0035C2.19118 9.84807 2.19114 9.67977 2.24286 9.52429C3.28413 6.39401 6.23693 4.13672 9.71694 4.13672C13.1953 4.13672 16.147 6.39191 17.1896 9.51992C17.2414 9.67537 17.2414 9.84367 17.1897 9.99915C16.1484 13.1294 13.1956 15.3867 9.71563 15.3867C6.23723 15.3867 3.28556 13.1315 2.243 10.0035Z" stroke="#0D0E10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.9663 9.76172C11.9663 11.0044 10.959 12.0117 9.71633 12.0117C8.47369 12.0117 7.46633 11.0044 7.46633 9.76172C7.46633 8.51908 8.47369 7.51172 9.71633 7.51172C10.959 7.51172 11.9663 8.51908 11.9663 9.76172Z" stroke="#0D0E10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+
+
+  </svg>
+);
+
 export const DiscordIcon: React.FC<IconSvgProps> = ({
   size = 24,
   width,
