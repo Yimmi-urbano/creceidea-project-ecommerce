@@ -5,10 +5,10 @@ import { useTheme } from 'next-themes';
 export default function CardProgressViews() {
   const { theme } = useTheme();  // Obtiene el tema actual
 
-  const titleColor = theme === 'dark' ? 'text-white' : 'text-gray-900';
+  const titleColor = theme === 'dark' ? 'text-black' : 'text-white';
 
   const circularProgressClasses = {
-    svg: "w-[3rem] h-[3rem] md:w-[5rem] md:h-[5rem] drop-shadow-md",
+    svg: "w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] drop-shadow-md",
     indicator: theme === 'dark' ? "stroke-white" : "stroke-green-300",  // Verde claro en modo claro
     track: theme === 'dark' ? "stroke-white/10" : "stroke-green-100/10",  // Verde muy claro para la pista
     value: theme === 'dark' ? "text-1xl font-semibold text-white" : "text-1xl font-semibold text-green-600",  // Verde oscuro para el valor
@@ -17,7 +17,7 @@ export default function CardProgressViews() {
   return (
     <Card className="border-none" isBlurred>
       <CardBody className="justify-center items-center pb-0 flex flex-col">
-        <div className={`text-m font-medium ${titleColor} mb-2`}>
+        <div className={`text-xl font-bold ${titleColor} mb-2`}>
           Máximo 5000 visitas mensuales
         </div>
         <CircularProgress
