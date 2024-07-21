@@ -2,6 +2,7 @@
 
 import AreaChartComponent from "@/components/areachart";
 import TopProductComponent from "@/components/topproduct";
+import Ordenes from "@/components/ordenes";
 import CardProgressViews from "@/components/countViewsSite";
 import CardProducts from "@/components/products/card";
 import { Card, CardBody } from "@nextui-org/react";
@@ -39,7 +40,7 @@ export default function DashboardLayout() {
 
         <Card isBlurred className="md:col-span-2">
           <CardBody>
-
+          <Ordenes />
           </CardBody>
         </Card>
       </div>
