@@ -6,11 +6,11 @@ import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, BlogIcon } from 
 type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "BlogIcon";
 
 const iconsMap: Record<IconKey, JSX.Element> = {
-  DashboardIcon: <DashboardIcon size={30} />,  // Aumentar tamaño aquí
-  CategoriesIcon: <CategoriesIcon size={30} />,
-  PagesIcon: <PagesIcon size={30} />,
-  ProductIcon: <ProductIcon size={30} />,
-  BlogIcon: <BlogIcon size={30} />,
+  DashboardIcon: <DashboardIcon size={20} />,  // Aumentar tamaño aquí
+  CategoriesIcon: <CategoriesIcon size={20} />,
+  PagesIcon: <PagesIcon size={20} />,
+  ProductIcon: <ProductIcon size={20} />,
+  BlogIcon: <BlogIcon size={20} />,
 };
 
 export default function Options() {
