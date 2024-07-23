@@ -4,6 +4,7 @@ import { MiniEyeIcon, MiniTrashIcon } from '../icons';
 import { getProducts } from "@/hooks/fetchProducts";
 import withPermission from "../withPermission";
 
+
 interface Product {
   price: {
     regular: number;
@@ -40,11 +41,11 @@ return (
     {products.map((item) => (
       <Card key={item._id} className="w-full bg-sky-500/[.06] rounded-lg shadow-md flex flex-row">
         <div className="flex items-center gap-4 p-4 flex-grow">
-          <img src={item.image_default} alt={item.title} className="w-16 h-16" />
+          <img src={item.image_default} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
           <div>
-            <h3 className="font-bold text-lg">{item.title}</h3>
+            <h3 className="font-bold text-sm">{item.title}</h3>
             <div className="flex items-baseline gap-1">
-              <p className="text-sm line-through text-red-500 dark:text-red-300">S/{item.price.regular}</p>
+              <p className="text-sm line-through text-red-500 dark:text-red-300">S/{item.price.regular} - </p>
               <p className="text-sm font-bold text-green-600 dark:text-green-300">S/{item.price.sale}</p>
             </div>
           </div>

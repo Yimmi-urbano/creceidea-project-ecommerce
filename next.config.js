@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     cacheHandler: require.resolve('./cache-handler.js'),
-    cacheMaxMemorySize: 100, // disable default in-memory caching
-    output:"export"
+    cacheMaxMemorySize: 100,
 }
 
 module.exports = nextConfig
