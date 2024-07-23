@@ -77,9 +77,7 @@ body:before {
     margin: 15px;
     border-radius: 15px;
     overflow: hidden;
-    background-color: rgba(4, 87, 148, 0.4);
 
-    backdrop-filter: blur(10px);
 }
 
 .card-login {
