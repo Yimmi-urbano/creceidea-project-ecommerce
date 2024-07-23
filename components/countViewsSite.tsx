@@ -14,7 +14,7 @@ export default function CardProgressViews() {
   };
 
   return (
-    <Card isBlurred className="border-none bg-background/50 dark:bg-sky-800/40 max-w-[610px]">
+    <Card isBlurred className="border-none bg-background/50 dark:bg-sky-950/30 max-w-[610px]">
       <CardBody className="justify-center items-center pb-0 flex flex-col">
         <div className={`text-sm mb-2 md:block hidden`}>
           Máximo <span className="font-bold"> 5000 </span> visitas mensuales
