@@ -10,7 +10,6 @@ const Sidebar: React.FC = () => {
 
   return (
     <div id="sidebar" ref={sidebarRef} className="resizable text-white p-4 relative flex flex-col items-center">
-      {/* Contenedor para el logo con flexbox centrado */}
       <div className="flex justify-center items-center w-full mt-5 mb-10">
         <Logo className='logo-sidebar mb-10 mt-5 ml-[-9px]' />
       </div>
