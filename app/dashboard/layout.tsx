@@ -13,8 +13,8 @@ export default function DashboardLayout({
   return (
 
     <div className="flex h-screen">
-      {!isMobile && <Sidebar />}
-      {isMobile && <OptionsToolbar />}
+     <div className="md:flex hidden"><Sidebar /></div>
+     <div className="md:hidden visible"> <OptionsToolbar /></div>
       <div className="flex-1 p-4 gap-2 flex flex-wrap">
         <div className="w-full"><HeadToolbar /></div>
         <div className="w-full"> {children}</div>
