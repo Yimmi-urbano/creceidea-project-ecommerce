@@ -39,14 +39,14 @@ const CardProducts: React.FC = () => {
     <div className="flex flex-wrap gap-4">
       <h2 className="text-xl font-semibold text-gray-600 dark:text-white mb-4">Productos</h2>
       {products.map((item) => (
-        <Card key={item._id} className="w-full bg-sky-500/[.06] rounded-lg shadow-md flex flex-row">
+        <Card isBlurred key={item._id} className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-800/40">
           <div className="flex items-center gap-4 p-4 flex-grow">
             <img src={item.image_default} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
             <div>
               <h3 className="font-bold text-sm">{item.title}</h3>
-              <div className="flex items-baseline gap-1">
-                <p className="text-sm line-through text-red-500 dark:text-red-300">S/{item.price.regular.toFixed(2)} - </p>
-                <p className="text-sm font-bold text-green-600 dark:text-green-300">S/{item.price.sale.toFixed(2)}</p>
+              <div className="flex items-baseline gap-2">
+                <p className="text-sm line-through text-red-500 dark:text-red-300">S/ {item.price.regular.toFixed(2)}</p>
+                <p className="text-sm font-bold text-green-600 dark:text-green-300">S/ {item.price.sale.toFixed(2)}</p>
               </div>
             </div>
           </div>
