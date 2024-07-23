@@ -13,31 +13,31 @@ export default function DashboardLayout() {
      
       <div className="grid  grid-cols-2 md:grid-cols-4 gap-4 h-[8rem] md:h-[12rem]">
       <CardProgressViews  />
-        <Card isBlurred >
+        <Card>
           <CardBody className="p-0">
             <AreaChartComponent />
           </CardBody>
         </Card>
-        <Card isBlurred className=" md:flex hidden">
+        <Card  className="md:flex hidden">
           <CardBody>
           <TopProductComponent />
           </CardBody>
         </Card>
 
-        <Card isBlurred className="md:flex hidden">
+        <Card className="md:flex hidden">
           <CardBody>
           </CardBody>
         </Card>
 
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 h-[25rem]">
-        <Card isBlurred className="sm:p-0">
+        <Card  className="sm:p-0">
           <CardBody>
             <CardProducts />
           </CardBody>
         </Card>
 
-        <Card isBlurred className="md:col-span-2 md:flex hidden">
+        <Card  className="md:col-span-2 md:flex hidden">
           <CardBody>
           <Ordenes />
           </CardBody>

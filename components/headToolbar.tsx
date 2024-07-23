@@ -8,7 +8,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
   return (
    
     <div className="grid grid-cols-1 gap-4 h-[3rem]">
-<Card isBlurred>
+<Card>
   <CardBody>
 <ThemeSwitch/>
   </CardBody>
