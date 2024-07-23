@@ -16,8 +16,8 @@ export default function CardProgressViews() {
   return (
     <Card className="border-none" isBlurred>
       <CardBody className="justify-center items-center pb-0 flex flex-col">
-        <div className={`text-sm mb-2 md:flex hidden`}>
-          Máximo <span className="font-bold">5000</span> visitas mensuales
+        <div className={`text-sm mb-2 md:block hidden`}>
+          Máximo <span className="font-bold"> 5000 </span> visitas mensuales
         </div>
         <CircularProgress
           classNames={circularProgressClasses}

@@ -34,7 +34,7 @@ const TopProductComponent: React.FC = () => {
         </div>
       </div>
 
-      <Button type="submit" color="warning" size="sm" startContent={<EyeIcon />} className="m-auto block w-[80%] flex rounded-3xl" >
+      <Button type="submit" color="primary" size="sm" variant='solid' endContent={<EyeIcon />} className="m-auto block w-[80%] flex rounded-3xl" >
         Ver producto
       </Button>
     </div>
