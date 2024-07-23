@@ -45,8 +45,8 @@ const CardProducts: React.FC = () => {
             <div>
               <h3 className="font-bold text-sm">{item.title}</h3>
               <div className="flex items-baseline gap-1">
-                <p className="text-sm line-through text-red-500 dark:text-red-300">S/{item.price.regular} - </p>
-                <p className="text-sm font-bold text-green-600 dark:text-green-300">S/{item.price.sale}</p>
+                <p className="text-sm line-through text-red-500 dark:text-red-300">S/{item.price.regular.toFixed(2)} - </p>
+                <p className="text-sm font-bold text-green-600 dark:text-green-300">S/{item.price.sale.toFixed(2)}</p>
               </div>
             </div>
           </div>
