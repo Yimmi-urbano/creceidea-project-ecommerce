@@ -39,7 +39,7 @@ const CardProducts: React.FC = () => {
     <div className="flex flex-wrap gap-4">
       <h2 className="text-xl font-semibold text-gray-600 dark:text-white mb-4">Productos</h2>
       {products.map((item) => (
-        <Card isBlurred key={item._id} className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-800/40">
+        <Card isBlurred key={item._id} className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-950/30">
           <div className="flex items-center gap-4 p-4 flex-grow">
             <img src={item.image_default} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
             <div>

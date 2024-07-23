@@ -45,13 +45,13 @@ const Ordenes: React.FC = () => {
         <div className="overflow-x-auto">
           <Table className="min-w-full leading-normal" isHeaderSticky removeWrapper>
             <TableHeader >
-              <TableColumn className='dark:bg-sky-800/60 dark:text-white'>N° de orden</TableColumn>
-              <TableColumn className='dark:bg-sky-800/60 dark:text-white'>Cliente</TableColumn>
-              <TableColumn className='dark:bg-sky-800/60 dark:text-white'>Fecha de compra</TableColumn>
-              <TableColumn className='dark:bg-sky-800/60 dark:text-white'>Fecha de pago</TableColumn>
-              <TableColumn className='dark:bg-sky-800/60 dark:text-white'>Estado</TableColumn>
-              <TableColumn className='dark:bg-sky-800/60 dark:text-white'>Precio Total</TableColumn>
-              <TableColumn className='dark:bg-sky-800/60 dark:text-white'>-</TableColumn>
+              <TableColumn className='dark:bg-sky-950/40 dark:text-white'>N° de orden</TableColumn>
+              <TableColumn className='dark:bg-sky-950/40 dark:text-white'>Cliente</TableColumn>
+              <TableColumn className='dark:bg-sky-950/40 dark:text-white'>Fecha de compra</TableColumn>
+              <TableColumn className='dark:bg-sky-950/40 dark:text-white'>Fecha de pago</TableColumn>
+              <TableColumn className='dark:bg-sky-950/40 dark:text-white'>Estado</TableColumn>
+              <TableColumn className='dark:bg-sky-950/40 dark:text-white'>Precio Total</TableColumn>
+              <TableColumn className='dark:bg-sky-950/40 dark:text-white'>-</TableColumn>
             </TableHeader>
             <TableBody>
               {orders.map((order) => (
