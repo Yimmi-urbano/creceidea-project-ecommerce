@@ -1,16 +1,21 @@
 "use client"
-import AreaChartComponent from "@/components/areachart";
-import CardProgressViews from "@/components/countViewsSite";
 import CardProducts from "@/components/products/card";
 import { Card, CardBody } from "@nextui-org/react";
 
 
-export default function PageProducts() {
+  export default function PageProducts({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) {
   return (
     <div className="">
-  
-  <h1>Productos</h1>
-
+  <Card isBlurred className="md:flex hidden border-none bg-background/50 dark:bg-sky-950/30">
+          <CardBody>
+          <CardProducts />
+          </CardBody>
+        </Card>
+  {children}
     </div>
   );
 }
