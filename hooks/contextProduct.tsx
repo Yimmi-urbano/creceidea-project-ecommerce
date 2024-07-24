@@ -1,5 +1,6 @@
+// ProductContext.tsx
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-import { getProducts } from './fetchProducts';
+import { getProducts } from '@/hooks/fetchProducts';
 
 interface Product {
   price: {
@@ -17,28 +18,34 @@ interface Product {
 
 interface ProductContextProps {
   products: Product[];
+  page: number;
+  totalPages: number;
+  setPage: (page: number) => void;
 }
 
 const ProductContext = createContext<ProductContextProps | undefined>(undefined);
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getProducts();
+        const response = await getProducts(page);
         setProducts(response.products);
+        setTotalPages(response.totalPages);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [page]);
 
   return (
-    <ProductContext.Provider value={{ products }}>
+    <ProductContext.Provider value={{ products, page, totalPages, setPage }}>
       {children}
     </ProductContext.Provider>
   );
