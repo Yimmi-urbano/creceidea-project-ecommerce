@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 
-body {
+.dark body {
 
-    background-image: url('https://media-static.creceidea.pe/images/background.webp');
+    background-image: url('https://media-static.creceidea.pe/images/background-creceidea.jpg');
     background-size: cover;
     background-position: top center;
 
@@ -23,8 +23,8 @@ body {
     position: relative;
 }
 
-.login-page:before,
-body:before {
+.dark .login-page:before,
+.dark body:before {
     content: "";
     position: absolute;
     width: 100%;
