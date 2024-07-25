@@ -34,18 +34,26 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    let isMounted = true; // Control de montaje
+
     const fetchData = async () => {
       try {
         const response = await getProducts(page);
-        setProducts(response.products);
-        setFilteredProducts(response.products);
-        setTotalPages(response.totalPages);
+        if (isMounted) {
+          setProducts(response.products);
+          setFilteredProducts(response.products);
+          setTotalPages(response.totalPages);
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
     fetchData();
+
+    return () => {
+      isMounted = false; // Cleanup
+    };
   }, [page]);
 
   return (
