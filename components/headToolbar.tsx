@@ -11,6 +11,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 <Card isBlurred className="border-none bg-background/50 dark:bg-sky-950/30">
   <CardBody>
 <ThemeSwitch/>
+
   </CardBody>
 </Card>
 </div>

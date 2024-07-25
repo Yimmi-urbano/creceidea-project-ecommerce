@@ -7,6 +7,7 @@ import { Input } from "@nextui-org/input";
 import { getDomain, login } from "./api";
 import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 
 const CardLogin = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,8 @@ const CardLogin = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [isVisible, setIsVisible] = React.useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   useEffect(() => {
     document.body.classList.add("login-page");
@@ -76,6 +79,7 @@ const CardLogin = () => {
   };
 
   return (
+    
     <Card className="border-none card-login w-full lg:w-[350px] h-[450px] lg:h-auto bottom-[-10px] lg:right-[100px] absolute lg:relative">
       <CardBody className="p-5">
         <form onSubmit={handleSubmit}>
@@ -100,7 +104,7 @@ const CardLogin = () => {
 
           <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-4">
             <Input
-              type="password"
+              type={isVisible ? "text" : "password"}
               label="Contraseña"
               variant="bordered"
               value={password}
@@ -110,6 +114,15 @@ const CardLogin = () => {
               className="max-w-xs"
               labelPlacement="outside"
               placeholder="Contraseña"
+              endContent={
+                <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
             />
           </div>
 

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const API_URL_PRODUCTS = process.env.NEXT_PUBLIC_PRODUCTS;
 
-export const getProducts = async (page: number) => {
+export const getProducts = async (page: number, title: string = "", category: string = "") => {
   const domain = localStorage.getItem("domainSelect");
 
   if (!domain) {
@@ -12,11 +12,18 @@ export const getProducts = async (page: number) => {
 
   const domainPrimary = domain.split('.')[0];
 
-  const response = await axios.get(`${API_URL_PRODUCTS}`, {
-    params: { page }, // Incluye el parámetro de página
+  let url = `${API_URL_PRODUCTS}`;
+  if (title) {
+    url += `/title/${title}`;
+  } else if (category) {
+    url += `/category/${category}`;
+  }
+
+  const response = await axios.get(url, {
     headers: {
       Domain: domainPrimary,
     },
+    params: { page },
   });
 
   return response.data;
