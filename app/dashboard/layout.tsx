@@ -10,7 +10,7 @@ export default function DashboardLayout({
 }) {
 
   return (
-    <div className="flex md:h-screen">
+    <div className="flex md:h-screen mb-16">
      <div className="md:flex hidden"><Sidebar /></div>
      <div className="md:hidden visible "> <OptionsToolbar /></div>
       <div className="flex-1 p-4 gap-4 flex flex-wrap">
