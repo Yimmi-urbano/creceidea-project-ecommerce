@@ -16,8 +16,10 @@ const Paginator: React.FC = () => {
       initialPage={page}
       onChange={(page) => handlePageChange(page)}
       showControls
-      isCompact
-      showShadow
+      
+      size="sm"
+      className="m-auto"
+      
     />
   );
 };

@@ -1,4 +1,3 @@
-// ProductFilter.tsx
 import React, { useState, useEffect } from 'react';
 import { useProductContext } from '@/hooks/contextProduct';
 import { getProducts } from '@/hooks/fetchProducts';
@@ -10,6 +9,7 @@ const ProductFilter: React.FC = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
+    
     const fetchFilteredProducts = async () => {
       try {
         const response = await getProducts(page, filter);
@@ -19,13 +19,13 @@ const ProductFilter: React.FC = () => {
       }
     };
 
-    fetchFilteredProducts(); // Llamada general a fetchFilteredProducts
+    fetchFilteredProducts();
 
   }, [filter, page, setFilteredProducts]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
-    setPage(1); // Resetear a la primera página cuando se cambie el filtro
+    setPage(1); 
   };
 
   return (
@@ -47,7 +47,7 @@ const ProductFilter: React.FC = () => {
             ],
             innerWrapper: "bg-transparent",
             inputWrapper: [
-              "shadow-xl",
+              
               "bg-default-200/50",
               "dark:bg-default/60",
               "backdrop-blur-xl",

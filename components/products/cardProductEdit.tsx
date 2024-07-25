@@ -22,16 +22,14 @@ const CardProducts: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row  justify-center items-center gap-1 md:gap-3 pr-4">
+          <div className="flex flex-col md:flex-row  justify-center items-center gap-3 pr-4">
             <Button isIconOnly color="success" variant="flat" className="p-0 min-w-6 w-6 h-6 rounded-md" aria-label="Ver Detalles">
               <MiniEyeIcon size={18} />
             </Button>
             <Button isIconOnly color="danger" variant="flat" className="p-0 min-w-6 w-6 h-6 rounded-md" aria-label="Eliminar">
               <MiniTrashIcon size={18} />
             </Button>
-            <Button isIconOnly color="primary" variant="flat" className="p-0 min-w-6 w-6 h-6 rounded-md" aria-label="Eliminar">
-              <ShareIcon size={18} />
-            </Button>
+           
           
           </div>
         </Card>
