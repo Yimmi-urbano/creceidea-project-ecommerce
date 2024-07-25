@@ -10,7 +10,7 @@ interface Product {
   };
   _id: string;
   title: string;
-  image_default: string[];
+  image_default: string;
   stock: number;
   is_available: boolean;
   description_short: string;
@@ -18,8 +18,6 @@ interface Product {
 
 interface ProductContextProps {
   products: Product[];
-  filteredProducts: Product[];
-  setFilteredProducts: (products: Product[]) => void;
   page: number;
   totalPages: number;
   setPage: (page: number) => void;
@@ -29,35 +27,25 @@ const ProductContext = createContext<ProductContextProps | undefined>(undefined)
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    let isMounted = true; // Control de montaje
-
     const fetchData = async () => {
       try {
         const response = await getProducts(page);
-        if (isMounted) {
-          setProducts(response.products);
-          setFilteredProducts(response.products);
-          setTotalPages(response.totalPages);
-        }
+        setProducts(response.products);
+        setTotalPages(response.totalPages);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
     fetchData();
-
-    return () => {
-      isMounted = false; // Cleanup
-    };
   }, [page]);
 
   return (
-    <ProductContext.Provider value={{ products, filteredProducts, setFilteredProducts, page, totalPages, setPage }}>
+    <ProductContext.Provider value={{ products, page, totalPages, setPage }}>
       {children}
     </ProductContext.Provider>
   );
