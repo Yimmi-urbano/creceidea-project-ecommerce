@@ -16,6 +16,7 @@ const Paginator: React.FC = () => {
       initialPage={page}
       onChange={(page) => handlePageChange(page)}
       showControls
+      isCompact
       showShadow
     />
   );
