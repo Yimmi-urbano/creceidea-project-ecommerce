@@ -5,14 +5,14 @@ import { useProductContext } from '@/hooks/contextProduct';
 import withPermission from "../withPermission";
 
 const CardProducts: React.FC = () => {
-  const { filteredProducts } = useProductContext();
+  const { products } = useProductContext();
  
   return (
    
     <div className="flex flex-wrap gap-4">
-      {filteredProducts.map((item) => (
+      {products.map((item) => (
         <Card key={item._id} className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-950/30">
-          <div className="flex items-center gap-4 p-4 flex-grow">
+          <div className="flex items-center gap-4 p-2 flex-grow">
             <img src={item.image_default[0]} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
             <div>
               <h3 className="font-bold text-sm">{item.title}</h3>
