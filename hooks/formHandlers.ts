@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import { uploadImage, postProduct } from '@/hooks/fetchProducts';
 
+
 export interface FormData {
     name: string;
     description: string;
@@ -77,15 +78,17 @@ export const handleBack = (activeTab: string, setActiveTab: React.Dispatch<React
 
 export const handleSubmit = async (
     setSubmitting: React.Dispatch<React.SetStateAction<boolean>>,
+    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
     formData: FormData
 ) => {
     setSubmitting(true);
+    
     const data = {
         id: "CASACA00032BC00000",
         title: formData.name,
         type_product: "basic",
         image_default: formData.imageUrls,
-        category: [formData.category], // Puedes actualizar esto según tu estructura de datos
+        category: [formData.category],
         stock: formData.stock,
         is_available: true,
         price: {
@@ -130,13 +133,14 @@ export const handleSubmit = async (
                 price: { regular: 160, sale: 90, tag: "x 12 meses" },
             },
         ],
-        description_long: "<ul>\n<li> Costo mínimo de Instalación</li>\n<li>100% Fibra Óptica</li>\n<li>Internet Simétrico</li>\n<li>Duplica x 3 meses</li>\n</ul>",
+        description_long: "descripcion larga",
         description_short: formData.description,
     };
 
     try {
         await postProduct(data);
         alert('Producto enviado correctamente');
+        setModalOpen(true)
     } catch (error) {
         alert('Error al enviar el producto');
     } finally {
