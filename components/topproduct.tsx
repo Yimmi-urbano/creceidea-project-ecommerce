@@ -21,7 +21,7 @@ const sampleProduct: Product = {
 const TopProductComponent: React.FC = () => {
   const [product, setProduct] = useState<Product>(sampleProduct);
   return (
-    <Card isBlurred className="md:flex hidden border-none bg-[#53B48399] dark:bg-sky-950/30 max-w-[610px]">
+    <Card isBlurred className="md:flex hidden border-1 border-[#B8F1D2] bg-[#53B48399] dark:bg-[#2F946199]/60 dark:border-[#53B483] max-w-[610px]">
           <CardBody >
             <div className="text-white flex flex-col items-center">
               <h2 className="text-sm font-bold mb-1 mt-1">Producto más vendido</h2>
