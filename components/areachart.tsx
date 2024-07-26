@@ -7,6 +7,7 @@ import {
   TooltipProps,
 } from 'recharts';
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
+import { Card, CardBody } from "@nextui-org/react";
 import withPermission from "./withPermission"; 
 
 
@@ -35,21 +36,25 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, pa
 
 const AreaChartComponent: React.FC = () => {
   return (
-    <ResponsiveContainer width="100%" className="h-[150px]">
-      <AreaChart
-        data={data}
-        margin={{ top: 60, right: 0, left: 0, bottom: 0 }}
-      >
-        <defs>
-          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <Tooltip content={<CustomTooltip />} />
-        <Area type="monotone" dataKey="uv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorUv)" />
-      </AreaChart>
-    </ResponsiveContainer>
+    <Card isBlurred className="border-none bg-[#D9F9E699] dark:bg-sky-950/30 max-w-[610px]">
+      <CardBody className="p-0">
+        <ResponsiveContainer width="100%" className="h-[150px]">
+          <AreaChart
+            data={data}
+            margin={{ top: 60, right: 0, left: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <Tooltip content={<CustomTooltip />} />
+            <Area type="monotone" dataKey="uv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorUv)" />
+          </AreaChart>
+        </ResponsiveContainer>
+      </CardBody>
+    </Card>
   );
 };
 
