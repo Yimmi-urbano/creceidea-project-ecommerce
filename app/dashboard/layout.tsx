@@ -10,10 +10,10 @@ export default function DashboardLayout({
 }) {
 
   return (
-    <div className="flex md:h-screen mb-16">
+    <div className="flex md:h-screen mb-16 md:mb-0">
      <div className="md:flex hidden"><Sidebar /></div>
      <div className="md:hidden visible "> <OptionsToolbar /></div>
-      <div className="flex-1 p-4 gap-4 flex flex-wrap">
+      <div className="flex-1 p-4 gap-4 flex flex-wrap w-full">
         <div className="w-full h-[3rem]"><HeadToolbar /></div>
         <div className="w-full"> {children}</div>
       </div>
