@@ -1,6 +1,7 @@
 import React from "react";
 import { CircularProgress, Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import { useTheme } from 'next-themes';
+import { WorldIcon } from './icons';
 
 export default function CardProgressViews() {
   const { theme } = useTheme();  // Obtiene el tema actual
@@ -14,11 +15,12 @@ export default function CardProgressViews() {
   };
 
   return (
-    <Card isBlurred className="border-none bg-[#E0EDF499] dark:bg-sky-950/30 max-w-[610px]">
+    <Card isBlurred className="border-1 border-[#A2CADF] bg-[#E0EDF499] dark:bg-sky-950/30 dark:border-[#387EA3] max-w-[610px]">
       <CardBody className="justify-center items-center pb-0 flex flex-col">
-        <div className={`text-sm mb-2 md:block hidden`}>
-          Máximo <span className="font-bold"> 5000 </span> visitas mensuales
-        </div>
+      <div className="flex items-center mb-2">
+        <WorldIcon className="w-6 h-6 text-blue-500 mr-2" />
+        <span className="ml-4 font-bold text-[#25556D] dark:text-[#C1DCEA]">Máximo 2000 visitas al Mes</span>
+      </div>
         <CircularProgress
           classNames={circularProgressClasses}
           value={70}
