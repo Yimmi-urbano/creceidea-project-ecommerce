@@ -109,6 +109,15 @@ export const WorldIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
 
 );
 
+export const PlusIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+  <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 26C0 11.6406 11.6406 0 26 0C40.3594 0 52 11.6406 52 26C52 40.3594 40.3594 52 26 52C11.6406 52 0 40.3594 0 26Z" fill="#E0EDF4"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M26 15C26.5523 15 27 15.4477 27 16V25H36C36.5523 25 37 25.4477 37 26C37 26.5523 36.5523 27 36 27H27V36C27 36.5523 26.5523 37 26 37C25.4477 37 25 36.5523 25 36V27H16C15.4477 27 15 26.5523 15 26C15 25.4477 15.4477 25 16 25H25V16C25 15.4477 25.4477 15 26 15Z" fill="#2D6684"/>
+  </svg>
+
+
+);
+
 export const CameraIcon = ({
   fill = 'currentColor',
   filled='',
