@@ -4,6 +4,14 @@ import { fetchCategories } from '@/hooks/fetchProducts';
 import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData } from '@/hooks/formHandlers';
 import { CameraIcon, MiniTrashIcon } from '../icons';
 
+interface Category {
+    _id: string;
+    title: string;
+    icon_url: string;
+    slug: string;
+    __v: number;
+}
+
 function ProductForm() {
     const [activeTab, setActiveTab] = useState('0');
     const [formData, setFormData] = useState<FormData>({
@@ -15,7 +23,7 @@ function ProductForm() {
         imageUrls: [],
     });
 
-    const [categories, setCategories] = useState<string[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -63,8 +71,8 @@ function ProductForm() {
                         >
 
                             {categories.map((category) => (
-                                <SelectItem key={category} >
-                                    {category}
+                                <SelectItem key={category.slug} value={category.slug} >
+                                    {category.title}
                                 </SelectItem>
                             ))}
                         </Select>
