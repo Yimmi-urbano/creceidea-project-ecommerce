@@ -81,17 +81,21 @@ export const postProduct = async (data: any) => {
   }
 };
 
-export const fetchCategories = async (): Promise<string[]> => {
-  const domain = localStorage.getItem("domainSelect")??'';
+export const fetchCategories = async (): Promise<any[]> => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain.split('.')[0];
+
+
   try {
       const response = await fetch('https://api-categories.creceidea.pe/api/categories', {
-          headers: { 'domain': domainPrimary },
+          headers: { 'domain': domainPrimary, 'method':'GET' },
       });
       if (!response.ok) {
           throw new Error('Error al obtener las categorías');
       }
-      return response.json();
+      const data = await response.json();
+      console.log(data)
+      return data;
   } catch (error) {
       console.error('Error al obtener categorías:', error);
       return [];
