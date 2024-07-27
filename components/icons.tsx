@@ -102,6 +102,7 @@ export const EditProductIcon: React.FC<IconSvgProps> = ({ size = 24, ...props })
 
 
  export const CameraIcon: React.FC<IconSvgProps> =({
+
   fill = 'currentColor',
 
   size='',
