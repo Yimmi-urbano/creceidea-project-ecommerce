@@ -85,7 +85,7 @@ export const fetchCategories = async (): Promise<string[]> => {
   const domain = localStorage.getItem("domainSelect")??'';
   const domainPrimary = domain.split('.')[0];
   try {
-      const response = await fetch('https://api-products.creceidea.pe/api/categories', {
+      const response = await fetch('https://api-categories.creceidea.pe/api/categories', {
           headers: { 'domain': domainPrimary },
       });
       if (!response.ok) {
