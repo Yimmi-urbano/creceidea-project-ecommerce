@@ -49,7 +49,6 @@ export const EditProductIcon: React.FC<IconSvgProps> = ({ size = 24, ...props })
 </svg>
 );
 
-
   export const EyeFilledIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
 
   <svg
