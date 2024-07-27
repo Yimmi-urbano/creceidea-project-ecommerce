@@ -58,6 +58,29 @@ function ProductForm() {
                         <Input
                             label="Nombre del Producto"
                             name="name"
+                            classNames={
+                                {
+                                    label: "text-black/50 dark:text-white/90",
+                                    innerWrapper: "bg-transparent",
+                                    input: [
+                                        "bg-transparent",
+                                        "text-black/90 dark:text-white/90",
+                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                    ],
+                                    inputWrapper: [
+                                        "shadow-xl",
+                                        "bg-cyan-500/50",
+                                        "dark:bg-cyan-600/10",
+                                        "backdrop-blur-xl",
+                                        "backdrop-saturate-200",
+                                        "hover:bg-default-200/70",
+                                        "dark:hover:bg-default/70",
+                                        "group-data-[focus=true]:bg-default-200/50",
+                                        "dark:group-data-[focus=true]:bg-default/60",
+                                        "!cursor-text",
+                                      ],
+                                }
+                            }
                             value={formData.name}
                             onChange={(e) => handleChange(e, setFormData, formData)}
 
@@ -65,6 +88,10 @@ function ProductForm() {
                         <Select
                             name="category"
                             value={formData.category}
+                            classNames={{
+                              
+                                helperWrapper:  "max-h-[400px] bg-cyan-600/10",
+                              }}
                             onChange={(e) => handleChange(e, setFormData, formData)}
                             label="Categoría"
                             placeholder="Seleccionar"
@@ -79,6 +106,29 @@ function ProductForm() {
                         <Textarea
                             label="Descripción"
                             name="description"
+                            classNames={
+                                {
+                                    label: "text-black/50 dark:text-white/90",
+                                    innerWrapper: "bg-transparent",
+                                    input: [
+                                        "bg-transparent",
+                                        "text-black/90 dark:text-white/90",
+                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                    ],
+                                    inputWrapper: [
+                                        "shadow-xl",
+                                        "bg-cyan-500/50",
+                                        "dark:bg-cyan-600/10",
+                                        "backdrop-blur-xl",
+                                        "backdrop-saturate-200",
+                                        "hover:bg-default-200/70",
+                                        "dark:hover:bg-default/70",
+                                        "group-data-[focus=true]:bg-default-200/50",
+                                        "dark:group-data-[focus=true]:bg-default/60",
+                                        "!cursor-text",
+                                      ],
+                                }
+                            }
                             value={formData.description}
                             onChange={(e) => handleChange(e, setFormData, formData)}
 
@@ -93,6 +143,29 @@ function ProductForm() {
                             label="Precio"
                             name="price"
                             value={formData.price}
+                            classNames={
+                                {
+                                    label: "text-black/50 dark:text-white/90",
+                                    innerWrapper: "bg-transparent",
+                                    input: [
+                                        "bg-transparent",
+                                        "text-black/90 dark:text-white/90",
+                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                    ],
+                                    inputWrapper: [
+                                        "shadow-xl",
+                                        "bg-cyan-500/50",
+                                        "dark:bg-cyan-600/10",
+                                        "backdrop-blur-xl",
+                                        "backdrop-saturate-200",
+                                        "hover:bg-default-200/70",
+                                        "dark:hover:bg-default/70",
+                                        "group-data-[focus=true]:bg-default-200/50",
+                                        "dark:group-data-[focus=true]:bg-default/60",
+                                        "!cursor-text",
+                                      ],
+                                }
+                            }
                             placeholder="0.00"
                             onChange={(e) => handleChange(e, setFormData, formData)}
                             startContent={
@@ -107,6 +180,29 @@ function ProductForm() {
                         <Input
                             label="Stock"
                             name="stock"
+                            classNames={
+                                {
+                                    label: "text-black/50 dark:text-white/90",
+                                    innerWrapper: "bg-transparent",
+                                    input: [
+                                        "bg-transparent",
+                                        "text-black/90 dark:text-white/90",
+                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                    ],
+                                    inputWrapper: [
+                                        "shadow-xl",
+                                        "bg-cyan-500/50",
+                                        "dark:bg-cyan-600/10",
+                                        "backdrop-blur-xl",
+                                        "backdrop-saturate-200",
+                                        "hover:bg-default-200/70",
+                                        "dark:hover:bg-default/70",
+                                        "group-data-[focus=true]:bg-default-200/50",
+                                        "dark:group-data-[focus=true]:bg-default/60",
+                                        "!cursor-text",
+                                      ],
+                                }
+                            }
                             value={formData.stock}
                             onChange={(e) => handleChange(e, setFormData, formData)}
                             type="number"
@@ -194,13 +290,13 @@ function ProductForm() {
                 </Tab>
             </Tabs>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px' }}>
-                <Button variant='flat' onClick={() => handleBack(activeTab, setActiveTab)} disabled={parseInt(activeTab) === 0}>
+                <Button  onClick={() => handleBack(activeTab, setActiveTab)} disabled={parseInt(activeTab) === 0}>
                     Atrás
                 </Button>
                 {parseInt(activeTab) !== 3 && (
                     <Button
-                    color="primary"
-                    variant='flat'
+                        color="primary"
+                        
                         onClick={() => handleNext(activeTab, setActiveTab)}
                         disabled={parseInt(activeTab) === 3}
                     >
@@ -210,17 +306,17 @@ function ProductForm() {
 
                 {parseInt(activeTab) === 3 && (
                     <Button
-                    variant='flat'
-                    color='success'
+                        
+                        color='success'
                         onClick={() => handleSubmit(setSubmitting, formData)}
                         disabled={submitting}
                     >
                         {submitting ? 'Publicando...' : 'Publicar'}
                     </Button>
-                    
+
                 )}
             </div>
-   
+
         </div>
     );
 }

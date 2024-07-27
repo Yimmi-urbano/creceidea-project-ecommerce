@@ -9,7 +9,7 @@ const Sidebar: React.FC = () => {
   const { sidebarRef, resizeHandleRef } = useResizableSidebar();
 
   return (
-    <Card isBlurred id="sidebar" ref={sidebarRef} className="resizable border-1 border-[#41B4F1CC]/80 bg-[#4595C0] dark:bg-sky-950/30 dark:text-white  p-4 relative flex flex-col items-center">
+    <Card isBlurred id="sidebar" ref={sidebarRef} className="resizable border-1 border-[#41B4F1CC]/30 bg-[#4595C0] dark:bg-sky-950/30 dark:text-white  p-4 relative flex flex-col items-center">
       <div className="flex justify-center items-center w-full mt-5 mb-10">
         <Logo className='logo-sidebar mb-10 mt-5 ml-[-9px]' />
       </div>
