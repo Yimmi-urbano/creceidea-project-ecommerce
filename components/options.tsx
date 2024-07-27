@@ -6,7 +6,7 @@ import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, BlogIcon } from 
 type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "BlogIcon";
 
 const iconsMap: Record<IconKey, JSX.Element> = {
-  DashboardIcon: <DashboardIcon size={20} />,  // Aumentar tamaño aquí
+  DashboardIcon: <DashboardIcon size={20} />,  
   CategoriesIcon: <CategoriesIcon size={20} />,
   PagesIcon: <PagesIcon size={20} />,
   ProductIcon: <ProductIcon size={20} />,
@@ -18,9 +18,10 @@ export default function Options() {
     <div className="flex flex-col items-center w-full">
       {siteConfig.navItems.map((item) => (
         <Link 
+        key={item.href}
           isBlock 
           size="md" 
-          className="flex items-center w-full mb-3 justify-start text-white"  // Cambia el color del texto aquí
+          className="flex items-center w-full mb-3 justify-start text-white"  
           href={item.href}
         >
           {iconsMap[item.icon as IconKey]}
