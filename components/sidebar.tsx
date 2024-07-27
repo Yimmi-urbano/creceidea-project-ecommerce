@@ -1,5 +1,4 @@
 
-'use client';
 import React from 'react';
 import useResizableSidebar from '@/hooks/useResizableSidebar';
 import Options from './options';

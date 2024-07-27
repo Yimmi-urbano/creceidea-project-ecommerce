@@ -8,7 +8,7 @@ import { Card, CardBody } from "@nextui-org/react";
 import { ProductProvider } from "@/hooks/contextProduct";
 
 
-export default function DashboardLayout() {
+export default function DashboardLayoutPage() {
   return (
     <div className="z-index gap-4 grid ">
       <div className="grid  grid-cols-2 md:grid-cols-4 gap-4 h-[8rem] md:h-[12rem]">

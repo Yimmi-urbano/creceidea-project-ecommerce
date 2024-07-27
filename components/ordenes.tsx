@@ -13,13 +13,13 @@ interface Order {
 }
 
 const orders: Order[] = [
-  { id: '#048', client: 'Juan García', purchaseDate: '27/07/2024', paymentDate: 'Jul, 27 2024 18:26', status: 'Aprobado', totalPrice: 'S/ 1,299' },
-  { id: '#032', client: 'Carlos González', purchaseDate: '27/07/2024', paymentDate: 'Jul, 27 2024 15:34', status: 'Aprobado', totalPrice: 'S/ 100' },
-  { id: '#813', client: 'Carmen Tello', purchaseDate: '26/07/2024', paymentDate: 'Jul, 27 2024 15:26', status: 'Pendiente', totalPrice: 'S/ 500' },
-  { id: '#140', client: 'José Paredes', purchaseDate: '01/06/2024', paymentDate: 'Jun, 04 2024 13:26', status: 'Rechazado', totalPrice: 'S/ 1,299' },
-  { id: '#140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
-  { id: '#140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
-  { id: '#140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
+  { id: '048', client: 'Juan García', purchaseDate: '27/07/2024', paymentDate: 'Jul, 27 2024 18:26', status: 'Aprobado', totalPrice: 'S/ 1,299' },
+  { id: '032', client: 'Carlos González', purchaseDate: '27/07/2024', paymentDate: 'Jul, 27 2024 15:34', status: 'Aprobado', totalPrice: 'S/ 100' },
+  { id: '813', client: 'Carmen Tello', purchaseDate: '26/07/2024', paymentDate: 'Jul, 27 2024 15:26', status: 'Pendiente', totalPrice: 'S/ 500' },
+  { id: '40', client: 'José Paredes', purchaseDate: '01/06/2024', paymentDate: 'Jun, 04 2024 13:26', status: 'Rechazado', totalPrice: 'S/ 1,299' },
+  { id: '3140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
+  { id: '2140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
+  { id: '140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
 ];
 
 const getStatusClass = (status: string): "success" | "warning" | "danger" | undefined => {

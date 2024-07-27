@@ -78,7 +78,6 @@ export const handleBack = (activeTab: string, setActiveTab: React.Dispatch<React
 
 export const handleSubmit = async (
     setSubmitting: React.Dispatch<React.SetStateAction<boolean>>,
-    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
     formData: FormData
 ) => {
     setSubmitting(true);
@@ -140,7 +139,6 @@ export const handleSubmit = async (
     try {
         await postProduct(data);
         alert('Producto enviado correctamente');
-        setModalOpen(true)
     } catch (error) {
         alert('Error al enviar el producto');
     } finally {

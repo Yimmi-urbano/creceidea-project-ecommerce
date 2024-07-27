@@ -1,10 +1,8 @@
-"use client"
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Tabs, Tab, Spinner, SelectItem, Select, Textarea, Card, CardHeader, CardBody, Image, CardFooter } from '@nextui-org/react';
 import { fetchCategories } from '@/hooks/fetchProducts';
 import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData } from '@/hooks/formHandlers';
 import { CameraIcon, MiniTrashIcon } from '../icons';
-import ApiModal from '@/components/products/modal';
 
 function ProductForm() {
     const [activeTab, setActiveTab] = useState('0');
@@ -206,7 +204,7 @@ function ProductForm() {
                     <Button
                     variant='flat'
                     color='success'
-                        onClick={() => handleSubmit(setSubmitting,setModalOpen, formData)}
+                        onClick={() => handleSubmit(setSubmitting, formData)}
                         disabled={submitting}
                     >
                         {submitting ? 'Publicando...' : 'Publicar'}
@@ -214,12 +212,7 @@ function ProductForm() {
                     
                 )}
             </div>
-            <ApiModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        status='success'
-        message='exito'
-      />
+   
         </div>
     );
 }
