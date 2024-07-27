@@ -1,5 +1,6 @@
 import React from "react";
 import { CircularProgress, Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
+import { WorldIcon } from "./icons";
 
 
 export default function CardProgressViews() {
