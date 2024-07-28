@@ -6,7 +6,6 @@ import CardProgressViews from "@/components/countViewsSite";
 import CardProducts from "@/components/products/card";
 import { Card, CardBody, CardHeader, Link } from "@nextui-org/react";
 import { ProductProvider } from "@/hooks/contextProduct";
-import CardSlider  from "@/components/cardSlider"
 
 
 export default function DashboardLayoutPage() {
@@ -16,12 +15,6 @@ export default function DashboardLayoutPage() {
         <CardProgressViews />
         <AreaChartComponent />
         <TopProductComponent />
-        <Card isBlurred className="md:flex  border-none bg-background/50 dark:bg-sky-950/30">
-          <CardBody>
-          <CardSlider/>
-          </CardBody>
-        </Card>
-      
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 h-[25rem]">
         <Card isBlurred className="sm:p-0 border-none bg-background/50 dark:bg-sky-950/30 max-w-[610px]">
