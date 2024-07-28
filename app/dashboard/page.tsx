@@ -4,7 +4,7 @@ import TopProductComponent from "@/components/topproduct";
 import Ordenes from "@/components/ordenes";
 import CardProgressViews from "@/components/countViewsSite";
 import CardProducts from "@/components/products/card";
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
 import { ProductProvider } from "@/hooks/contextProduct";
 
 
@@ -18,6 +18,9 @@ export default function DashboardLayoutPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 h-[25rem]">
         <Card isBlurred className="sm:p-0 border-none bg-background/50 dark:bg-sky-950/30 max-w-[610px]">
+        <CardHeader className="bg-transparent pl-4 pr-4 pb-3 pt-3 flex justify-between">
+        <h2 className="text-sm md:text-xl font-semibold text-gray-600 dark:text-white">Productos</h2>
+      </CardHeader>
           <CardBody>
             <ProductProvider>
               <CardProducts />
