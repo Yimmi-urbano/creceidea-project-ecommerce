@@ -36,17 +36,30 @@ export const uploadImage = async (file: File): Promise<string> => {
   const domainPrimary = domain.split('.')[0];
 
   const options = {
-    maxSizeMB: 1,         
-    maxWidthOrHeight: 800, 
-    useWebWorker: true,  
+    maxSizeMB: 1,          // Tamaño máximo del archivo en MB
+    maxWidthOrHeight: 800, // Ancho o alto máximo de la imagen
+    useWebWorker: true,    // Usar web workers para mejorar el rendimiento
   };
 
   try {
-  
+    // Comprimir la imagen
     const compressedFile = await imageCompression(file, options);
-    const formData = new FormData();
-    formData.append('image', compressedFile);
 
+    // Generar un nuevo nombre para el archivo con una versión
+    const originalName = file.name;
+    const version = Date.now(); // Puedes usar una versión, timestamp u otro identificador
+    const newFileName = `${originalName.split('.')[0]}-${version}.${originalName.split('.').pop()}`;
+
+    // Crear un nuevo archivo con el nombre modificado
+    const renamedFile = new File([compressedFile], newFileName, {
+      type: compressedFile.type,
+    });
+
+    // Crear FormData y añadir la imagen comprimida y renombrada
+    const formData = new FormData();
+    formData.append('image', renamedFile);
+
+    // Enviar la imagen comprimida al servidor
     const response = await fetch('https://api-upload.creceidea.pe/image/product', {
       method: 'POST',
       headers: {
