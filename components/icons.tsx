@@ -116,9 +116,7 @@ export const PlusIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
 );
 
  export const CameraIcon: React.FC<IconSvgProps> =({
-
   fill = 'currentColor',
-
   size='',
   height='',
   width='',
@@ -187,6 +185,12 @@ export const PagesIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
     </svg>
 
   </svg>
+);
+
+export const MenuMobile: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fillRule="evenodd" clipRule="evenodd" d="M22.75 7.3125C22.75 6.86377 22.3862 6.5 21.9375 6.5H4.0625C3.61377 6.5 3.25 6.86377 3.25 7.3125C3.25 7.76123 3.61377 8.125 4.0625 8.125H21.9375C22.3862 8.125 22.75 7.76123 22.75 7.3125ZM22.75 13C22.75 12.5513 22.3862 12.1875 21.9375 12.1875H4.0625C3.61377 12.1875 3.25 12.5513 3.25 13C3.25 13.4487 3.61377 13.8125 4.0625 13.8125H21.9375C22.3862 13.8125 22.75 13.4487 22.75 13ZM22.75 18.6875C22.75 18.2388 22.3862 17.875 21.9375 17.875H13C12.5513 17.875 12.1875 18.2388 12.1875 18.6875C12.1875 19.1362 12.5513 19.5 13 19.5H21.9375C22.3862 19.5 22.75 19.1362 22.75 18.6875Z" fill="#ffffff"/>
+</svg>
 );
 
 export const ProductIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
