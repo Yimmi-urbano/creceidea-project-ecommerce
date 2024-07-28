@@ -28,7 +28,7 @@ function ProductForm() {
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
-    const [modalOpen, setModalOpen] = useState(false);
+   
 
     useEffect(() => {
         const loadCategories = async () => {

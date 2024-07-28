@@ -1,5 +1,7 @@
 // fetchProducts.ts
 import axios from "axios";
+import imageCompression from 'browser-image-compression';
+
 
 const API_URL_PRODUCTS = process.env.NEXT_PUBLIC_PRODUCTS;
 
@@ -30,30 +32,39 @@ export const getProducts = async (page: number, title: string = "", category: st
 };
 
 export const uploadImage = async (file: File): Promise<string> => {
-  const domain = localStorage.getItem("domainSelect")??'';
+  const domain = localStorage.getItem('domainSelect') ?? '';
   const domainPrimary = domain.split('.')[0];
-  const formData = new FormData();
-  formData.append('image', file);
+
+  const options = {
+    maxSizeMB: 1,         
+    maxWidthOrHeight: 800, 
+    useWebWorker: true,  
+  };
 
   try {
-      const response = await fetch('https://api-upload.creceidea.pe/image/product', {
-          method: 'POST',
-          headers: {
-              'domain': domainPrimary,
-          },
-          body: formData,
-      });
+  
+    const compressedFile = await imageCompression(file, options);
+    const formData = new FormData();
+    formData.append('image', compressedFile);
 
-      const result = await response.json();
-      if (response.ok) {
-          return result.imageUrl;
-      } else {
-          console.error('Error en la carga de imagen:', result);
-          throw new Error('Error en la carga de imagen');
-      }
+    const response = await fetch('https://api-upload.creceidea.pe/image/product', {
+      method: 'POST',
+      headers: {
+        domain: domainPrimary,
+      },
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      return result.imageUrl;
+    } else {
+      console.error('Error en la carga de imagen:', result);
+      throw new Error('Error en la carga de imagen');
+    }
   } catch (error) {
-      console.error('Error en la carga de imagen:', error);
-      throw error;
+    console.error('Error en la carga de imagen:', error);
+    throw error;
   }
 };
 
