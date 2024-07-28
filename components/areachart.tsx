@@ -23,9 +23,9 @@ const data = [
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="custom-tooltip bg-green-700 text-white p-2 rounded-lg">
-        <p className="label font-bold">{`${payload[0].payload.name}`}</p>
-        <p className="intro">{`S/ ${payload[0].value}`}</p>
+      <div className="custom-tooltip bg-green-700 text-white p-2 rounded-md">
+        <p className="label font-bold text-xs">{`${payload[0].payload.name}`}</p>
+        <p className="intro text-xs">{`S/ ${payload[0].value}`}</p>
       </div>
     );
   }
@@ -35,11 +35,11 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, pa
 
 const AreaChartComponent: React.FC = () => {
   return (
-    <Card isBlurred className="border-1 border-[#B8F1D2] bg-[#D9F9E699] dark:bg-[#2F946199]/60 dark:border-[#53B483] max-w-[610px]">
+    <Card isBlurred className="border-1 border-[#B8F1D2] bg-[#D9F9E699] dark:bg-[#2F946199]/60 dark:border-[#53B483]">
       <CardBody className="p-0">
         <div className="p-4">
-          <h2 className="text-4xl font-bold text-gray-800 dark:text-white">S/ 500.00</h2>
-          <p className="text-lg text-gray-600 dark:text-white">S/ 300.00 ventas mes anterior</p>
+          <h2 className=" text-xl md:text-2xl font-bold text-gray-800 dark:text-white">+ S/ 500.00</h2>
+          <p className="text-xs text-gray-600 dark:text-white">S/ 300.00 - Junio</p>
         </div>
         <ResponsiveContainer width="100%" className="h-[150px]">
           <AreaChart

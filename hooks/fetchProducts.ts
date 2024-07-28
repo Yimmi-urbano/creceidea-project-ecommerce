@@ -36,30 +36,26 @@ export const uploadImage = async (file: File): Promise<string> => {
   const domainPrimary = domain.split('.')[0];
 
   const options = {
-    maxSizeMB: 1,          // Tamaño máximo del archivo en MB
-    maxWidthOrHeight: 800, // Ancho o alto máximo de la imagen
-    useWebWorker: true,    // Usar web workers para mejorar el rendimiento
+    maxSizeMB: 1,
+    maxWidthOrHeight: 800,
+    useWebWorker: true,
   };
 
   try {
-    // Comprimir la imagen
+
     const compressedFile = await imageCompression(file, options);
 
-    // Generar un nuevo nombre para el archivo con una versión
     const originalName = file.name;
-    const version = Date.now(); // Puedes usar una versión, timestamp u otro identificador
+    const version = Date.now();
     const newFileName = `${originalName.split('.')[0]}-${version}.${originalName.split('.').pop()}`;
 
-    // Crear un nuevo archivo con el nombre modificado
     const renamedFile = new File([compressedFile], newFileName, {
       type: compressedFile.type,
     });
 
-    // Crear FormData y añadir la imagen comprimida y renombrada
     const formData = new FormData();
     formData.append('image', renamedFile);
 
-    // Enviar la imagen comprimida al servidor
     const response = await fetch('https://api-upload.creceidea.pe/image/product', {
       method: 'POST',
       headers: {
@@ -82,26 +78,26 @@ export const uploadImage = async (file: File): Promise<string> => {
 };
 
 export const postProduct = async (data: any) => {
-  const domain = localStorage.getItem("domainSelect")??'';
+  const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain.split('.')[0];
   try {
-      const response = await fetch('https://api-products.creceidea.pe/api/products', { 
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'domain': domainPrimary,
-          },
-          body: JSON.stringify(data),
-      });
+    const response = await fetch('https://api-products.creceidea.pe/api/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'domain': domainPrimary,
+      },
+      body: JSON.stringify(data),
+    });
 
-      if (!response.ok) {
-          throw new Error('Error al enviar los datos del producto');
-      }
+    if (!response.ok) {
+      throw new Error('Error al enviar los datos del producto');
+    }
 
-      return await response.json();
+    return await response.json();
   } catch (error) {
-      console.error('Error en la solicitud POST:', error);
-      throw error;
+    console.error('Error en la solicitud POST:', error);
+    throw error;
   }
 };
 
@@ -111,17 +107,17 @@ export const fetchCategories = async (): Promise<any[]> => {
 
 
   try {
-      const response = await fetch('https://api-categories.creceidea.pe/api/categories', {
-          headers: { 'domain': domainPrimary, 'method':'GET' },
-      });
-      if (!response.ok) {
-          throw new Error('Error al obtener las categorías');
-      }
-      const data = await response.json();
-      console.log(data)
-      return data;
+    const response = await fetch('https://api-categories.creceidea.pe/api/categories', {
+      headers: { 'domain': domainPrimary, 'method': 'GET' },
+    });
+    if (!response.ok) {
+      throw new Error('Error al obtener las categorías');
+    }
+    const data = await response.json();
+    console.log(data)
+    return data;
   } catch (error) {
-      console.error('Error al obtener categorías:', error);
-      return [];
+    console.error('Error al obtener categorías:', error);
+    return [];
   }
 };
