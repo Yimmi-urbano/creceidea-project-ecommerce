@@ -101,8 +101,9 @@
 }
 
 .toolbar-footer .toolbar-inner {
-    height: 70px;
-    background-color: rgba(4, 87, 148, 0.4);
+    height: 60px;
+    background-color: #ff7800ad;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 

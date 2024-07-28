@@ -9,7 +9,7 @@ const CardProducts: React.FC = () => {
  
   return (
    
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-3">
       {products.map((item) => (
         <Card key={item._id} className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-950/30">
           <div className="flex items-center gap-4 p-2 flex-grow">
@@ -22,7 +22,7 @@ const CardProducts: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row  justify-center items-center gap-3 pr-4">
+          <div className="flex flex-col md:flex-row  justify-center items-center gap-3 pr-3">
             <Button isIconOnly color="success" variant="flat" className="p-0 min-w-6 w-6 h-6 rounded-md" aria-label="Ver Detalles">
               <MiniEyeIcon size={18} />
             </Button>
