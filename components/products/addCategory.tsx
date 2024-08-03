@@ -32,7 +32,7 @@ const AddCategory = () => {
   return (
     <div>
       <Button onPress={onOpen}>Agregar Categoría</Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal className="bg-background/70 dark:bg-sky-950/80" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -42,7 +42,7 @@ const AddCategory = () => {
                   
                   isClearable
                   fullWidth
-                  color="primary"
+                  
                   size="lg"
                   placeholder="Título"
                   onChange={(e) => setTitle(e.target.value)}
@@ -51,7 +51,7 @@ const AddCategory = () => {
                 {message && <div>{message}</div>}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="danger" onPress={onClose}>
                   Cerrar
                 </Button>
                 <Button color="primary" onPress={handleAddCategory}>
