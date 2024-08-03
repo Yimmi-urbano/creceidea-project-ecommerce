@@ -1,86 +1,83 @@
-"use client"
+"use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlusIcon, EditProductIcon, ShareIcon, EyeFilledIcon, MiniTrashIcon } from '../../../components/icons';
-
+import AddCategory from '@/components/products/addCategory';
+import { fetchCategories, deleteCategory } from '@/hooks/fetchProducts';
+import { Button, Card, CardBody, CardHeader } from '@nextui-org/react';
 
 interface Category {
+  _id: string;
   title: string;
-  detail: string;
-  imageUrl: string;
-  productCount: number;
+  icon_url: string;
 }
 
-const categories: Category[] = [
-  {
-    title: "Electrónica",
-    detail: "Última tecnología en dispositivos electrónicos.",
-    imageUrl: "https://via.placeholder.com/100",
-    productCount: 120,
-  },
-  {
-    title: "Hogar",
-    detail: "Productos para mejorar y decorar tu hogar.",
-    imageUrl: "https://via.placeholder.com/100",
-    productCount: 85,
-  },
-  {
-    title: "Ropa",
-    detail: "Moda y tendencias para toda la familia.",
-    imageUrl: "https://via.placeholder.com/100",
-    productCount: 200,
-  },
-];
+const CategoryCard: React.FC<{ category: Category, onDelete: (id: string) => void }> = ({ category, onDelete }) => {
+  const { _id, title, icon_url } = category;
 
-const CategoryCard: React.FC<Category> = ({ title, detail, imageUrl, productCount }) => (
-  <div className="flex items-center justify-between p-4 bg-blue-[#F6F7F999]/60 dark:bg-sky-950/90 shadow-md rounded-lg mb-4">
-    <div className="flex items-center">
-      <img src={imageUrl} alt={title} className="w-16 h-16 rounded-md mr-4" />
-      <div>
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="text-gray-600">{detail}</p>
-        <p className="text-gray-400">{productCount} productos</p>
+  return (
+    <Card isBlurred className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-950/30">
+      <div className="flex items-center gap-4 p-2 flex-grow">
+        <h3 className="text-lg font-semibold">{title}</h3>
       </div>
-    </div>
-    <div className="flex space-x-2">
-      <button className="p-2 bg-white border stroke-black rounded-md hover:bg-gray-300">
-        <EditProductIcon />
-      </button>
-      
-      <button className="p-2 bg-blue-200 rounded-md hover:bg-blue-300">
-        <EyeFilledIcon />
-      </button>
+      <div className="flex flex-row justify-center items-center gap-3 pr-3">
+        <Button
+          isIconOnly
+          color="danger"
+          variant="flat"
+          className="p-0 min-w-6 w-6 h-6 rounded-md"
+          aria-label="Eliminar"
+          onClick={() => onDelete(_id)}
+        >
+          <MiniTrashIcon size={18} />
+        </Button>
+      </div>
+    </Card>
+  );
+};
 
-      <button className="p-2 bg-[#C1DCEA] stroke-black rounded-md hover:bg-gray-300">
-        <ShareIcon />
-      </button>
-      
-      <button className="p-2 bg-red-200 rounded-md hover:bg-red-300">
-        <MiniTrashIcon />
-      </button>
-    </div>
-  </div>
-);
+const PageCategories: React.FC = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
 
-const PageCategories: React.FC = () => (
-  <div className="p-8 min-h-screen">
-    <div className="mb-6">
-      <button className="flex items-center w-full p-2 bg-white  dark:bg-sky-950/30 rounded-lg shadow-sm hover:bg-gray-50">
-        <PlusIcon className="mr-2"/> 
-        <span className="text-[#25556D] dark:text-white font-semibold  ml-6">Agregar nueva categoría</span>
-      </button>
-    </div>
-    <div className="mb-6">
-      <input
-        type="text"
-        placeholder="Buscar categoría"
-        className="p-2 w-full border border-gray-300 rounded-md"
-      />
-    </div>
-    {categories.map((category, index) => (
-      <CategoryCard key={index} {...category} />
-    ))}
-  </div>
-);
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const categoriesData: Category[] = await fetchCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error al cargar categorías:', error);
+      }
+    };
+
+    loadCategories();
+  }, []);
+
+  const handleDeleteCategory = async (_id: string) => {
+    try {
+      await deleteCategory(_id);
+      setCategories((prevCategories) =>
+        prevCategories.filter((category) => category._id !== _id)
+      );
+    } catch (error) {
+      console.error('Error al eliminar la categoría:', error);
+    }
+  };
+
+  return (
+    <Card isBlurred className="border-none bg-background/50 dark:bg-sky-950/30">
+      <CardHeader className="bg-transparent flex justify-between">
+        <h2 className="text-xl font-semibold text-gray-600 dark:text-white">Productos</h2>
+        <AddCategory />
+      </CardHeader>
+      <CardBody>
+        <div className="flex flex-wrap gap-3">
+          {categories.map((category, index) => (
+            <CategoryCard key={index} category={category} onDelete={handleDeleteCategory} />
+          ))}
+        </div>
+      </CardBody>
+    </Card>
+  );
+};
 
 export default PageCategories;

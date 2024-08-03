@@ -1,14 +1,12 @@
+"use client"
 import React from 'react';
 import { Card, Button } from "@nextui-org/react";
 import { MiniEyeIcon, MiniTrashIcon, ShareIcon } from '../icons';
 import { useProductContext } from '@/hooks/contextProduct';
 import withPermission from "../withPermission";
-
 const CardProducts: React.FC = () => {
   const { products } = useProductContext();
- 
   return (
-   
     <div className="flex flex-wrap gap-3">
       {products.map((item) => (
         <Card key={item._id} className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-950/30">
@@ -29,13 +27,10 @@ const CardProducts: React.FC = () => {
             <Button isIconOnly color="danger" variant="flat" className="p-0 min-w-6 w-6 h-6 rounded-md" aria-label="Eliminar">
               <MiniTrashIcon size={18} />
             </Button>
-           
-          
           </div>
         </Card>
       ))}
     </div>
   );
 };
-
 export default withPermission(CardProducts, 'inventario');

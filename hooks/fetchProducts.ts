@@ -27,7 +27,6 @@ export const getProducts = async (page: number, title: string = "", category: st
     },
     params: { page },
   });
-
   return response.data;
 };
 
@@ -104,8 +103,6 @@ export const postProduct = async (data: any) => {
 export const fetchCategories = async (): Promise<any[]> => {
   const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain.split('.')[0];
-
-
   try {
     const response = await fetch('https://api-categories.creceidea.pe/api/categories', {
       headers: { 'domain': domainPrimary, 'method': 'GET' },
@@ -114,10 +111,55 @@ export const fetchCategories = async (): Promise<any[]> => {
       throw new Error('Error al obtener las categorías');
     }
     const data = await response.json();
-    console.log(data)
     return data;
   } catch (error) {
     console.error('Error al obtener categorías:', error);
     return [];
+  }
+};
+
+const DEFAULT_ICON_URL = 'https://example.com/icons/placeholder.png';
+
+export const addCategory = async (title: string) => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
+  const domainPrimary = domain.split('.')[0];
+
+  try {
+    const response = await axios.post(
+      'https://api-categories.creceidea.pe/api/categories',
+      {
+        title,
+        icon_url: DEFAULT_ICON_URL,
+      },
+      {
+        headers: {
+          domain: domainPrimary,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al agregar la categoría');
+  }
+};
+
+export const deleteCategory = async (id: string) => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
+  const domainPrimary = domain.split('.')[0];
+
+  try {
+    const response = await axios.delete(
+      `https://api-categories.creceidea.pe/api/categories/${id}`,
+      {
+        headers: {
+          domain: domainPrimary,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al eliminar la categoría');
   }
 };

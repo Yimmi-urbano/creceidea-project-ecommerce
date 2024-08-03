@@ -11,11 +11,14 @@ import { ProductProvider } from "@/hooks/contextProduct";
 export default function DashboardLayoutPage() {
   return (
     <div className="z-index gap-4 grid ">
+      
       <div className="grid  grid-cols-2 md:grid-cols-4 gap-4 h-[8rem] md:h-[12rem]">
         <CardProgressViews />
         <AreaChartComponent />
         <TopProductComponent />
       </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 h-[25rem]"></div>
+{/**? 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 h-[25rem]">
         <Card isBlurred className="sm:p-0 border-none bg-background/50 dark:bg-sky-950/30 max-w-[610px]">
         <CardHeader className="bg-transparent pl-4 pr-4 pb-3 pt-3 flex justify-between">
@@ -33,6 +36,7 @@ export default function DashboardLayoutPage() {
           </CardBody>
         </Card>
       </div>
+*/}
     </div>
   );
 }
