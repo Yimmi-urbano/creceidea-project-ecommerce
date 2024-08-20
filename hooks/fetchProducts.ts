@@ -1,7 +1,7 @@
 // fetchProducts.ts
 import axios from "axios";
 import imageCompression from 'browser-image-compression';
-
+import { addProductToWooCommerceService } from '@/hooks/woocommerce/postProduct';
 
 const API_URL_PRODUCTS = process.env.NEXT_PUBLIC_PRODUCTS;
 
@@ -89,8 +89,13 @@ export const postProduct = async (data: any) => {
       body: JSON.stringify(data),
     });
 
+
     if (!response.ok) {
       throw new Error('Error al enviar los datos del producto');
+    }
+
+    if (domainPrimary == 'identidadmovil') {
+      await addProductToWooCommerceService(data);
     }
 
     return await response.json();
@@ -162,4 +167,36 @@ export const deleteCategory = async (id: string) => {
   } catch (error) {
     throw new Error('Error al eliminar la categoría');
   }
+};
+
+export const fetchBanners = async () => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
+  const domainPrimary = domain.split('.')[0];
+  try {
+    const response = await axios.get('https://api-configuration.creceidea.pe/api/banners', {
+      headers: {
+        'Content-Type': 'application/json',
+        'domain': domainPrimary,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Error fetching banners');
+  }
+};
+export const fetchBannerById = async (bannerId: string) => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
+  const domainPrimary = domain.split('.')[0];
+  const response = await fetch(`https://api-configuration.creceidea.pe/api/banners/${bannerId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'domain': domainPrimary
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error fetching banner: ${response.statusText}`);
+  }
+
+  return response.json();
 };
