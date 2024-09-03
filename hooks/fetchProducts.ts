@@ -1,8 +1,7 @@
-// fetchProducts.ts
 import axios from "axios";
 import imageCompression from 'browser-image-compression';
 import { addProductToWooCommerceService } from '@/hooks/woocommerce/postProduct';
-
+const DEFAULT_ICON_URL = 'https://example.com/icons/placeholder.png';
 const API_URL_PRODUCTS = process.env.NEXT_PUBLIC_PRODUCTS;
 
 export const getProducts = async (page: number, title: string = "", category: string = "") => {
@@ -36,7 +35,7 @@ export const uploadImage = async (file: File): Promise<string> => {
 
   const options = {
     maxSizeMB: 1,
-    maxWidthOrHeight: 800,
+    maxWidthOrHeight: 1000,
     useWebWorker: true,
   };
 
@@ -105,6 +104,40 @@ export const postProduct = async (data: any) => {
   }
 };
 
+export const updateProduct = async (data: any) => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
+  const domainPrimary = domain.split('.')[0];
+  const productId = localStorage.getItem("selectedCardId");
+
+  if (!domain) {
+    throw new Error("Domain not selected");
+  }
+  try {
+    const response = await fetch(`https://api-products.creceidea.pe/api/products/${productId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'domain': domainPrimary,
+      },
+      body: JSON.stringify(data),
+    });
+
+
+    if (!response.ok) {
+      throw new Error('Error al enviar los datos del producto');
+    }
+
+    if (domainPrimary == 'identidadmovil') {
+      await addProductToWooCommerceService(data);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error en la solicitud POST:', error);
+    throw error;
+  }
+};
+
 export const fetchCategories = async (): Promise<any[]> => {
   const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain.split('.')[0];
@@ -123,9 +156,7 @@ export const fetchCategories = async (): Promise<any[]> => {
   }
 };
 
-const DEFAULT_ICON_URL = 'https://example.com/icons/placeholder.png';
-
-export const addCategory = async (title: string) => {
+export const addCategory = async (title: string, selectedParent?: string | null) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain.split('.')[0];
 
@@ -135,6 +166,7 @@ export const addCategory = async (title: string) => {
       {
         title,
         icon_url: DEFAULT_ICON_URL,
+        parent: selectedParent
       },
       {
         headers: {
@@ -146,6 +178,31 @@ export const addCategory = async (title: string) => {
     return response.data;
   } catch (error) {
     throw new Error('Error al agregar la categoría');
+  }
+};
+
+export const updateCategory = async (id: string, title: string, selectedParent?: string | null) => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
+  const domainPrimary = domain.split('.')[0];
+
+  try {
+    const response = await axios.put(
+      `https://api-categories.creceidea.pe/api/categories/${id}`,
+      {
+        title,
+        icon_url: DEFAULT_ICON_URL,
+        parent: selectedParent
+      },
+      {
+        headers: {
+          domain: domainPrimary,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al eliminar la categoría');
   }
 };
 
@@ -184,6 +241,7 @@ export const fetchBanners = async () => {
     throw new Error('Error fetching banners');
   }
 };
+
 export const fetchBannerById = async (bannerId: string) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain.split('.')[0];
@@ -199,4 +257,49 @@ export const fetchBannerById = async (bannerId: string) => {
   }
 
   return response.json();
+};
+
+export const deleteProduct = async (productId: string): Promise<void> => {
+  const domain = localStorage.getItem("domainSelect");
+
+  if (!domain) {
+    throw new Error("Domain not selected");
+  }
+
+  const domainPrimary = domain.split('.')[0];
+
+  const url = `https://api-products.creceidea.pe/api/products/${productId}/trash`;
+
+  try {
+    await axios.delete(url, {
+      headers: {
+        Domain: domainPrimary,
+      }
+    });
+    console.log('Producto eliminado exitosamente');
+  } catch (error) {
+    console.error('Error al eliminar el producto:', error);
+  }
+};
+
+export const getProductById = async (): Promise<void> => {
+  const domain = localStorage.getItem("domainSelect");
+  const productId = localStorage.getItem("selectedCardId");
+
+  if (!domain) {
+    throw new Error("Domain not selected");
+  }
+
+  const domainPrimary = domain.split('.')[0];
+
+  const response = await fetch(`https://api-products.creceidea.pe/api/products/${productId}`, {
+    headers: {
+      Domain: domainPrimary,
+    }
+  });
+  if (!response.ok) {
+    throw new Error('Error fetching product details');
+  }
+  const data = await response.json();
+  return data;
 };

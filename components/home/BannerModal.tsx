@@ -86,7 +86,7 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} className='bg-background/70 dark:bg-sky-950/30'>
+        <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/90'>
             <ModalContent>
                 <ModalHeader>
                     <h2>{banner ? 'Editar Banner' : 'Crear Banner'}</h2>
@@ -101,15 +101,13 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
                                 onChange={handleFileChange}
                             />
                             <Button
-                                
                                 isIconOnly
-
-                                color='success'
+                                color='warning'
                                 variant='flat'
                                 className='h-[80px] w-full min-w-20'
                                 onClick={handleAddImageClick}
                             >
-                                {!loading ? <CameraIcon /> : <Spinner size="lg" color="success" />}
+                                {!loading ? <CameraIcon /> : <Spinner size="lg" color="warning" />}
                             </Button>
                         </>
                     )}
@@ -119,7 +117,7 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
                             <img src={imageUrl} alt="Banner Preview" className="w-full h-[200px] rounded-xl object-cover mb-4"/>
                             <Button
                                 color='danger'
-                                variant='flat'
+                                
                                 onClick={handleRemoveImage}
                             >
                                 Eliminar Imagen  <MiniTrashIcon />
@@ -147,11 +145,11 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
                     )}
                 </ModalBody>
                 <ModalFooter>
-                    <Button color='danger' variant='flat' onClick={onClose} disabled={loading}>
+                    <Button color='danger' className='hidden' variant='flat' onClick={onClose} disabled={loading}>
                         Cancelar
                     </Button>
                     {imageUrl && (
-                        <Button color='success' variant='flat' onClick={handleSubmit} disabled={loading || !text || !action || !destino || !textButton}>
+                        <Button color='warning'  onClick={handleSubmit} disabled={loading || !text || !action || !destino || !textButton}>
                             {loading ? 'Subiendo...' : (banner ? 'Actualizar Banner' : 'Crear Banner')}
                         </Button>
                     )}

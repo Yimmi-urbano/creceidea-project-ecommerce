@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Tabs, Tab, Spinner, SelectItem, Select, Textarea, Card, CardHeader, CardBody, Image, CardFooter, Chip, ScrollShadow } from '@nextui-org/react';
-import { fetchCategories } from '@/hooks/fetchProducts';
-import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData } from '@/hooks/formHandlers';
+import { fetchCategories, getProductById } from '@/hooks/fetchProducts';
+import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData, handleSubmitUpdate } from '@/hooks/formHandlers';
 import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from '../icons';
-import { useConfig } from '@/hooks/ConfigContext';
 import CategorySelector from "@/components/CategorySelect";
 
 interface Category {
@@ -14,27 +13,24 @@ interface Category {
     __v: number;
 }
 
-
-const ProductForm: React.FC = () => {
+function ProductForm() {
     const [activeTab, setActiveTab] = useState('0');
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
+    const [submitting, setSubmittingEdit] = useState(false);
+    const [detailproduct, setGetProductById] = useState<any>(null);
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
-
-    const { config } = useConfig();
-    const integrations = config?.integrations;
 
     const [formData, setFormData] = useState<FormData>({
         name: '',
         description: '',
         price: '',
-        sale: '',
+        sale:'',
         category: [],
         stock: '',
         imageUrls: [],
-        integrations: integrations ?? []
+        integrations: []
     });
 
 
@@ -51,10 +47,42 @@ const ProductForm: React.FC = () => {
         loadCategories();
     }, []);
 
+    useEffect(() => {
+        const loadProductById = async () => {
+            try {
+                const data = await getProductById();
+                setGetProductById(data);
+            } catch (error) {
+                console.error('Error al cargar producto por ID:', error);
+            }
+        };
+
+
+
+        loadProductById();
+
+
+    }, []);
+
+    useEffect(() => {
+        if (detailproduct) {
+            setFormData({
+                name: detailproduct.title || '',
+                description: detailproduct.description_short || '',
+                price: detailproduct.price['regular'] || '',
+                sale:detailproduct.price['sale'] || '',
+                category: detailproduct.category || '',
+                stock: detailproduct.stock || '',
+                imageUrls: detailproduct.image_default || '',
+                integrations: []
+            });
+        }
+    }, [detailproduct]);
+
 
     const handleTabChange = (key: any) => setActiveTab(key);
-
     return (
+
         <Card isBlurred className="md:h-[85vh] min-h-[383px] border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
             <CardBody>
                 <Tabs
@@ -77,7 +105,7 @@ const ProductForm: React.FC = () => {
                         } >
 
 
-                        <div className='flex flex-wrap gap-3'>
+                        <div style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <Input
                                 label="Nombre del Producto"
@@ -109,17 +137,17 @@ const ProductForm: React.FC = () => {
                                 onChange={(e) => handleChange(e, setFormData, formData)}
 
                             />
-                            <Card className='w-full bg-[#0c4a6e]/40'>
-                                <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
-
-                                <CardBody>
-                                    <ScrollShadow className="w-full h-[170px]">
-                                        <CategorySelector
-                                            selectedCategories={formData.category}
-                                            onChange={(selectedCategories) => setFormData({ ...formData, category: selectedCategories })}
-                                        />
-                                    </ScrollShadow>
-                                </CardBody>
+                                 <Card className='w-full bg-[#0c4a6e]/40'>
+                            <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
+                            
+                            <CardBody>
+                            <ScrollShadow className="w-full h-[170px]">
+                                <CategorySelector
+                                    selectedCategories={formData.category}
+                                    onChange={(selectedCategories) => setFormData({ ...formData, category: selectedCategories })}
+                                />
+                            </ScrollShadow>
+                            </CardBody>
                             </Card>
                             <Textarea
                                 label="Descripción"
@@ -164,7 +192,7 @@ const ProductForm: React.FC = () => {
 
 
 
-                        <div className='flex flex-wrap gap-3'>
+                        <div style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <Input
                                 label="Precio"
@@ -203,8 +231,7 @@ const ProductForm: React.FC = () => {
                                 type="number"
                             />
 
-
-                            <Input
+<Input
                                 label="Precio Oferta"
                                 name="sale"
                                 value={formData.sale}
@@ -240,8 +267,6 @@ const ProductForm: React.FC = () => {
                                 }
                                 type="number"
                             />
-
-
                             <Input
                                 label="Stock"
                                 name="stock"
@@ -281,25 +306,24 @@ const ProductForm: React.FC = () => {
 
                         </div>
                     } >
-                        <div className='flex flex-wrap gap-3'>
+                        <div style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <input
                                 type="file"
                                 accept="image/*"
-                                className='hidden'
-
+                                style={{ display: 'none' }}
                                 ref={fileInputRef}
                                 onChange={(e) => handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)}
                             />
 
-                            <div className='grid grid-cols-3 gap-4'>
+                            <div style={{ marginTop: '16px' }} className='grid grid-cols-3 gap-4'>
 
                                 {formData.imageUrls.map((url, index) => (
-                                    <div key={index} className='relative'>
+                                    <div key={index} style={{ display: 'inline-block', position: 'relative' }}>
                                         <Image
                                             src={url}
 
-                                            className='object-cover border-1 border-[#0ea5e9]/30 h-[80px] md:h-[200px] md:w-[200px] w-full'
+                                            className='object-cover border-1 border-[#0ea5e9]/30 h-[70px] md:h-[200px] md:w-[200px] w-full'
                                             isBlurred
 
                                         />
@@ -307,9 +331,15 @@ const ProductForm: React.FC = () => {
                                             isIconOnly
                                             size="sm"
                                             color="danger"
-                                            className='p-1 w-[1rem] h-[1.5rem] z-10 absolute'
+                                            className='p-1 w-[1rem] h-[1.5rem] z-10 '
                                             onClick={() => handleRemoveImage(index, setFormData, formData)}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '6px',
+                                                right: '6px',
 
+
+                                            }}
                                         >
                                             <MiniTrashIcon size={16} />
                                         </Button>
@@ -341,9 +371,6 @@ const ProductForm: React.FC = () => {
                             </div>
                         } >
 
-
-
-
                         <Card className="bg-gray-50 w-[250px] m-auto md:w-[300px]  pb-5">
 
                             <CardBody className="">
@@ -366,12 +393,13 @@ const ProductForm: React.FC = () => {
                             </CardBody>
 
                         </Card>
+
                     </Tab>
                 </Tabs>
-
             </CardBody>
-            <CardFooter className='justify-between'>
 
+
+            <CardFooter className='justify-between'>
                 <Button variant='flat' color='danger' onClick={() => handleBack(activeTab, setActiveTab)} disabled={parseInt(activeTab) === 0}>
                     Atrás
                 </Button>
@@ -390,16 +418,15 @@ const ProductForm: React.FC = () => {
                     <Button
 
                         color='success'
-                        onClick={() => handleSubmit(setSubmitting, formData)}
+                        onClick={() => handleSubmitUpdate(setSubmittingEdit, formData)}
                         disabled={submitting}
                     >
-                        {submitting ? 'Publicando...' : 'Crear Producto'}
+                        {submitting ? 'Actualizando...' : 'Actualizar Producto'}
                     </Button>
 
                 )}
-
             </CardFooter>
-        </Card >
+        </Card>
     );
 }
 

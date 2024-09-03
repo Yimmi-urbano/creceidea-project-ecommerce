@@ -11,7 +11,14 @@
 
 }
 
+.flexbox-fix input {
+    background-color: #ffffff !important;
+}
 
+.chrome-picker {
+    z-index: 999999 !important;
+    position: absolute;
+}
 
 .z-index {
     z-index: 1;
@@ -80,10 +87,6 @@
 
 }
 
-.card-login {
-    background-color: rgba(4, 87, 148, 0.4);
-    backdrop-filter: blur(10px);
-}
 
 .logo-sidebar {
     width: 100%;
@@ -102,7 +105,6 @@
 
 .toolbar-footer .toolbar-inner {
     height: 60px;
-    background-color: #ff7800ad;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }

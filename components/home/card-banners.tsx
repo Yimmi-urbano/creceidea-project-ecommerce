@@ -44,11 +44,11 @@ const BannerList: React.FC<BannerListProps> = ({ onEdit, onOpenModal }) => {
   if (error) return <div>{error}</div>;
 
   return (
-    <Card isBlurred className="border-none p-0 bg-background/50 dark:bg-sky-950/30">
+    <Card isBlurred className="p-0  border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40">
       <CardHeader className="bg-transparent flex justify-between">
         <h2 className="text-xl font-semibold text-gray-600 dark:text-white">Banners</h2>
         {banners.length <= 4 && (
-          <Button isIconOnly color='success' className='text-lg' onClick={onOpenModal}>+</Button>
+          <Button isIconOnly color='warning' className='text-lg' onClick={onOpenModal}>+</Button>
         )}
       </CardHeader>
       <CardBody className="flex gap-3">
@@ -57,7 +57,7 @@ const BannerList: React.FC<BannerListProps> = ({ onEdit, onOpenModal }) => {
             <CardBody>
               <div className='flex flex-row justify-between gap-4'>
                 <div className='flex flex-row gap-4 items-center'>
-                  <Image
+                  <img
                     src={banner.image}
                     alt="Banner Image"
                     className="w-60 h-16 rounded-xl object-cover"

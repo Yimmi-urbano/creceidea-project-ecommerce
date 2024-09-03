@@ -21,6 +21,7 @@ interface ProductContextProps {
   page: number;
   totalPages: number;
   setPage: (page: number) => void;
+  fetchProducts: () => void; // Nueva función agregada
 }
 
 const ProductContext = createContext<ProductContextProps | undefined>(undefined);
@@ -30,22 +31,22 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getProducts(page);
-        setProducts(response.products);
-        setTotalPages(response.totalPages);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  const fetchProducts = async () => {
+    try {
+      const response = await getProducts(page);
+      setProducts(response.products);
+      setTotalPages(response.totalPages);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchProducts();
   }, [page]);
 
   return (
-    <ProductContext.Provider value={{ products, page, totalPages, setPage }}>
+    <ProductContext.Provider value={{ products, page, totalPages, setPage, fetchProducts }}>
       {children}
     </ProductContext.Provider>
   );

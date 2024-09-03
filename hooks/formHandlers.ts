@@ -1,14 +1,16 @@
 import { ChangeEvent } from 'react';
-import { uploadImage, postProduct } from '@/hooks/fetchProducts';
+import { uploadImage, updateProduct,postProduct } from '@/hooks/fetchProducts';
 
 
 export interface FormData {
     name: string;
     description: string;
     price: string;
-    category: string;
+    sale: string;
+    category: { idcat: string, slug: string }[];
     stock: string;
     imageUrls: string[];
+    integrations:[]
 }
 
 export const handleChange = (
@@ -81,18 +83,17 @@ export const handleSubmit = async (
     formData: FormData
 ) => {
     setSubmitting(true);
-    
     const data = {
         id: "CASACA00032BC00000",
         title: formData.name,
         type_product: "basic",
         image_default: formData.imageUrls,
-        category: [formData.category],
+        category: formData.category,
         stock: formData.stock,
         is_available: true,
         price: {
             regular: formData.price,
-            sale: formData.price,
+            sale: formData.sale||0,
             tag: "",
         },
         is_trash: {
@@ -138,10 +139,81 @@ export const handleSubmit = async (
 
     try {
         await postProduct(data);
+        console.log(formData.integrations)
+        alert('Producto enviado correctamente');
+    } catch (error) {
+        alert('Error al enviar el producto');
+        console.log(formData.integrations)
+    } finally {
+        setSubmitting(false);
+    }
+};
+
+export const handleSubmitUpdate = async (
+    setSubmittingEdit: React.Dispatch<React.SetStateAction<boolean>>,
+    formData: FormData
+) => {
+    setSubmittingEdit(true);
+    const data = {
+        id: "CASACA00032BC00000",
+        title: formData.name,
+        type_product: "basic",
+        image_default: formData.imageUrls,
+        category: formData.category,
+        stock: formData.stock,
+        is_available: true,
+        price: {
+            regular: formData.price,
+            sale: formData.sale||0,
+            tag: "",
+        },
+        is_trash: {
+            date: "",
+            status: false,
+        },
+        default_variations: ["attr002", "attr005"],
+        atributos: [
+            {
+                name_attr: "Talla",
+                values: [
+                    { Id: "attr001", valor: "S" },
+                    { Id: "attr002", valor: "M" },
+                    { Id: "attr003", valor: "L" },
+                ],
+            },
+            {
+                name_attr: "Color",
+                values: [
+                    { Id: "attr004", valor: "rojo" },
+                    { Id: "attr005", valor: "verde" },
+                    { Id: "attr006", valor: "amarillo" },
+                ],
+            },
+        ],
+        variations: [
+            {
+                chill_attr: ["attr001", "attr006"],
+                price: { regular: 50, sale: 40, tag: "x 3 meses" },
+            },
+            {
+                chill_attr: ["attr002", "attr005"],
+                price: { regular: 100, sale: 80, tag: "x 6 meses" },
+            },
+            {
+                chill_attr: ["attr003", "attr004"],
+                price: { regular: 160, sale: 90, tag: "x 12 meses" },
+            },
+        ],
+        description_long: "descripcion larga",
+        description_short: formData.description,
+    };
+
+    try {
+        await updateProduct(data);
         alert('Producto enviado correctamente');
     } catch (error) {
         alert('Error al enviar el producto');
     } finally {
-        setSubmitting(false);
+        setSubmittingEdit(false);
     }
 };

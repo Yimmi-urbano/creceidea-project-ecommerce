@@ -8,6 +8,7 @@ import { getDomain, login } from "./api";
 import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
+import { input } from "@nextui-org/react";
 
 const CardLogin = () => {
   const [email, setEmail] = useState("");
@@ -80,7 +81,7 @@ const CardLogin = () => {
 
   return (
     
-    <Card className="border-none card-login w-full lg:w-[350px] h-[450px] lg:h-auto bottom-[-10px] lg:right-[100px] absolute lg:relative">
+    <Card shadow="none" isBlurred className="border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40  card-login w-[90%] lg:w-[350px] h-[450px] lg:h-auto bottom-[-10px] lg:right-[100px] left-[20px] absolute lg:relative">
       <CardBody className="p-5">
         <form onSubmit={handleSubmit}>
           <article className="prose">
@@ -96,7 +97,11 @@ const CardLogin = () => {
               onChange={(e) => setEmail(e.target.value)}
               isInvalid={!!emailError}
               errorMessage={emailError}
-              className="max-w-xs border-100"
+              classNames={{
+                inputWrapper:[
+                  'border-1 border-[#0ea5e9]/40 bg-sky-900'
+                ]
+              }}
               labelPlacement="outside"
               placeholder="Ingrese su correo"
             />
@@ -111,15 +116,19 @@ const CardLogin = () => {
               onChange={(e) => setPassword(e.target.value)}
               isInvalid={!!passwordError}
               errorMessage={passwordError}
-              className="max-w-xs"
+              classNames={{
+                inputWrapper:[
+                  'border-1 border-[#0ea5e9]/40 bg-sky-900'
+                ]
+              }}
               labelPlacement="outside"
               placeholder="Contraseña"
               endContent={
                 <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                   {isVisible ? (
-                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                    <EyeSlashFilledIcon className="text-2xl text-[#0ea5e9] pointer-events-none" />
                   ) : (
-                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                    <EyeFilledIcon className="text-2xl text-[#0ea5e9] pointer-events-none" />
                   )}
                 </button>
               }
@@ -129,14 +138,14 @@ const CardLogin = () => {
           {error && <p className="text-red-600">{error}</p>}
 
           <CardFooter className="flex flex-wrap gap-4">
-            <Button type="submit" color="warning" className="m-auto block w-[80%] rounded-3xl" isLoading={isLoading}>
+            <Button type="submit" color="warning" className="m-auto  w-[80%] rounded-3xl" isLoading={isLoading}>
               Iniciar sesión
             </Button>
-            <Link className="flex items-center text-center w-full block text-current" href="#">
+            <Link className="flex items-center text-center p-0 w-full block text-current" href="#">
               <span className="text-sm">¿Olvidaste tu clave?</span>
             </Link>
 
-            <Link className="flex items-center text-center w-full block text-current" href="#">
+            <Link className="flex items-center p-0 hidden text-center w-full  text-current" href="#">
               <span className="text-sm">¿Aún no tienes cuenta? Registrarse</span>
             </Link>
           </CardFooter>

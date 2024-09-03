@@ -1,17 +1,25 @@
-// CardProducts.tsx
 import React from 'react';
 import { Card, Button } from "@nextui-org/react";
 import { MiniEyeIcon, MiniTrashIcon } from '../icons';
 import { useProductContext } from '@/hooks/contextProduct';
 import withPermission from "../withPermission";
+import { useRouter } from "next/router";
 
 const CardProducts: React.FC = () => {
   const { products } = useProductContext();
+  const router = useRouter();
+
+  const handlePress = (id: string) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedCardId", id);
+    }
+    router.push("/dashboard/product/edit");
+  };
 
   return (
     <div className="flex flex-wrap gap-3">
       {products.map((item) => (
-        <Card key={item._id} className="w-full rounded-lg flex flex-row border-none bg-background/70 dark:bg-sky-950/30">
+        <Card key={item._id} isPressable onPress={() => handlePress(item._id)} className="w-full rounded-lg flex flex-row border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40">
           <div className="flex items-center gap-4 p-2 flex-grow">
             <img src={item.image_default[0]} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
             <div>

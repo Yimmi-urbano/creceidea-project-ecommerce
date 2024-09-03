@@ -3,7 +3,7 @@ import { HeadToolbar } from "@/components/headToolbar";
 import Sidebar from "@/components/sidebar";
 import OptionsToolbar from "@/components/toolbar";
 
-export default function Home({
+export default function SiteConfig({
     children,
   }: {
     children: React.ReactNode;
@@ -19,3 +19,4 @@ export default function Home({
        </div>
     );
   }
+  

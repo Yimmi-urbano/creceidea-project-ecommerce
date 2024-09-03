@@ -1,5 +1,4 @@
-'use client';
-
+"use client"
 import React, { useState } from 'react';
 import BannerList from '@/components/home/card-banners';
 import BannerModal from '@/components/home/BannerModal';

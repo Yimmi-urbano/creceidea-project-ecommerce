@@ -9,7 +9,7 @@ export default function PageProducts({
 {
   
   return (
-    <div className="">
+    <div>
     <div>{children}</div>
     </div>
   );

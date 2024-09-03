@@ -15,19 +15,9 @@ export const siteConfig = {
       icon: "CategoriesIcon"
     },
     {
-      label: "Paginas   ",
-      href: "/dashboard/pages",
-      icon: "PagesIcon"
-    },
-    {
       label: "Productos",
       href: "/dashboard/products",
       icon: "ProductIcon"
-    },
-    {
-      label: "Blog      ",
-      href: "/dashboard/blog",
-      icon: "BlogIcon"
     }
   ],
   navMenuItems: [
