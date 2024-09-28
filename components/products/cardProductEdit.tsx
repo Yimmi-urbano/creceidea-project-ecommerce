@@ -33,7 +33,7 @@ const CardProducts: React.FC = () => {
   const handleDelete = async () => {
     if (selectedProductId) {
       await deleteProduct(selectedProductId);
-      fetchProducts();
+      fetchProducts();  // Refresca la lista de productos
       closeModal();
     }
   };
@@ -42,9 +42,20 @@ const CardProducts: React.FC = () => {
     <>
       <div className="flex flex-wrap gap-3">
         {products.map((item) => (
-          <Card key={item._id} isBlurred isPressable onPress={() => handlePress(item._id)} shadow='none' className="w-full rounded-lg flex flex-row border-1 border-[#0ea5e9]/30 bg-[#0891b2]">
+          <Card 
+            key={item._id} 
+            isBlurred 
+            isPressable 
+            onPress={() => handlePress(item._id)} 
+            shadow='none' 
+            className="w-full rounded-lg flex flex-row border-1 border-[#0ea5e9]/30 bg-[#0891b2]"
+          >
             <div className="flex items-center gap-4 p-2 flex-grow">
-              <img src={item.image_default[0]} alt={item.title} className="w-16 h-16 rounded-xl object-cover" />
+              <img 
+                src={item.image_default[0]} 
+                alt={item.title} 
+                className="w-16 h-16  border-1 border-[#0ea5e9]/30 rounded-xl object-cover" 
+              />
               <div>
                 <h3 className="font-bold text-sm">{item.title}</h3>
                 <div className="flex items-baseline gap-2">
@@ -63,7 +74,6 @@ const CardProducts: React.FC = () => {
                     </p>
                   )}
                 </div>
-
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-center items-center gap-3 pr-3">
@@ -94,10 +104,10 @@ const CardProducts: React.FC = () => {
             <p>¿Estás seguro de que deseas eliminar este producto?</p>
           </ModalBody>
           <ModalFooter>
-            <Button color="warning" onPress={handleDelete}>
+            <Button color="warning" onPress={handleDelete} aria-label="Eliminar Producto">
               Eliminar
             </Button>
-            <Button onPress={closeModal}>
+            <Button onPress={closeModal} aria-label="Cancelar Eliminación">
               Cancelar
             </Button>
           </ModalFooter>

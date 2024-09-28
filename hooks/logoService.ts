@@ -10,7 +10,7 @@ export const useUploadLogo = () => {
 
     const getDomainFromLocalStorage = (): string => {
       const domain = localStorage.getItem('domainSelect');
-      return domain ? domain.split('.')[0] : '';
+      return domain ? domain: '';
     };
   
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {

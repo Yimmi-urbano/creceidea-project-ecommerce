@@ -1,5 +1,3 @@
-"use client";
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { fetchCategories, updateCategory, deleteCategory, addCategory } from '@/hooks/fetchProducts';
 
@@ -44,18 +42,8 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const fetchAndSetCategories = async () => {
     try {
       const data = await fetchCategories();
-      // Handle categories with invalid parent ids
-      const updateCategoriesWithValidParents = (categories: Category[]): Category[] => {
-        return categories.map(category => ({
-          ...category,
-          children: updateCategoriesWithValidParents(category.children),
-          parent: allCategories.find(cat => cat.id === category.parent) ? category.parent : null
-        }));
-      };
-
-      const validCategories = updateCategoriesWithValidParents(data);
-      setCategories(validCategories);
-      setAllCategories(flattenCategories(validCategories));
+      setCategories(data);
+      setAllCategories(flattenCategories(data));
       setMessage('');
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -68,10 +56,19 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const handleUpdateCategory = async (id: string, title: string, parent: string | null) => {
     try {
-      const validParent = allCategories.find(cat => cat.id === parent) ? parent : null;
-      await updateCategory(id, title, validParent);
-      setMessage('Categoría actualizada con éxito');
-      await fetchAndSetCategories();
+
+      if (id === parent) {
+
+        setMessage('No puede asignarse a sí mismo como categoría principal');
+        await fetchAndSetCategories();
+
+      } else {
+
+        await updateCategory(id, title, parent);
+        setMessage('Categoría actualizada con éxito');
+        await fetchAndSetCategories();
+      }
+
     } catch (error) {
       setMessage('Error al actualizar la categoría');
       console.error(error);
@@ -91,8 +88,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const handleAddCategory = async (title: string, parent: string | null) => {
     try {
-      const validParent = allCategories.find(cat => cat.id === parent) ? parent : null;
-      await addCategory(title, validParent);
+      await addCategory(title, parent);
       setMessage('Categoría agregada con éxito');
       await fetchAndSetCategories();
     } catch (error) {

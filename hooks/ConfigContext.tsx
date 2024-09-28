@@ -26,7 +26,7 @@ export const useConfig = () => {
 
 const getDomainFromLocalStorage = (): string => {
   const domain = localStorage.getItem('domainSelect');
-  return domain ? domain.split('.')[0] : '';
+  return domain ? domain : '';
 };
 
 export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

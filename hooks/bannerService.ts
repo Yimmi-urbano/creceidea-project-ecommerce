@@ -2,7 +2,7 @@ import { uploadImage } from '@/hooks/fetchProducts';
 
 const getDomainFromLocalStorage = (): string => {
     const domain = localStorage.getItem('domainSelect');
-    return domain ? domain.split('.')[0] : '';
+    return domain ? domain: '';
 };
 
 export const fetchBanners = async (): Promise<Banner[]> => {

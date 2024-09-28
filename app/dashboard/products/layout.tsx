@@ -9,8 +9,8 @@ export default function PageProducts({
 {
   
   return (
-    <div>
-    <div>{children}</div>
-    </div>
+
+    <>{children}</>
+
   );
 }

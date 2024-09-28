@@ -81,11 +81,11 @@ const CardLogin = () => {
 
   return (
     
-    <Card shadow="none" isBlurred className="border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40  card-login w-[90%] lg:w-[350px] h-[450px] lg:h-auto bottom-[-10px] lg:right-[100px] left-[20px] absolute lg:relative">
+    <Card shadow="none" isBlurred className="border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40  card-login w-[90%] lg:w-[350px] h-[380px] lg:h-auto bottom-[30px] lg:bottom-[0px] lg:right-[100px] left-[20px] absolute lg:relative">
       <CardBody className="p-5">
         <form onSubmit={handleSubmit}>
           <article className="prose">
-            <h2 className="mb-5 mt-5 text-xl font-bold">Iniciar Sesión</h2>
+            <h2 className="mb-5 mt-2 text-xl font-bold">Iniciar Sesión</h2>
           </article>
 
           <div className="flex w-full flex-wrap lg:items-end md:flex-nowrap mb-6 mt-5 md:mb-4">

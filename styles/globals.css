@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.dark body {
+.dark {
 
     background-image: url('https://media-static.creceidea.pe/images/background-creceidea.jpg');
     background-size: cover;
@@ -94,7 +93,7 @@
 }
 
 .toolbar-footer {
-    height: 70px;
+    height: 60px;
     position: fixed;
     bottom: 10px;
     padding-left: 10px;

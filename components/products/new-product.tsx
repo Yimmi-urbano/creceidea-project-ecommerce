@@ -55,7 +55,7 @@ const ProductForm: React.FC = () => {
     const handleTabChange = (key: any) => setActiveTab(key);
 
     return (
-        <Card isBlurred className="md:h-[85vh] min-h-[383px] border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
+        <Card isBlurred className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
             <CardBody>
                 <Tabs
                     selectedKey={activeTab}
@@ -113,7 +113,7 @@ const ProductForm: React.FC = () => {
                                 <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
 
                                 <CardBody>
-                                    <ScrollShadow className="w-full h-[170px]">
+                                    <ScrollShadow className="w-full h-[170px] lg:h-[250px]">
                                         <CategorySelector
                                             selectedCategories={formData.category}
                                             onChange={(selectedCategories) => setFormData({ ...formData, category: selectedCategories })}
@@ -121,36 +121,7 @@ const ProductForm: React.FC = () => {
                                     </ScrollShadow>
                                 </CardBody>
                             </Card>
-                            <Textarea
-                                label="Descripción"
-                                name="description"
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                value={formData.description}
-                                onChange={(e) => handleChange(e, setFormData, formData)}
 
-                            />
                         </div>
                     </Tab>
                     <Tab key="1"
@@ -164,7 +135,7 @@ const ProductForm: React.FC = () => {
 
 
 
-                        <div className='flex flex-wrap gap-3'>
+                        <div className='grid grid-cols-2 gap-4' key={1}>
 
                             <Input
                                 label="Precio"
@@ -245,6 +216,7 @@ const ProductForm: React.FC = () => {
                             <Input
                                 label="Stock"
                                 name="stock"
+                                className='col-span-2'
                                 classNames={
                                     {
                                         label: "text-black/50 dark:text-white/90",
@@ -272,6 +244,37 @@ const ProductForm: React.FC = () => {
                                 onChange={(e) => handleChange(e, setFormData, formData)}
                                 type="number"
                             />
+                            <Textarea
+                                label="Descripción"
+                                name="description"
+                                classNames={
+                                    {
+                                        label: "text-black/50 dark:text-white/90",
+                                        innerWrapper: "bg-transparent",
+                                        input: [
+                                            "bg-transparent",
+                                            "text-black/90 dark:text-white/90",
+                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                        ],
+                                        inputWrapper: [
+                                            "shadow-xl",
+                                            "bg-cyan-500/50",
+                                            "dark:bg-cyan-600/10",
+                                            "backdrop-blur-xl",
+                                            "backdrop-saturate-200",
+                                            "hover:bg-default-200/70",
+                                            "dark:hover:bg-default/70",
+                                            "group-data-[focus=true]:bg-default-200/50",
+                                            "dark:group-data-[focus=true]:bg-default/60",
+                                            "!cursor-text",
+                                        ],
+                                    }
+                                }
+                                value={formData.description}
+                                onChange={(e) => handleChange(e, setFormData, formData)}
+                                className='col-span-2'
+
+                            />
                         </div>
                     </Tab>
                     <Tab key="2" title={
@@ -281,7 +284,7 @@ const ProductForm: React.FC = () => {
 
                         </div>
                     } >
-                        <div className='flex flex-wrap gap-3'>
+                        <div  key={1} style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <input
                                 type="file"
@@ -292,14 +295,14 @@ const ProductForm: React.FC = () => {
                                 onChange={(e) => handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)}
                             />
 
-                            <div className='grid grid-cols-3 gap-4'>
+                            <div className='grid grid-cols-3 gap-4' key={1}>
 
                                 {formData.imageUrls.map((url, index) => (
-                                    <div key={index} className='relative'>
+                                    <div key={index} style={{ display: 'inline-block', position: 'relative' }}>
                                         <Image
                                             src={url}
 
-                                            className='object-cover border-1 border-[#0ea5e9]/30 h-[80px] md:h-[200px] md:w-[200px] w-full'
+                                            className='object-cover border-1 border-[#0ea5e9]/30 h-[80px] min-w-20 md:h-[200px] md:w-[200px] w-full'
                                             isBlurred
 
                                         />
@@ -309,6 +312,13 @@ const ProductForm: React.FC = () => {
                                             color="danger"
                                             className='p-1 w-[1rem] h-[1.5rem] z-10 absolute'
                                             onClick={() => handleRemoveImage(index, setFormData, formData)}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '6px',
+                                                right: '6px',
+
+
+                                            }}
 
                                         >
                                             <MiniTrashIcon size={16} />
@@ -344,18 +354,18 @@ const ProductForm: React.FC = () => {
 
 
 
-                        <Card className="bg-gray-50 w-[250px] m-auto md:w-[300px]  pb-5">
+                        <Card className="bg-gray-50 w-[240px] m-auto md:w-[300px]">
 
                             <CardBody className="">
                                 <Image
                                     alt="Card background"
-                                    className="object-cover md:h-[200px] md:w-[300px] rounded-xl w-full "
+                                    className="object-cover md:h-[250px] md:w-[300px] h-[150px] border-1 rounded-xl w-[240px] m-auto "
                                     src={formData.imageUrls[0]}
 
                                 />
                                 <h4 className="font-bold text-large text-slate-800">{formData.name}</h4>
                                 <p className=" text-rose-700 uppercase font-bold text-slate-800">S/ {formData.price}</p>
-                                <small className="text-default-500 text-sky-700">
+                                <small className="text-default-500 hidden text-sky-700">
                                     {formData.category.map(cat => (
                                         <div key={cat.idcat}>{cat.slug}</div>
                                     ))}

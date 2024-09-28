@@ -126,10 +126,11 @@ export const updateProduct = async (data: any) => {
     if (!response.ok) {
       throw new Error('Error al enviar los datos del producto');
     }
-
-    if (domainPrimary == 'identidadmovil') {
-      await addProductToWooCommerceService(data);
-    }
+    /*
+        if (domainPrimary == 'identidadmovil') {
+          await addProductToWooCommerceService(data);
+        }
+          */
 
     return await response.json();
   } catch (error) {
@@ -140,7 +141,7 @@ export const updateProduct = async (data: any) => {
 
 export const fetchCategories = async (): Promise<any[]> => {
   const domain = localStorage.getItem("domainSelect") ?? '';
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
   try {
     const response = await fetch('https://api-categories.creceidea.pe/api/categories', {
       headers: { 'domain': domainPrimary, 'method': 'GET' },
@@ -158,7 +159,7 @@ export const fetchCategories = async (): Promise<any[]> => {
 
 export const addCategory = async (title: string, selectedParent?: string | null) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
 
   try {
     const response = await axios.post(
@@ -183,7 +184,11 @@ export const addCategory = async (title: string, selectedParent?: string | null)
 
 export const updateCategory = async (id: string, title: string, selectedParent?: string | null) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
+
+  if (id === selectedParent) {
+    throw new Error('No puede asignarse a sí mismo como categoría principal');
+  }
 
   try {
     const response = await axios.put(
@@ -202,13 +207,13 @@ export const updateCategory = async (id: string, title: string, selectedParent?:
     );
     return response.data;
   } catch (error) {
-    throw new Error('Error al eliminar la categoría');
+    throw new Error('Error al actualizar la categoría');
   }
 };
 
 export const deleteCategory = async (id: string) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
 
   try {
     const response = await axios.delete(
@@ -228,7 +233,7 @@ export const deleteCategory = async (id: string) => {
 
 export const fetchBanners = async () => {
   const domain = localStorage.getItem("domainSelect") ?? '';
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
   try {
     const response = await axios.get('https://api-configuration.creceidea.pe/api/banners', {
       headers: {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Spacer, useDisclosure } from '@nextui-org/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Spacer, useDisclosure, Select, SelectItem, Link } from '@nextui-org/react';
 import { useCategoryContext } from '@/components/category/CategoryContext';
 
 const AddCategory: React.FC = () => {
@@ -12,7 +12,6 @@ const AddCategory: React.FC = () => {
   const handleAddNewCategory = async () => {
     try {
       await handleAddCategory(title, selectedParent);
-      setMessage('Categoría agregada con éxito');
       setTitle('');
       setSelectedParent(null);
       onOpenChange();
@@ -22,10 +21,17 @@ const AddCategory: React.FC = () => {
     }
   };
 
+  const clearSelection = () => {
+    setSelectedParent(null);
+  };
+
+
   return (
     <>
-      <Button color="primary" onPress={onOpen}>Agregar Categoría</Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+
+      <Button isIconOnly color='warning' className='text-lg' onPress={onOpen}>+</Button>
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/40'>
         <ModalContent>
           {(onClose) => (
             <>
@@ -38,20 +44,50 @@ const AddCategory: React.FC = () => {
                   placeholder="Título"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
+                  classNames={
+                    {
+                        label: "text-black/50 dark:text-white/90",
+                        innerWrapper: "bg-transparent",
+                        input: [
+                            "bg-transparent",
+                            "text-black/90 dark:text-white/90",
+                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                        ],
+                        inputWrapper: [
+                            
+                            "bg-cyan-500/50",
+                            "dark:bg-cyan-600/10",
+                            "backdrop-blur-xl",
+                            "backdrop-saturate-200",
+                            "hover:bg-default-200/70",
+                            "dark:hover:bg-default/70",
+                            "group-data-[focus=true]:bg-default-200/50",
+                            "dark:group-data-[focus=true]:bg-default/60",
+                            "!cursor-text",
+                        ],
+                    }
+                }
                 />
                 <Spacer y={1} />
-                <select
-                  value={selectedParent || ''}
+
+                <Select
+                  label="Seleccionar categoría"
+                  selectedKeys={[selectedParent || '']}
                   onChange={(e) => setSelectedParent(e.target.value || null)}
-                  style={{ width: '100%', padding: '8px', fontSize: '16px' }}
+                  description="Deje en blanco si es una categoría PRINCIPAL."
+                  classNames={{
+                    trigger: ["bg-[#082f49]/90"],
+                    popoverContent: ["backdrop-blur-md bg-[#082f49]/80"]
+    
+                  }}
                 >
-                  <option value="">Ninguna</option>
-                  {allCategories.map(category => (
-                    <option key={category.id} value={category.id}>
+                  {allCategories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
                       {category.title}
-                    </option>
+                    </SelectItem>
                   ))}
-                </select>
+                </Select>
+                {selectedParent && <Button color='danger' variant='flat' onClick={clearSelection}>Limpiar selección</Button>}
                 <Spacer y={1} />
                 {message && <div>{message}</div>}
               </ModalBody>
@@ -59,7 +95,7 @@ const AddCategory: React.FC = () => {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
                 </Button>
-                <Button color="primary" onPress={handleAddNewCategory}>
+                <Button color="warning" onPress={handleAddNewCategory}>
                   Agregar
                 </Button>
               </ModalFooter>

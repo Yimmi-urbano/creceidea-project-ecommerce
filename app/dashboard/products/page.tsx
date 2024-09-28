@@ -8,9 +8,9 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Link} from '@nextui-org
 
 export default function PageProducts() {
   return (
-    <Card shadow="none" className="p-0  border-[#0ea5e9]/0 bg-[#0c4a6e]/0 ">
+    <Card shadow="none" className="p-0 h-full  border-[#0ea5e9]/0 bg-[#0c4a6e]/0 ">
       <CardHeader className="bg-transparent flex justify-between">
-        <h2 className="text-xl font-semibold text-gray-600 dark:text-white">Productos</h2>
+        <span className="text-xl font-semibold text-gray-600 dark:text-white">Productos</span>
         <Button isIconOnly color='warning' className='text-lg' href='/dashboard/products/create' as={Link}>+</Button>
 
       </CardHeader>

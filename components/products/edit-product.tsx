@@ -26,7 +26,7 @@ function ProductForm() {
         name: '',
         description: '',
         price: '',
-        sale:'',
+        sale: '',
         category: [],
         stock: '',
         imageUrls: [],
@@ -70,7 +70,7 @@ function ProductForm() {
                 name: detailproduct.title || '',
                 description: detailproduct.description_short || '',
                 price: detailproduct.price['regular'] || '',
-                sale:detailproduct.price['sale'] || '',
+                sale: detailproduct.price['sale'] || '',
                 category: detailproduct.category || '',
                 stock: detailproduct.stock || '',
                 imageUrls: detailproduct.image_default || '',
@@ -83,8 +83,8 @@ function ProductForm() {
     const handleTabChange = (key: any) => setActiveTab(key);
     return (
 
-        <Card isBlurred className="md:h-[85vh] min-h-[383px] border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
-            <CardBody>
+        <Card  key={1}  isBlurred className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
+            <CardBody className='p-0'>
                 <Tabs
                     selectedKey={activeTab}
                     fullWidth
@@ -105,7 +105,7 @@ function ProductForm() {
                         } >
 
 
-                        <div style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
+                        <div key="0" style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <Input
                                 label="Nombre del Producto"
@@ -137,48 +137,19 @@ function ProductForm() {
                                 onChange={(e) => handleChange(e, setFormData, formData)}
 
                             />
-                                 <Card className='w-full bg-[#0c4a6e]/40'>
-                            <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
-                            
-                            <CardBody>
-                            <ScrollShadow className="w-full h-[170px]">
-                                <CategorySelector
-                                    selectedCategories={formData.category}
-                                    onChange={(selectedCategories) => setFormData({ ...formData, category: selectedCategories })}
-                                />
-                            </ScrollShadow>
-                            </CardBody>
-                            </Card>
-                            <Textarea
-                                label="Descripción"
-                                name="description"
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                value={formData.description}
-                                onChange={(e) => handleChange(e, setFormData, formData)}
+                            <Card className='w-full bg-[#0c4a6e]/40'>
+                                <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
 
-                            />
+                                <CardBody>
+                                    <ScrollShadow className="w-full h-[170px]">
+                                        <CategorySelector
+                                            selectedCategories={formData.category}
+                                            onChange={(selectedCategories) => setFormData({ ...formData, category: selectedCategories })}
+                                        />
+                                    </ScrollShadow>
+                                </CardBody>
+                            </Card>
+                           
                         </div>
                     </Tab>
                     <Tab key="1"
@@ -192,11 +163,12 @@ function ProductForm() {
 
 
 
-                        <div style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
+                        <div key="0" style={{ padding: '10px' }} className='grid grid-cols-2 gap-4'>
 
                             <Input
-                                label="Precio"
+                                label="Precio Normal"
                                 name="price"
+                                className=''
                                 value={formData.price}
                                 classNames={
                                     {
@@ -231,10 +203,11 @@ function ProductForm() {
                                 type="number"
                             />
 
-<Input
+                            <Input
                                 label="Precio Oferta"
                                 name="sale"
                                 value={formData.sale}
+                                 className=''
                                 classNames={
                                     {
                                         label: "text-black/50 dark:text-white/90",
@@ -270,6 +243,7 @@ function ProductForm() {
                             <Input
                                 label="Stock"
                                 name="stock"
+                                 className='col-span-2'
                                 classNames={
                                     {
                                         label: "text-black/50 dark:text-white/90",
@@ -297,6 +271,37 @@ function ProductForm() {
                                 onChange={(e) => handleChange(e, setFormData, formData)}
                                 type="number"
                             />
+                             <Textarea
+                                label="Descripción"
+                                name="description"
+                                className='col-span-2'
+                                classNames={
+                                    {
+                                        label: "text-black/50 dark:text-white/90",
+                                        innerWrapper: "bg-transparent",
+                                        input: [
+                                            "bg-transparent",
+                                            "text-black/90 dark:text-white/90",
+                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                        ],
+                                        inputWrapper: [
+                                            "shadow-xl",
+                                            "bg-cyan-500/50",
+                                            "dark:bg-cyan-600/10",
+                                            "backdrop-blur-xl",
+                                            "backdrop-saturate-200",
+                                            "hover:bg-default-200/70",
+                                            "dark:hover:bg-default/70",
+                                            "group-data-[focus=true]:bg-default-200/50",
+                                            "dark:group-data-[focus=true]:bg-default/60",
+                                            "!cursor-text",
+                                        ],
+                                    }
+                                }
+                                value={formData.description}
+                                onChange={(e) => handleChange(e, setFormData, formData)}
+
+                            />
                         </div>
                     </Tab>
                     <Tab key="2" title={
@@ -306,7 +311,7 @@ function ProductForm() {
 
                         </div>
                     } >
-                        <div style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
+                        <div key="0" style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <input
                                 type="file"
@@ -316,14 +321,14 @@ function ProductForm() {
                                 onChange={(e) => handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)}
                             />
 
-                            <div style={{ marginTop: '16px' }} className='grid grid-cols-3 gap-4'>
+                            <div key="0" style={{ marginTop: '16px' }} className='grid grid-cols-3 gap-4'>
 
                                 {formData.imageUrls.map((url, index) => (
                                     <div key={index} style={{ display: 'inline-block', position: 'relative' }}>
                                         <Image
                                             src={url}
 
-                                            className='object-cover border-1 border-[#0ea5e9]/30 h-[70px] md:h-[200px] md:w-[200px] w-full'
+                                            className='object-cover border-1 border-[#0ea5e9]/30 h-[80px] md:h-[200px] md:w-[200px] min-w-20 w-full'
                                             isBlurred
 
                                         />
@@ -371,18 +376,18 @@ function ProductForm() {
                             </div>
                         } >
 
-                        <Card className="bg-gray-50 w-[250px] m-auto md:w-[300px]  pb-5">
+                        <Card className="bg-gray-50 w-[240px] m-auto md:w-[300px]">
 
                             <CardBody className="">
                                 <Image
                                     alt="Card background"
-                                    className="object-cover md:h-[200px] md:w-[300px] rounded-xl w-full "
+                                    className="object-cover md:h-[250px] md:w-[300px] h-[150px] border-1 rounded-xl w-[240px] m-auto "
                                     src={formData.imageUrls[0]}
 
                                 />
                                 <h4 className="font-bold text-large text-slate-800">{formData.name}</h4>
                                 <p className=" text-rose-700 uppercase font-bold text-slate-800">S/ {formData.price}</p>
-                                <small className="text-default-500 text-sky-700">
+                                <small className="text-default-500 hidden text-sky-700">
                                     {formData.category.map(cat => (
                                         <div key={cat.idcat}>{cat.slug}</div>
                                     ))}
