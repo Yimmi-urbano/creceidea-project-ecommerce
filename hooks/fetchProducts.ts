@@ -11,7 +11,7 @@ export const getProducts = async (page: number, title: string = "", category: st
     throw new Error("Domain not selected");
   }
 
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
 
   let url = `${API_URL_PRODUCTS}`;
   if (title) {
@@ -77,7 +77,7 @@ export const uploadImage = async (file: File): Promise<string> => {
 
 export const postProduct = async (data: any) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
   try {
     const response = await fetch('https://api-products.creceidea.pe/api/products', {
       method: 'POST',
@@ -106,7 +106,7 @@ export const postProduct = async (data: any) => {
 
 export const updateProduct = async (data: any) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
   const productId = localStorage.getItem("selectedCardId");
 
   if (!domain) {
@@ -271,7 +271,7 @@ export const deleteProduct = async (productId: string): Promise<void> => {
     throw new Error("Domain not selected");
   }
 
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
 
   const url = `https://api-products.creceidea.pe/api/products/${productId}/trash`;
 
@@ -295,7 +295,7 @@ export const getProductById = async (): Promise<void> => {
     throw new Error("Domain not selected");
   }
 
-  const domainPrimary = domain.split('.')[0];
+  const domainPrimary = domain;
 
   const response = await fetch(`https://api-products.creceidea.pe/api/products/${productId}`, {
     headers: {
