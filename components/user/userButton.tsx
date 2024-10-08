@@ -51,6 +51,7 @@ export default function UserButtonEvent() {
             <p className="font-normal">{titleToDisplay}</p>
           </DropdownItem>
           <DropdownSection aria-label="Preferences" showDivider>
+          <DropdownItem key="catalogo" variant="flat" className="text-black" href="/configuration/catalogo" as={Link}>Catálogo</DropdownItem>
             <DropdownItem key="site" variant="flat" className="text-black" href="/configuration/site" as={Link}>Sitio</DropdownItem>
             <DropdownItem key="home" variant="flat" className="text-black" href="/configuration/home" as={Link}>Banner</DropdownItem>
           </DropdownSection>

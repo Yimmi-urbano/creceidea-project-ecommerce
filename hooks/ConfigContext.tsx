@@ -6,6 +6,21 @@ interface ConfigData {
   meta_keyword?: string;
   title?: string;
   slogan?: string;
+  catalogo?: {
+    button: {
+      text: string;
+      action: string;
+      color_bg: string;
+      color_text: string;
+    };
+    whatsapp: {
+      number: string;
+    };
+    currency: {
+      code: string;
+      symbol: string;
+    };
+  };
   integrations?:[]
 }
 
