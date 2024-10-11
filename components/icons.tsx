@@ -456,3 +456,8 @@ export const ProductCheckIconSvg: React.FC<IconSvgProps> = ({ size = 15, ...prop
   <path d="M11,16c-0.256,0-0.512-0.098-0.707-0.293l-3-3c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0L11,13.586l9.293-9.293	c0.391-0.391,1.023-0.391,1.414,0s0.391,1.023,0,1.414l-10,10C11.512,15.902,11.256,16,11,16z"  fill="currentColor"></path>
 </svg>
 );
+
+export const UpdateIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="96px" height="96px">    <path fill="currentColor" d="M 7.1601562 3 L 8.7617188 5 L 18 5 C 18.551 5 19 5.448 19 6 L 19 15 L 16 15 L 20 20 L 24 15 L 21 15 L 21 6 C 21 4.346 19.654 3 18 3 L 7.1601562 3 z M 4 4 L 0 9 L 3 9 L 3 18 C 3 19.654 4.346 21 6 21 L 16.839844 21 L 15.238281 19 L 6 19 C 5.449 19 5 18.552 5 18 L 5 9 L 8 9 L 4 4 z"/></svg>
+  );
+
