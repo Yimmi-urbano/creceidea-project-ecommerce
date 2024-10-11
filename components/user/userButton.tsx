@@ -53,6 +53,7 @@ export default function UserButtonEvent() {
           <DropdownSection aria-label="Preferences" showDivider>
           <DropdownItem key="catalogo" variant="flat" className="text-black" href="/configuration/catalogo" as={Link}>Catálogo</DropdownItem>
             <DropdownItem key="site" variant="flat" className="text-black" href="/configuration/site" as={Link}>Sitio</DropdownItem>
+            <DropdownItem key="social-link" variant="flat" className="text-black" href="/configuration/social-link" as={Link}>Redes Sociales</DropdownItem>
             <DropdownItem key="home" variant="flat" className="text-black" href="/configuration/home" as={Link}>Banner</DropdownItem>
           </DropdownSection>
           <DropdownSection aria-label="Help & Feedback">
