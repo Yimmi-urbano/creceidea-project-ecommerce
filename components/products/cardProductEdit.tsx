@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Card, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Image } from "@nextui-org/react";
+import React, { useState, useEffect } from 'react';
+import { Card, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Image, Spinner } from "@nextui-org/react";
 import { MiniEyeIcon, MiniTrashIcon } from '../icons';
 import { useProductContext } from '@/hooks/contextProduct';
 import withPermission from "../withPermission";
@@ -8,10 +8,21 @@ import { useRouter } from "next/navigation";
 
 const CardProducts: React.FC = () => {
   const { products, fetchProducts } = useProductContext();
+  const [isLoading, setIsLoading] = useState(true); // Estado de carga
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      setIsLoading(true); // Inicia la carga
+      await fetchProducts(); // Carga los productos
+      setIsLoading(false); // Finaliza la carga
+    };
+
+    loadProducts(); // Llamada única para cargar los productos al montar el componente
+  }, []); // No tiene dependencias, lo que evita el loop infinito
 
   const handlePress = (id: string) => {
     if (typeof window !== "undefined") {
@@ -40,7 +51,11 @@ const CardProducts: React.FC = () => {
 
   return (
     <>
-      {products.length > 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center items-center h-40">
+          <Spinner size="lg" />
+        </div>
+      ) : products.length > 0 ? (
         <div className="flex flex-wrap gap-3">
           {products.map((item) => (
             <Card 
@@ -55,7 +70,7 @@ const CardProducts: React.FC = () => {
                 <Image 
                   src={item.image_default[0]} 
                   alt={item.title} 
-                  className="w-16 h-16  border-1 border-[#0ea5e9]/30 rounded-xl object-cover" 
+                  className="w-16 h-16 border-1 border-[#0ea5e9]/30 rounded-xl object-cover" 
                 />
                 <div>
                   <h3 className="font-bold text-sm">{item.title}</h3>
