@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react';
 import { uploadImage, updateProduct,postProduct } from '@/hooks/fetchProducts';
 
 
+
 export interface FormData {
     name: string;
     description: string;
@@ -80,7 +81,9 @@ export const handleBack = (activeTab: string, setActiveTab: React.Dispatch<React
 
 export const handleSubmit = async (
     setSubmitting: React.Dispatch<React.SetStateAction<boolean>>,
-    formData: FormData
+    formData: FormData,
+    setSuccessCreate: React.Dispatch<React.SetStateAction<boolean>>
+    
 ) => {
     setSubmitting(true);
     const data = {
@@ -139,11 +142,11 @@ export const handleSubmit = async (
 
     try {
         await postProduct(data);
-        console.log(formData.integrations)
         alert('Producto enviado correctamente');
+        setSuccessCreate(true)
     } catch (error) {
         alert('Error al enviar el producto');
-        console.log(formData.integrations)
+        
     } finally {
         setSubmitting(false);
     }
@@ -151,7 +154,8 @@ export const handleSubmit = async (
 
 export const handleSubmitUpdate = async (
     setSubmittingEdit: React.Dispatch<React.SetStateAction<boolean>>,
-    formData: FormData
+    formData: FormData,
+    setSuccessCreate: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     setSubmittingEdit(true);
     const data = {
@@ -211,6 +215,7 @@ export const handleSubmitUpdate = async (
     try {
         await updateProduct(data);
         alert('Producto enviado correctamente');
+        setSuccessCreate(true)
     } catch (error) {
         alert('Error al enviar el producto');
     } finally {

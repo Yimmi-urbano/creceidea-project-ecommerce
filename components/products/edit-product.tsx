@@ -4,6 +4,7 @@ import { fetchCategories, getProductById } from '@/hooks/fetchProducts';
 import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData, handleSubmitUpdate } from '@/hooks/formHandlers';
 import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from '../icons';
 import CategorySelector from "@/components/CategorySelect";
+import { useRouter } from 'next/navigation';
 
 interface Category {
     _id: string;
@@ -20,7 +21,9 @@ function ProductForm() {
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmittingEdit] = useState(false);
     const [detailproduct, setGetProductById] = useState<any>(null);
+    const [successcreate, setSuccessCreate] = useState(false);
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+    const router = useRouter();
 
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -79,7 +82,11 @@ function ProductForm() {
         }
     }, [detailproduct]);
 
-
+    useEffect(() => {
+        if (successcreate) {
+            router.push('/dashboard/products');
+        }
+    }, [successcreate, router]);
     const handleTabChange = (key: any) => setActiveTab(key);
     return (
 
@@ -423,7 +430,7 @@ function ProductForm() {
                     <Button
 
                         color='success'
-                        onClick={() => handleSubmitUpdate(setSubmittingEdit, formData)}
+                        onClick={() => handleSubmitUpdate(setSubmittingEdit, formData, setSuccessCreate)}
                         disabled={submitting}
                     >
                         {submitting ? 'Actualizando...' : 'Actualizar Producto'}

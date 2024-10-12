@@ -5,6 +5,7 @@ import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage,
 import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from '../icons';
 import { useConfig } from '@/hooks/ConfigContext';
 import CategorySelector from "@/components/CategorySelect";
+import { useRouter } from "next/navigation";
 
 interface Category {
     _id: string;
@@ -21,7 +22,10 @@ const ProductForm: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [successcreate, setSuccessCreate] = useState(false);
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+    const router = useRouter();
+    
 
     const { config } = useConfig();
     const integrations = config?.integrations;
@@ -53,6 +57,13 @@ const ProductForm: React.FC = () => {
 
 
     const handleTabChange = (key: any) => setActiveTab(key);
+
+    useEffect(() => {
+        if (successcreate) {
+            router.push('/dashboard/products'); // Redirige a la página de productos
+        }
+    }, [successcreate, router]);
+
 
     return (
         <Card isBlurred className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
@@ -400,7 +411,7 @@ const ProductForm: React.FC = () => {
                     <Button
 
                         color='success'
-                        onClick={() => handleSubmit(setSubmitting, formData)}
+                        onClick={() => handleSubmit(setSubmitting, formData,setSuccessCreate)}
                         disabled={submitting}
                     >
                         {submitting ? 'Publicando...' : 'Crear Producto'}
