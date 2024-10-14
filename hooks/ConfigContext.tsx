@@ -6,6 +6,7 @@ interface ConfigData {
   meta_keyword?: string;
   title?: string;
   slogan?: string;
+  theme?:String;
   catalogo?: {
     button: {
       text: string;
