@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Button, Input, CardBody, Select, SelectItem, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react';
+import React, { useEffect, useReducer, useCallback, useState } from 'react';
+import { Card, Button, Input, CardBody, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Select, SelectItem } from '@nextui-org/react';
 import {
     fetchSocialLinks,
     addSocialLink,
@@ -7,195 +7,126 @@ import {
     deleteSocialLink,
     fetchAvailableIcons
 } from '@/hooks/socialsLinksService';
-import { EyeFilledIcon, EyeSlashFilledIcon, EditProductIcon, MiniTrashIcon, UpdateIcon } from './icons';
+import { EyeFilledIcon, EyeSlashFilledIcon, EditProductIcon, MiniTrashIcon } from './icons';
+import { socialLinksReducer, initialState } from '@/hooks/socialLinksReducer';
+import { SocialLink, IconOption } from '@/types';
 
 const SocialLinksManager = () => {
-    const [links, setLinks] = useState<any[]>([]);
-    const [newLink, setNewLink] = useState({ title: '', icon: '', url: '', is_active: true });
-    const [editingLink, setEditingLink] = useState<any | null>(null);
-    const [showAddCard, setShowAddCard] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar el modal de confirmación de eliminación
-    const [selectedLinkId, setSelectedLinkId] = useState<string | null>(null); // Enlace seleccionado para eliminar
-    const [availableIcons, setAvailableIcons] = useState<any[]>([]);
-
-    const refreshLinks = async () => {
+    const [state, dispatch] = useReducer(socialLinksReducer, initialState);
+    const [availableIcons, setAvailableIcons] = useState<IconOption[]>([]);
+    
+    // Refresh links and fetch icons
+    const refreshLinks = useCallback(async () => {
         try {
             const fetchedLinks = await fetchSocialLinks();
-            setLinks(fetchedLinks);
+            dispatch({ type: 'SET_LINKS', payload: fetchedLinks });
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching links:', error);
         }
-    };
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
             await refreshLinks();
-            const icons = await fetchAvailableIcons();
-            setAvailableIcons(icons);
+            try {
+                const icons = await fetchAvailableIcons();
+                setAvailableIcons(icons);
+            } catch (error) {
+                console.error('Error fetching icons:', error);
+            }
         };
         fetchData();
-    }, []);
+    }, [refreshLinks]);
 
-    const handleIconChange = (selectedKeys: any) => {
+    // Handle icon change
+    const handleIconChange = (selectedKeys: Set<string>) => {
         const selectedIconKey = Array.from(selectedKeys)[0];
         const selectedIcon = availableIcons.find(icon => icon.key === selectedIconKey);
         if (selectedIcon) {
-            setNewLink((prev) => ({ ...prev, icon: selectedIcon.key, title: selectedIcon.value }));
+            dispatch({ type: 'SET_NEW_LINK_ICON', payload: selectedIcon });
         }
     };
 
+    // Get disabled keys for icon select
     const getDisabledKeys = () => {
-        return new Set(
-            links
-                .filter((link) => !editingLink || link._id !== editingLink._id)
-                .map((link) => link.icon)
+        return new Set(state.links
+            .filter(link => !state.editingLink || link._id !== state.editingLink._id)
+            .map(link => link.icon)
         );
     };
 
-    const handleAddLink = async () => {
+    // Handle Add or Edit link
+    const handleAddOrEditLink = async () => {
+        const actionType = state.editingLink ? 'update' : 'add';
         try {
-            await addSocialLink(newLink);
-            setNewLink({ title: '', icon: '', url: '', is_active: true });
-            setShowAddCard(false);
+            if (state.editingLink) {
+                await updateSocialLink({ ...state.newLink, _id: state.editingLink._id });
+            } else {
+                await addSocialLink(state.newLink);
+            }
+            dispatch({ type: 'RESET_NEW_LINK' });
+            refreshLinks();
+            dispatch({ type: 'CLOSE_MODAL' });
+        } catch (error) {
+            console.error(`Error during ${actionType} link:`, error);
+        }
+    };
+
+    // Handle link edit
+    const handleEditLink = (link: SocialLink) => {
+        dispatch({ type: 'SET_EDITING_LINK', payload: link });
+    };
+
+    // Handle link delete
+    const handleDeleteLink = async () => {
+        if (!state.selectedLinkId) return;
+        try {
+            await deleteSocialLink(state.selectedLinkId);
+            dispatch({ type: 'RESET_SELECTED_LINK' });
             refreshLinks();
         } catch (error) {
-            console.error(error);
+            console.error('Error deleting link:', error);
         }
     };
 
-    const handleEditLink = (link: any) => {
-        setEditingLink(link);
-        setNewLink({ ...link });
-    };
-
-    const handleUpdateLink = async () => {
-        if (editingLink) {
-            try {
-                await updateSocialLink({ ...newLink, _id: editingLink._id });
-
-                setNewLink({ title: '', icon: '', url: '', is_active: true });
-                setEditingLink(null);
-                refreshLinks();
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    };
-
-    const handleDeleteLink = async () => {
-        if (selectedLinkId) {
-            try {
-                await deleteSocialLink(selectedLinkId);
-                setShowDeleteModal(false); // Cerrar el modal después de eliminar
-                setSelectedLinkId(null); // Resetear el estado del enlace seleccionado
-                refreshLinks();
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    };
-
-    const handleToggleActive = async (link: any) => {
-        const updatedLink = { ...link, is_active: !link.is_active };
+    // Handle toggle link active status
+    const handleToggleActive = async (link: SocialLink) => {
         try {
+            const updatedLink = { ...link, is_active: !link.is_active };
             await updateSocialLink(updatedLink);
             refreshLinks();
         } catch (error) {
-            console.error(error);
+            console.error('Error toggling link active state:', error);
         }
     };
 
+    // Open delete confirmation modal
     const openDeleteModal = (linkId: string) => {
-        setSelectedLinkId(linkId); // Guardar el ID del enlace a eliminar
-        setShowDeleteModal(true); // Abrir el modal de confirmación
+        dispatch({ type: 'SET_SELECTED_LINK_ID', payload: linkId });
     };
 
     return (
         <div>
-                  {/* Botón para abrir el modal de agregar enlace */}
-                  <Button color='warning' onClick={() => setShowAddCard(true)} style={{ marginTop: '1rem' }}>
+            <Button color='warning' onClick={() => dispatch({ type: 'OPEN_ADD_MODAL' })} style={{ marginTop: '1rem' }}>
                 Agregar Enlace
             </Button>
-            {links.map((link) => (
-                <Card key={link._id} style={{ marginTop: '1rem' }} isBlurred className="p-0  border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40">
+
+            {/* Links List */}
+            {state.links.map((link) => (
+                <Card key={link._id} style={{ marginTop: '1rem' }} isBlurred className="p-0 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40">
                     <CardBody>
-                        <div className='flex gap-5 flex-col md:flex-row relative'>
-                            <Select
-                                className='w-[250px]'
-                                label="Icono"
-                                variant="flat"
-                                selectedKeys={editingLink?._id === link._id ? new Set([newLink.icon]) : new Set([link.icon])}
-                                onSelectionChange={handleIconChange}
-                                disabledKeys={getDisabledKeys()}
-                                disabled={editingLink?._id !== link._id}
-                                classNames={{
-                                    trigger: ["bg-[#082f49]/90"],
-                                    popoverContent: ["backdrop-blur-md bg-[#082f49]/80"]
-                                  }}
-                            >
-                                {availableIcons.map((icon) => (
-                                    <SelectItem key={icon.key} value={icon.key}>
-                                        {icon.value}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                            <Input
-                                className='hidden d-none'
-                                label="Título"
-                                value={editingLink?._id === link._id ? newLink.title : link.title}
-                                onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
-                                placeholder="Ingrese el título"
-                                disabled={editingLink?._id !== link._id}
-                            />
-                            <Input
-                                label="URL"
-                                value={editingLink?._id === link._id ? newLink.url : link.url}
-                                onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-                                placeholder="Ingrese la URL"
-                                disabled={editingLink?._id !== link._id}
-                                classNames={
-                                    {
-                                      label: "text-black/50 dark:text-white/90",
-                                      innerWrapper: "bg-transparent",
-                                      input: [
-                                        "bg-transparent",
-                                        "text-black/90 dark:text-white/90",
-                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                      ],
-                                      inputWrapper: [
-                                        "bg-cyan-500/40",
-                                        "dark:bg-cyan-600/30",
-                                        "backdrop-blur-xl",
-                                        "backdrop-saturate-200",
-                                        "hover:bg-default-200/70",
-                                        "dark:hover:bg-default/70",
-                                        "group-data-[focus=true]:bg-default-200/50",
-                                        "dark:group-data-[focus=true]:bg-default/60",
-                                        "!cursor-text",
-                                      ],
-                                    }
-                                  }
-                            />
-                            <div className='flex gap-5  order-1 items-center absolute md:relative right-0'>
-                                {editingLink?._id === link._id ? (
-                                    <Button isIconOnly onClick={handleUpdateLink} variant="flat"
-                                        className='p-1 min-w-6 w-6 h-6 rounded-md' color='warning'>
-                                        <UpdateIcon size={16} />
-                                    </Button>
-                                ) : (
-                                    <Button isIconOnly variant="flat"
-                                        className='p-0 min-w-6 w-6 h-6 rounded-md' color='success' onClick={() => handleEditLink(link)}>
-                                        <EditProductIcon size={16} />
-                                    </Button>
-                                )}
-                                <Button color="danger" variant="flat"
-                                    className='p-0 min-w-6 w-6 h-6 rounded-md' isIconOnly onClick={() => openDeleteModal(link._id)}>
+                        <div className='flex gap-5 justify-between items-center'>
+                          
+                            <div>{link.title}</div>
+                            
+                            <div className='flex gap-5 items-center'>
+                                <Button isIconOnly variant="flat" color='success' onClick={() => handleEditLink(link)}>
+                                    <EditProductIcon size={16} />
+                                </Button>
+                                <Button color="danger" variant="flat" isIconOnly onClick={() => openDeleteModal(link._id)}>
                                     <MiniTrashIcon size={18} />
                                 </Button>
-
-                                <Button color="default" variant="flat"
-                                    className='p-1 min-w-6 w-6 h-6 rounded-md' isIconOnly onClick={() => handleToggleActive(link)}>
-
+                                <Button color="default" variant="flat" isIconOnly onClick={() => handleToggleActive(link)}>
                                     {link.is_active ? (
                                         <EyeFilledIcon className="text-2xl text-[#ffffff]" />
                                     ) : (
@@ -208,17 +139,15 @@ const SocialLinksManager = () => {
                 </Card>
             ))}
 
-      
-
-            {/* Modal para agregar enlace */}
-            <Modal isOpen={showAddCard} onClose={() => setShowAddCard(false)}>
+            {/* Add/Edit Modal */}
+            <Modal isOpen={state.showModal} onClose={() => dispatch({ type: 'CLOSE_MODAL' })} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/90'>
                 <ModalContent>
-                    <ModalHeader>Agregar Enlace Social</ModalHeader>
+                    <ModalHeader>{state.editingLink ? 'Editar Enlace Social' : 'Agregar Enlace Social'}</ModalHeader>
                     <ModalBody>
                         <Select
                             label="Icono"
                             variant="bordered"
-                            selectedKeys={new Set([newLink.icon])}
+                            selectedKeys={new Set([state.newLink.icon])}
                             onSelectionChange={handleIconChange}
                             disabledKeys={getDisabledKeys()}
                         >
@@ -230,30 +159,76 @@ const SocialLinksManager = () => {
                         </Select>
                         <Input
                             label="Título"
-                            value={newLink.title}
-                            onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
+                            value={state.newLink.title}
+                            onChange={(e) => dispatch({ type: 'SET_NEW_LINK_TITLE', payload: e.target.value })}
                             placeholder="Ingrese el título"
+                            classNames={
+                                {
+                                    label: "text-black/50 dark:text-white/90",
+                                    innerWrapper: "bg-transparent",
+                                    input: [
+                                        "bg-transparent",
+                                        "text-black/90 dark:text-white/90",
+                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                    ],
+                                    inputWrapper: [
+                                        "shadow-xl",
+                                        "bg-cyan-500/50",
+                                        "dark:bg-cyan-600/10",
+                                        "backdrop-blur-xl",
+                                        "backdrop-saturate-200",
+                                        "hover:bg-default-200/70",
+                                        "dark:hover:bg-default/70",
+                                        "group-data-[focus=true]:bg-default-200/50",
+                                        "dark:group-data-[focus=true]:bg-default/60",
+                                        "!cursor-text",
+                                    ],
+                                }
+                            }
                         />
                         <Input
                             label="URL"
-                            value={newLink.url}
-                            onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+                            value={state.newLink.url}
+                            onChange={(e) => dispatch({ type: 'SET_NEW_LINK_URL', payload: e.target.value })}
                             placeholder="Ingrese la URL"
+                            classNames={
+                                {
+                                    label: "text-black/50 dark:text-white/90",
+                                    innerWrapper: "bg-transparent",
+                                    input: [
+                                        "bg-transparent",
+                                        "text-black/90 dark:text-white/90",
+                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                    ],
+                                    inputWrapper: [
+                                        "shadow-xl",
+                                        "bg-cyan-500/50",
+                                        "dark:bg-cyan-600/10",
+                                        "backdrop-blur-xl",
+                                        "backdrop-saturate-200",
+                                        "hover:bg-default-200/70",
+                                        "dark:hover:bg-default/70",
+                                        "group-data-[focus=true]:bg-default-200/50",
+                                        "dark:group-data-[focus=true]:bg-default/60",
+                                        "!cursor-text",
+                                    ],
+                                }
+                            }
                         />
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={handleAddLink}>
-                            Agregar Enlace
+                        <Button onClick={handleAddOrEditLink}>
+                            {state.editingLink ? 'Actualizar Enlace' : 'Agregar Enlace'}
                         </Button>
-                        <Button onClick={() => setShowAddCard(false)} color="secondary">
+                        <Button onClick={() => dispatch({ type: 'CLOSE_MODAL' })} color="secondary">
                             Cancelar
                         </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
 
-            {/* Modal de confirmación para eliminar */}
-            <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+            {/* Delete Confirmation Modal */}
+            <Modal isOpen={state.showDeleteModal} onClose={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/90'>
                 <ModalContent>
                     <ModalHeader>Confirmar Eliminación</ModalHeader>
                     <ModalBody>
@@ -263,7 +238,7 @@ const SocialLinksManager = () => {
                         <Button color="danger" onClick={handleDeleteLink}>
                             Eliminar
                         </Button>
-                        <Button onClick={() => setShowDeleteModal(false)} color="secondary">
+                        <Button onClick={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })} color="secondary">
                             Cancelar
                         </Button>
                     </ModalFooter>
