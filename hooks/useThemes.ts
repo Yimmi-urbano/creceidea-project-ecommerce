@@ -16,10 +16,9 @@ interface Theme {
 export const useThemes = () => {
   const [themes, setThemes] = useState<Theme[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedTheme, setSelectedTheme] = useState<string | null>(null); // string primitivo o null
-  const [updateSuccess, setUpdateSuccess] = useState<boolean | null>(null); // Estado para saber si la actualización fue exitosa
+  const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
+  const [updateSuccess, setUpdateSuccess] = useState<boolean | null>(null);
 
-  // Función para obtener los temas desde la API
   const fetchThemes = async () => {
     try {
       const response = await fetch('https://api-theme.creceidea.pe/api/themes');
@@ -36,7 +35,7 @@ export const useThemes = () => {
     fetchThemes();
   }, []);
 
-  // Función para actualizar el theme en la API
+
   const updateTheme = async (themeName: string | null) => {
     try {
       const domain = localStorage.getItem('domainSelect') || 'donguston.creceidea.pe';
@@ -57,23 +56,22 @@ export const useThemes = () => {
       }
 
       console.log('Tema actualizado con éxito');
-      setUpdateSuccess(true); // Actualización exitosa
+      setUpdateSuccess(true); 
     } catch (error) {
       console.error('Error al actualizar el tema:', error);
-      setUpdateSuccess(false); // Error en la actualización
+      setUpdateSuccess(false); 
     }
   };
 
-  // Manejar la selección de solo un tema a la vez
   const handleSingleCheckboxChange = (themeId: string, checked: boolean, themeName: string, isFree: boolean) => {
     if (checked) {
-      setSelectedTheme(themeName); // Actualizar el tema seleccionado
+      setSelectedTheme(themeName); 
       if (isFree) {
-        updateTheme(themeName); // Actualizar solo si es de tipo "free"
+        updateTheme(themeName);
       }
     } else {
-      setSelectedTheme(null); // Desactivar el tema
-      updateTheme(null); // Actualizar la API con "null" si se desactiva
+      setSelectedTheme(null);
+      updateTheme(null);
     }
   };
 
@@ -82,7 +80,7 @@ export const useThemes = () => {
     loading,
     selectedTheme,
     handleSingleCheckboxChange,
-    updateSuccess, // Devolver el estado de éxito o fallo
-    setUpdateSuccess, // Incluir el setter de updateSuccess
+    updateSuccess, 
+    setUpdateSuccess, 
   };
 };

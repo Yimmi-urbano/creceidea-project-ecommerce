@@ -48,8 +48,8 @@ const ThemesList: React.FC = () => {
         setIsNotificationOpen(false);
     };
 
-    const openPaymentModal = (themeName: string) => {
-        setPayThemeName(themeName);
+    const openPaymentModal = (themeTitle: string) => {
+        setPayThemeName(themeTitle);
         setIsPaymentOpen(true);
     };
 
@@ -57,13 +57,13 @@ const ThemesList: React.FC = () => {
         setIsPaymentOpen(false);
     };
 
-    const handleThemeSelection = async (themeName: string, themeType: string) => {
+    const handleThemeSelection = async (themeName: string, themeType: string, themeTitle: string) => {
         setIsLoading(true);
         setUpdateSuccess(null); // Reiniciar el estado de éxito/fallo
         setPendingSelection(themeName); // Guardar el tema seleccionado como pendiente
 
         if (themeType === 'pay') {
-            openPaymentModal(themeName); // Abrir modal de pago si el tema es de pago
+            openPaymentModal(themeTitle); // Abrir modal de pago si el tema es de pago
         } else {
             const selectedTheme = themes.find((theme) => theme.name === themeName);
             if (selectedTheme) {
@@ -87,12 +87,12 @@ const ThemesList: React.FC = () => {
                     key={_id}
                     shadow="sm"
                     isPressable
-                    
-                    onClick={() => handleThemeSelection(name, type_theme)}
+
+                    onClick={() => handleThemeSelection(name, type_theme, title)}
                     className={cardClassName}
-                    
-                    isBlurred 
-                   
+
+                    isBlurred
+
                 >
                     <CardBody>
                         <Image
@@ -113,13 +113,21 @@ const ThemesList: React.FC = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <a
                                 className='button'
-                                color="primary"
+                                color="warning"
                                 onClick={(e) => {
                                     e.stopPropagation(); // Evitar que el botón interfiera con la selección
                                     window.open(url_demo, '_blank');
                                 }}
                             >
                                 Ver Demo
+                            </a>
+
+                            <a
+                                className='button'
+                                color="danger"
+                                onClick={() => openPaymentModal(title)}
+                            >
+                                Quitar Anuncio
                             </a>
                         </div>
                     </CardBody>
