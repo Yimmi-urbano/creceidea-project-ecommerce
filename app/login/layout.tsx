@@ -5,7 +5,7 @@ export default function CardLogin({
     children: React.ReactNode;
   }) {
     return (
-      <section className="flex flex-col items-center justify-center  h-[99vh]"> 
+      <section className="flex items-center justify-center h-full"> 
        
        
           {children}
