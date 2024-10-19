@@ -114,7 +114,7 @@ const CardLogin = () => {
 
   return (
     <>
-      <div className="logo-crece-style relative lg:pb-10 pb-0 pt-20 lg:pt-0"> <Logo /></div>
+      <div className="logo-crece-style  absolute md:relative lg:pb-10 pb-0 top-20 lg:top-0"> <Logo /></div>
       <Card shadow="none" isBlurred className="border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 card-login w-[90%] lg:w-[350px] h-[380px] lg:h-auto bottom-[30px] lg:bottom-[0px] lg:right-[100px] left-[20px] absolute lg:relative">
         <CardBody className="p-5">
           <form onSubmit={handleSubmit}>
