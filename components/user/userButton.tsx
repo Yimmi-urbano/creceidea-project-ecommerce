@@ -24,12 +24,9 @@ export default function UserButtonEvent() {
 
       <Dropdown className="light text-black">
         <DropdownTrigger>
-
-
-
           <div className="flex gap-4 cursor-pointer">
        
-            <img
+            <Image
               className="rounded-full w-[40px] h-[40px] object-contain bg-slate-50 outline outline-offset-2 outline-2"
               src={logoToDisplay}
             />

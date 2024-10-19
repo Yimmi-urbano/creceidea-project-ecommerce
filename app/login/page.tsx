@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
@@ -7,8 +6,7 @@ import { Input } from "@nextui-org/input";
 import { getDomain, login } from "./api";
 import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
-import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
-import { input } from "@nextui-org/react";
+import { EyeFilledIcon, EyeSlashFilledIcon, Logo } from "@/components/icons";
 
 const CardLogin = () => {
   const [email, setEmail] = useState("");
@@ -28,14 +26,49 @@ const CardLogin = () => {
     };
   }, []);
 
+  // Validación de email
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Validación de campos vacíos y formato de correo
+  const validateForm = (): boolean => {
+    let isValid = true;
+
+    if (!email) {
+      setEmailError("El correo no puede estar vacío.");
+      isValid = false;
+    } 
+     if (!validateEmail(email)) {
+      setEmailError("Por favor ingrese un correo válido.");
+      isValid = false;
+    } else {
+      setEmailError(null);
+    }
+
+    if (!password) {
+      setPasswordError("La contraseña no puede estar vacía.");
+      isValid = false;
+    } else {
+      setPasswordError(null);
+    }
+
+    return isValid;
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     resetErrors();
+
+    // Validaciones
+    if (!validateForm()) return;
+
     setIsLoading(true);
 
     try {
       const response = await login(email, password);
-      
+
       if (response.status === "error") {
         handleLoginError(response.message);
       } else {
@@ -80,78 +113,76 @@ const CardLogin = () => {
   };
 
   return (
-    
-    <Card shadow="none" isBlurred className="border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40  card-login w-[90%] lg:w-[350px] h-[380px] lg:h-auto bottom-[30px] lg:bottom-[0px] lg:right-[100px] left-[20px] absolute lg:relative">
-      <CardBody className="p-5">
-        <form onSubmit={handleSubmit}>
-          <article className="prose">
-            <h2 className="mb-5 mt-2 text-xl font-bold">Iniciar Sesión</h2>
-          </article>
+    <>
+      <div className="logo-crece-style relative lg:pb-10 pb-0 pt-20 lg:pt-0"> <Logo /></div>
+      <Card shadow="none" isBlurred className="border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 card-login w-[90%] lg:w-[350px] h-[380px] lg:h-auto bottom-[30px] lg:bottom-[0px] lg:right-[100px] left-[20px] absolute lg:relative">
+        <CardBody className="p-5">
+          <form onSubmit={handleSubmit}>
+            <article className="prose">
+              <h2 className="mb-5 mt-2 text-xl font-bold">Inicia sesión en tu cuenta</h2>
+            </article>
 
-          <div className="flex w-full flex-wrap lg:items-end md:flex-nowrap mb-6 mt-5 md:mb-4">
-            <Input
-              type="email"
-              label="Correo"
-              variant="bordered"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              isInvalid={!!emailError}
-              errorMessage={emailError}
-              classNames={{
-                inputWrapper:[
-                  'border-1 border-[#0ea5e9]/40 bg-sky-900'
-                ]
-              }}
-              labelPlacement="outside"
-              placeholder="Ingrese su correo"
-            />
-          </div>
+            <div className="flex w-full flex-wrap lg:items-end md:flex-nowrap mb-6 mt-5 md:mb-4">
+              <Input
+                type="email"
+                label="Correo"
+                variant="bordered"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                isInvalid={!!emailError}
+                errorMessage={emailError}
+                classNames={{
+                  inputWrapper: ['border-1 border-[#0ea5e9]/40 bg-sky-900']
+                }}
+                labelPlacement="outside"
+                placeholder="Ingrese su correo"
+              />
+            </div>
 
-          <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-4">
-            <Input
-              type={isVisible ? "text" : "password"}
-              label="Contraseña"
-              variant="bordered"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              isInvalid={!!passwordError}
-              errorMessage={passwordError}
-              classNames={{
-                inputWrapper:[
-                  'border-1 border-[#0ea5e9]/40 bg-sky-900'
-                ]
-              }}
-              labelPlacement="outside"
-              placeholder="Contraseña"
-              endContent={
-                <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
-                  {isVisible ? (
-                    <EyeSlashFilledIcon className="text-2xl text-[#0ea5e9] pointer-events-none" />
-                  ) : (
-                    <EyeFilledIcon className="text-2xl text-[#0ea5e9] pointer-events-none" />
-                  )}
-                </button>
-              }
-            />
-          </div>
+            <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-4">
+              <Input
+                type={isVisible ? "text" : "password"}
+                label="Contraseña"
+                variant="bordered"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                isInvalid={!!passwordError}
+                errorMessage={passwordError}
+                classNames={{
+                  inputWrapper: ['border-1 border-[#0ea5e9]/40 bg-sky-900']
+                }}
+                labelPlacement="outside"
+                placeholder="Contraseña"
+                endContent={
+                  <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                    {isVisible ? (
+                      <EyeSlashFilledIcon className="text-2xl text-[#0ea5e9] pointer-events-none" />
+                    ) : (
+                      <EyeFilledIcon className="text-2xl text-[#0ea5e9] pointer-events-none" />
+                    )}
+                  </button>
+                }
+              />
+            </div>
 
-          {error && <p className="text-red-600">{error}</p>}
+            {error && <p className="text-red-600">{error}</p>}
 
-          <CardFooter className="flex flex-wrap gap-4">
-            <Button type="submit" color="warning" className="m-auto  w-[80%] rounded-3xl" isLoading={isLoading}>
-              Iniciar sesión
-            </Button>
-            <Link className="flex items-center text-center p-0 w-full block text-current" href="#">
-              <span className="text-sm">¿Olvidaste tu clave?</span>
-            </Link>
+            <CardFooter className="flex flex-wrap gap-4">
+              <Button type="submit" color="warning" className="m-auto w-[80%] rounded-3xl" isLoading={isLoading}>
+                Iniciar sesión
+              </Button>
+              <Link className="flex items-center text-center p-0 w-full block text-current" href="#">
+                <span className="text-sm">¿Olvidaste tu clave?</span>
+              </Link>
 
-            <Link className="flex items-center p-0 hidden text-center w-full  text-current" href="#">
-              <span className="text-sm">¿Aún no tienes cuenta? Registrarse</span>
-            </Link>
-          </CardFooter>
-        </form>
-      </CardBody>
-    </Card>
+              <Link className="flex items-center p-0 hidden text-center w-full text-current" href="#">
+                <span className="text-sm">¿Aún no tienes cuenta? Registrarse</span>
+              </Link>
+            </CardFooter>
+          </form>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 
