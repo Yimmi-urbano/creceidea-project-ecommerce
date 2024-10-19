@@ -40,7 +40,7 @@ export default function RootLayout({
       <head />
       <body
         className={clsx(
-          "h-screen  font-sans antialiased",
+          " font-sans antialiased",
           fontSans.variable,
         )}
       >
