@@ -7,6 +7,7 @@ import { getDomain, login } from "./api";
 import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
 import { EyeFilledIcon, EyeSlashFilledIcon, Logo } from "@/components/icons";
+import { Chip } from "@nextui-org/react";
 
 const CardLogin = () => {
   const [email, setEmail] = useState("");
@@ -93,7 +94,7 @@ const CardLogin = () => {
     } else if (message === "Contraseña incorrecta") {
       setPasswordError("Contraseña incorrecta");
     } else {
-      setError("Error desconocido. Inténtalo de nuevo más tarde.");
+      setError("Usuario y/o contraseña incorrecta.");
     }
   };
 
@@ -113,9 +114,9 @@ const CardLogin = () => {
   };
 
   return (
-    <Card shadow="none" className="border-0 bg-transparent card-login gap-5 w-lg-max">
+    <Card shadow="none" className="border-0 bg-transparent card-login gap-5 lg:w-[350px] w-[90%]">
      <div className="logo-crece-style"> <Logo /></div> 
-      <Card shadow="none" isBlurred className="border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 card-login w-[100%] ">
+      <Card  isBlurred className="border-1 dark:border-[#0ea5e9]/30 dark:bg-[#0c4a6e]/40 card-login w-[100%] ">
         <CardBody className="p-5">
           <form onSubmit={handleSubmit}>
             <article className="prose">
@@ -129,10 +130,11 @@ const CardLogin = () => {
                 variant="bordered"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                isRequired
                 isInvalid={!!emailError}
                 errorMessage={emailError}
                 classNames={{
-                  inputWrapper: ['border-1 border-[#0ea5e9]/40 bg-sky-900']
+                  inputWrapper: ['border-1 dark:border-[#0ea5e9]/40 dark:bg-sky-900/40']
                 }}
                 labelPlacement="outside"
                 placeholder="Ingrese su correo"
@@ -144,12 +146,13 @@ const CardLogin = () => {
                 type={isVisible ? "text" : "password"}
                 label="Contraseña"
                 variant="bordered"
+                isRequired
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 isInvalid={!!passwordError}
                 errorMessage={passwordError}
                 classNames={{
-                  inputWrapper: ['border-1 border-[#0ea5e9]/40 bg-sky-900']
+                  inputWrapper: ['border-1 dark:border-[#0ea5e9]/40 dark:bg-sky-900/40']
                 }}
                 labelPlacement="outside"
                 placeholder="Contraseña"
@@ -163,11 +166,16 @@ const CardLogin = () => {
                   </button>
                 }
               />
+            
+            </div>
+            <div className="text-center gap-4">
+            {error && <Chip variant="flat" size="md" className="w-[100%]" color="danger">{error}</Chip>}
+
             </div>
 
-            {error && <p className="text-red-600">{error}</p>}
 
-            <CardFooter className="flex flex-wrap gap-4">
+            <CardFooter className="flex flex-col gap-4 w-full">
+            
               <Button type="submit" color="warning" className="m-auto w-[80%] rounded-3xl" isLoading={isLoading}>
                 Iniciar sesión
               </Button>

@@ -100,6 +100,7 @@ const ThemesList: React.FC = () => {
                             width="100%"
                             height={140}
                             alt={title}
+                            className='object-cover'
                         />
                         <Spacer y={1} />
                         <div>

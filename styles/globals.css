@@ -40,11 +40,19 @@
     background: linear-gradient(335deg, rgba(0, 0, 0, 0.02703088071165971) 0%, rgba(0, 0, 0, 0.7133053905155813) 100%);
 }
 
-.logo-crece-style svg {
+.dark .logo-crece-style svg {
     width: 250px;
     height: 50px;
     fill: #fff;
 }
+
+.logo-crece-style svg {
+    width: 250px;
+    height: 50px;
+   
+}
+
+
 
 .logo-crece-dash {
     position: absolute;
@@ -85,6 +93,7 @@
 .logo-sidebar {
     width: 100%;
     fill: #fff;
+    position: relative;
 }
 
 .toolbar-footer {

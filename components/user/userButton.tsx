@@ -24,8 +24,10 @@ export default function UserButtonEvent() {
 
       <Dropdown className="light text-black">
         <DropdownTrigger>
-          <div className="flex gap-4 cursor-pointer">
-
+          <div className="flex gap-0  lg:gap-3 cursor-pointer">
+            <Link isBlock showAnchorIcon isExternal href={`${domainSelected}`} color="warning" size="sm" className="lg:hidden">
+              Ver tienda
+            </Link>
             <Image
               radius='full'
               width='40px'
@@ -39,6 +41,7 @@ export default function UserButtonEvent() {
               <Link
                 isExternal
                 showAnchorIcon
+                color="warning"
                 href={`${domainSelected}`}
                 size="sm"
               >{domainSelected}
