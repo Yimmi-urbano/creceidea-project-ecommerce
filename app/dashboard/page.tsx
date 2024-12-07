@@ -32,6 +32,7 @@ export default function DashboardLayoutPage() {
       </ProductProvider>
     </Card>
 
+
        {/**? 
       <div className="grid  grid-cols-2 md:grid-cols-4 gap-4 h-[8rem] md:h-[12rem]">
         <CardProgressViews />

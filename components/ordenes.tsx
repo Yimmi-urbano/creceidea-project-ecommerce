@@ -1,50 +1,85 @@
-import React from 'react';
-import { EyeIcon } from './icons'; // Asegúrate de que este ícono está correctamente definido
+import React, { useState } from 'react';
+import { EyeIcon } from './icons';
 import withPermission from "./withPermission";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@nextui-org/react";
-
-interface Order {
-  id: string;
-  client: string;
-  purchaseDate: string;
-  paymentDate: string;
-  status: string;
-  totalPrice: string;
-}
-
-const orders: Order[] = [
-  { id: '048', client: 'Juan García', purchaseDate: '27/07/2024', paymentDate: 'Jul, 27 2024 18:26', status: 'Aprobado', totalPrice: 'S/ 1,299' },
-  { id: '032', client: 'Carlos González', purchaseDate: '27/07/2024', paymentDate: 'Jul, 27 2024 15:34', status: 'Aprobado', totalPrice: 'S/ 100' },
-  { id: '813', client: 'Carmen Tello', purchaseDate: '26/07/2024', paymentDate: 'Jul, 27 2024 15:26', status: 'Pendiente', totalPrice: 'S/ 500' },
-  { id: '40', client: 'José Paredes', purchaseDate: '01/06/2024', paymentDate: 'Jun, 04 2024 13:26', status: 'Rechazado', totalPrice: 'S/ 1,299' },
-  { id: '3140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
-  { id: '2140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
-  { id: '140', client: 'Rosa Huamán', purchaseDate: '05/06/2024', paymentDate: 'Jun, 05 2024 10:46', status: 'Rechazado', totalPrice: 'S/ 100' },
-];
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Modal, ModalHeader, ModalBody, Dropdown, Button, DropdownItem, DropdownMenu, ModalFooter, useDisclosure, DropdownTrigger, ModalContent } from "@nextui-org/react";
+import { useFetchOrders } from '@/hooks/useIsOrders';
+import { updateOrderStatus, updatePaymentStatus } from '@/hooks/fetchOrders';
 
 const getStatusClass = (status: string): "success" | "warning" | "danger" | undefined => {
   switch (status) {
-    case 'Aprobado':
+    case 'completed':
       return 'success';
-    case 'Pendiente':
+    case 'pending':
       return 'warning';
-    case 'Rechazado':
+    case 'decline':
       return 'danger';
     default:
       return undefined;
   }
 };
 
+const getStatusLabel = (status: string) => {
+  switch (status) {
+    case 'completed':
+      return 'Completado';
+    case 'pending':
+      return 'Pendiente';
+    case 'decline':
+      return 'Cancelado';
+    default:
+      return undefined;
+  }
+};
+
 const Ordenes: React.FC = () => {
+  const { orders, loading, error, updateOrdersInState } = useFetchOrders();
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<string>("pending");
+  const [paymentMethod, setPaymentMethod] = useState<string>("credit_card");
+  const [orderStatus, setOrderStatus] = useState<string>("pending");
+
+  // Modal logic using useDisclosure for both modals
+  const { isOpen: isPaymentModalOpen, onOpen: openPaymentModal, onClose: closePaymentModal } = useDisclosure();
+  const { isOpen: isOrderModalOpen, onOpen: openOrderModal, onClose: closeOrderModal } = useDisclosure();
+
+  if (loading) {
+    return <p>Cargando órdenes...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  const handleSavePaymentStatus = async () => {
+    if (orderId) {
+      try {
+        await updatePaymentStatus(orderId, paymentStatus, paymentMethod); // Update API call with payment method
+        closePaymentModal(); // Close modal after update
+        updateOrdersInState();
+      } catch (error) {
+        console.error("Error al actualizar el estado de pago:", error);
+      }
+    }
+  };
+
+  const handleSaveOrderStatus = async () => {
+    if (orderId) {
+      try {
+        await updateOrderStatus(orderId, orderStatus);
+        closeOrderModal(); // Close modal after update
+        updateOrdersInState();
+      } catch (error) {
+        console.error("Error al actualizar el estado de la orden:", error);
+      }
+    }
+  };
+
   return (
     <div>
       <div className="sticky top-0 z-20">
-        <div className="p-4">
-          <h2 className="text-xl font-bold">Ordenes</h2>
-        </div>
         <div className="overflow-x-auto">
           <Table className="min-w-full leading-normal" isHeaderSticky removeWrapper>
-            <TableHeader >
+            <TableHeader>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>N° de orden</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Cliente</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Fecha de compra</TableColumn>
@@ -55,21 +90,24 @@ const Ordenes: React.FC = () => {
             </TableHeader>
             <TableBody>
               {orders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell>{order.id}</TableCell>
-                  <TableCell>{order.client}</TableCell>
-                  <TableCell>{order.purchaseDate}</TableCell>
-                  <TableCell>{order.paymentDate}</TableCell>
+                <TableRow key={order._id}>
+                  <TableCell>{order.orderNumber}</TableCell>
+                  <TableCell>{order.clientInfo['name']}</TableCell>
+                  <TableCell>{order.createdAt}</TableCell>
+                  <TableCell>{order.createdAt}</TableCell>
                   <TableCell>
-                    <Chip color={getStatusClass(order.status)} size="sm" variant="flat">
-                      {order.status}
+                    <Chip color={getStatusClass(order.paymentStatus['typeStatus'])} size="sm" variant="flat">
+                      {getStatusLabel(order.paymentStatus['typeStatus'])}
                     </Chip>
                   </TableCell>
-                  <TableCell>{order.totalPrice}</TableCell>
+                  <TableCell>{order.currency} {order.total}</TableCell>
                   <TableCell>
-                    <button>
+                    <Button isIconOnly onPress={() => { setOrderId(order._id); openOrderModal(); }}>
                       <EyeIcon className="hover:text-black fill-white" />
-                    </button>
+                    </Button>
+                    <Button isIconOnly onPress={() => { setOrderId(order._id); openPaymentModal(); }}>
+                      <EyeIcon className="hover:text-black fill-white" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -77,6 +115,62 @@ const Ordenes: React.FC = () => {
           </Table>
         </div>
       </div>
+
+      {/* Modal para editar estado de pago */}
+      <Modal isOpen={isPaymentModalOpen} onClose={closePaymentModal}>
+        <ModalContent>
+          <ModalHeader>Editar Estado de Pago</ModalHeader>
+          <ModalBody>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="bordered">{paymentStatus || 'Seleccionar Estado de Pago'}</Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Seleccionar Estado de Pago" onAction={(key) => setPaymentStatus(key as string)}>
+                <DropdownItem key="pending">Pendiente</DropdownItem>
+                <DropdownItem key="completed">Completado</DropdownItem>
+                <DropdownItem key="decline">Declinado</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="bordered">{paymentMethod || 'Seleccionar Método de Pago'}</Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Seleccionar Método de Pago" onAction={(key) => setPaymentMethod(key as string)}>
+                <DropdownItem key="credit_card">Tarjeta de Crédito</DropdownItem>
+                <DropdownItem key="Yape">Yape</DropdownItem>
+                <DropdownItem key="Plin">Plin</DropdownItem>
+                <DropdownItem key="transfer">Transferencia</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </ModalBody>
+          <ModalFooter>
+            <Button onPress={handleSavePaymentStatus}>Guardar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal para editar estado de la orden */}
+      <Modal isOpen={isOrderModalOpen} onClose={closeOrderModal}>
+        <ModalContent>
+          <ModalHeader>Editar Estado de Orden</ModalHeader>
+          <ModalBody>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="bordered">{orderStatus || 'Seleccionar Estado de Orden'}</Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Seleccionar Estado de Orden" onAction={(key) => setOrderStatus(key as string)}>
+                <DropdownItem key="pending">Pendiente</DropdownItem>
+                <DropdownItem key="shipped">Enviado</DropdownItem>
+                <DropdownItem key="delivered">Entregado</DropdownItem>
+                <DropdownItem key="cancelled">Cancelado</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </ModalBody>
+          <ModalFooter>
+            <Button onPress={handleSaveOrderStatus}>Guardar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

@@ -40,8 +40,8 @@ const CardLogin = () => {
     if (!email) {
       setEmailError("El correo no puede estar vacío.");
       isValid = false;
-    } 
-     if (!validateEmail(email)) {
+    }
+    if (!validateEmail(email)) {
       setEmailError("Por favor ingrese un correo válido.");
       isValid = false;
     } else {
@@ -115,8 +115,8 @@ const CardLogin = () => {
 
   return (
     <Card shadow="none" className="border-0 bg-transparent card-login gap-5 lg:w-[350px] w-[90%]">
-     <div className="logo-crece-style"> <Logo /></div> 
-      <Card  isBlurred className="border-1 dark:border-[#0ea5e9]/30 dark:bg-[#0c4a6e]/40 card-login w-[100%] ">
+      <div className="logo-crece-style"> <Logo /></div>
+      <Card isBlurred className="border-1 dark:border-[#0ea5e9]/30 dark:bg-[#0c4a6e]/40 card-login w-[100%] ">
         <CardBody className="p-5">
           <form onSubmit={handleSubmit}>
             <article className="prose">
@@ -129,7 +129,19 @@ const CardLogin = () => {
                 label="Correo"
                 variant="bordered"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setEmail(newValue);
+
+                  // Si el campo no está vacío, verifica si es un correo válido
+                  if (!newValue) {
+                    setEmailError("El correo no puede estar vacío.");
+                  } else if (!validateEmail(newValue)) {
+                    setEmailError("Por favor ingrese un correo válido.");
+                  } else {
+                    setEmailError(null); // Limpia el error si el correo es válido
+                  }
+                }}
                 isRequired
                 isInvalid={!!emailError}
                 errorMessage={emailError}
@@ -141,6 +153,7 @@ const CardLogin = () => {
               />
             </div>
 
+
             <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-4">
               <Input
                 type={isVisible ? "text" : "password"}
@@ -148,7 +161,10 @@ const CardLogin = () => {
                 variant="bordered"
                 isRequired
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordError(null); // Limpia el error cuando el usuario empieza a escribir
+                }}
                 isInvalid={!!passwordError}
                 errorMessage={passwordError}
                 classNames={{
@@ -157,7 +173,12 @@ const CardLogin = () => {
                 labelPlacement="outside"
                 placeholder="Contraseña"
                 endContent={
-                  <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                  <button
+                    className="focus:outline-none"
+                    type="button"
+                    onClick={toggleVisibility}
+                    aria-label="toggle password visibility"
+                  >
                     {isVisible ? (
                       <EyeSlashFilledIcon className="text-2xl text-[#0ea5e9] pointer-events-none" />
                     ) : (
@@ -166,16 +187,17 @@ const CardLogin = () => {
                   </button>
                 }
               />
-            
             </div>
+
+
             <div className="text-center gap-4">
-            {error && <Chip variant="flat" size="md" className="w-[100%]" color="danger">{error}</Chip>}
+              {error && <Chip variant="flat" size="md" className="w-[100%]" color="danger">{error}</Chip>}
 
             </div>
 
 
             <CardFooter className="flex flex-col gap-4 w-full">
-            
+
               <Button type="submit" color="warning" className="m-auto w-[80%] rounded-3xl" isLoading={isLoading}>
                 Iniciar sesión
               </Button>

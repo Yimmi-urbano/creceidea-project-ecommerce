@@ -4,6 +4,7 @@ import { Input, Button } from '@nextui-org/react';
 import { ChromePicker } from 'react-color';
 import { useConfig } from '@/hooks/ConfigContext';
 import { updateColors } from '@/hooks/colorService';
+import { NotificationModal } from '@/components/utils/NotificationModal';
 
 interface Color {
   title: string;
@@ -20,6 +21,11 @@ const ColorPicker: React.FC = () => {
   const [showPickers, setShowPickers] = useState<boolean[]>([false, false, false]);
 
   const pickerRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  // Estado para controlar el modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isModalLoading, setIsModalLoading] = useState(false);
 
   useEffect(() => {
     if (config && !loading) {
@@ -69,8 +75,12 @@ const ColorPicker: React.FC = () => {
   const handleUpdateColors = async () => {
     try {
       const colorHexes = colors.map((color) => color.hex);
+      setIsModalLoading(true); // Comienza la carga
+      setIsModalOpen(true); // Abre el modal
+
       await updateColors(colorHexes);
-      alert('Colores actualizados correctamente!');
+      setModalMessage('Colores actualizados correctamente!'); // Actualiza el mensaje con el resultado
+      setIsModalLoading(false); // Finaliza la carga
     } catch (error) {
       alert('Error updating colors');
     }
@@ -125,6 +135,14 @@ const ColorPicker: React.FC = () => {
         </div>
       ))}
       <Button onClick={handleUpdateColors} className='w-full' color='success'>Actualizar Colores</Button>
+
+
+      <NotificationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isLoading={isModalLoading}
+        message={modalMessage}
+      />
     </div>
   );
 };

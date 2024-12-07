@@ -217,10 +217,10 @@ const SocialLinksManager = () => {
                         />
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={handleAddOrEditLink}>
-                            {state.editingLink ? 'Actualizar Enlace' : 'Agregar Enlace'}
+                        <Button onClick={handleAddOrEditLink} color='warning'>
+                            {state.editingLink ? 'Actualizar' : 'Guardar'}
                         </Button>
-                        <Button onClick={() => dispatch({ type: 'CLOSE_MODAL' })} color="secondary">
+                        <Button onClick={() => dispatch({ type: 'CLOSE_MODAL' })} variant="flat" color="danger">
                             Cancelar
                         </Button>
                     </ModalFooter>
@@ -235,11 +235,11 @@ const SocialLinksManager = () => {
                         ¿Estás seguro que deseas eliminar este enlace?
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="danger" onClick={handleDeleteLink}>
-                            Eliminar
+                        <Button color="danger" variant='flat' onClick={handleDeleteLink}>
+                            Si, eliminar
                         </Button>
-                        <Button onClick={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })} color="secondary">
-                            Cancelar
+                        <Button onClick={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })}  color="warning">
+                            No, cancelar
                         </Button>
                     </ModalFooter>
                 </ModalContent>

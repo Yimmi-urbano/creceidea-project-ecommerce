@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Chip, Input, Textarea } from '@nextui-org/react';
 import { useConfig } from '@/hooks/ConfigContext';
 import { updateSeoMetadata, SeoMetadata } from '@/hooks/serviceUpdateSeo';
+import { NotificationModal } from '@/components/utils/NotificationModal';
 
 const UpdateMetadata: React.FC = () => {
   const { config } = useConfig();
@@ -12,6 +13,11 @@ const UpdateMetadata: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Estado para controlar el modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isModalLoading, setIsModalLoading] = useState(false);
 
   useEffect(() => {
     if (config) {
@@ -35,8 +41,11 @@ const UpdateMetadata: React.FC = () => {
     };
 
     try {
+      setIsModalLoading(true); // Comienza la carga
+      setIsModalOpen(true); // Abre el modal
       await updateSeoMetadata(updatedData);
-      setSuccessMessage('Datos actualizados!');
+      setModalMessage('SEO actualizado correctamente!'); // Actualiza el mensaje con el resultado
+      setIsModalLoading(false); // Finaliza la carga
     } catch (error) {
       setErrorMessage('Error al actualizar.');
     } finally {
@@ -46,12 +55,12 @@ const UpdateMetadata: React.FC = () => {
 
   return (
     <div className='flex gap-3 flex-wrap w-full'>
-            <Input
+      <Input
         label="Title"
         placeholder="Enter title"
         value={title}
         classNames={{
-          inputWrapper:[
+          inputWrapper: [
             'border-1 border-[#0ea5e9]/40 bg-sky-900'
           ]
         }}
@@ -62,31 +71,31 @@ const UpdateMetadata: React.FC = () => {
         placeholder="Enter slogan"
         value={slogan}
         classNames={{
-          inputWrapper:[
+          inputWrapper: [
             'border-1 border-[#0ea5e9]/40 bg-sky-900'
           ]
         }}
         onChange={(e) => setSlogan(e.target.value)}
       />
-  
+
       <Input
         label="Meta Keyword"
         placeholder="Enter meta keyword"
         value={metaKeyword}
         classNames={{
-          inputWrapper:[
+          inputWrapper: [
             'border-1 border-[#0ea5e9]/40 bg-sky-900'
           ]
         }}
         onChange={(e) => setMetaKeyword(e.target.value)}
       />
-  
-  <Textarea
+
+      <Textarea
         label="Meta Description"
         placeholder="Enter meta description"
         value={metaDescription}
         classNames={{
-          inputWrapper:[
+          inputWrapper: [
             'border-1 border-[#0ea5e9]/40 bg-sky-900'
           ]
         }}
@@ -95,7 +104,7 @@ const UpdateMetadata: React.FC = () => {
 
       {errorMessage && <Chip color="warning" variant='flat' className='w-[100%]'>{errorMessage}</Chip>}
       {successMessage && <Chip color="success" variant='flat' className='w-[100%]'>{successMessage}</Chip>}
-    
+
       <Button
         color="success"
         className='mb-4 w-full'
@@ -104,6 +113,12 @@ const UpdateMetadata: React.FC = () => {
       >
         Actualizar
       </Button>
+      <NotificationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isLoading={isModalLoading}
+        message={modalMessage}
+      />
     </div>
   );
 };

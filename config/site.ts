@@ -18,6 +18,11 @@ export const siteConfig = {
       label: "Productos",
       href: "/dashboard/products",
       icon: "ProductIcon"
+    },
+    {
+      label: "Ordenes",
+      href: "/dashboard/orders",
+      icon: "ProductIcon"
     }
   ],
   navMenuItems: [
