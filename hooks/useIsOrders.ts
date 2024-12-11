@@ -31,7 +31,6 @@ export const useFetchOrders = () => {
     fetchOrders();
   }, []);
 
-  // Función para actualizar todo el estado de las órdenes
   const updateOrdersInState = async () => {
     const orders = await fetchOrdersFromAPI();
     setOrders(orders.data || []);
