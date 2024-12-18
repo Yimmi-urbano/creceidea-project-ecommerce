@@ -20,7 +20,8 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
     }
 
     return (
-        <div className="p-4">
+        <div>
+            
             <Card shadow="sm" isBlurred className="mb-6 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/20">
                 <CardHeader>
                     <h2 className="text-lg font-semibold">Información del Pedido</h2>
@@ -30,7 +31,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                         <strong>Número de Pedido:</strong> {orderData?.orderNumber}
                     </p>
                     <p>
-                        <strong>Total:</strong> {orderData?.total} {orderData?.currency}
+                        <strong>Total:</strong> {orderData?.currency} {orderData?.total.toFixed(2)} 
                     </p>
                     <p>
                         <strong>Estado:</strong> {orderData?.orderStatus.message}
@@ -46,7 +47,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                     </p>
                 </CardBody>
             </Card>
-            <Card isBlurred className="mb-6 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/20">
+            <Card isBlurred className="mb-6 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/20 h-[400px]">
                 <CardBody>
                     <h2 className="text-xl font-semibold mt-2 mb-2">Productos</h2>
                     <ul>

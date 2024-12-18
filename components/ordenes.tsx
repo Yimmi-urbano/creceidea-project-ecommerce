@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EyeIcon, DeliveryIcon, PaymentIcon } from './icons';
 import withPermission from "./withPermission";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Modal, ModalHeader, ModalBody, Dropdown, Button, DropdownItem, DropdownMenu, ModalFooter, useDisclosure, DropdownTrigger, ModalContent, Link } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Modal, ModalHeader, ModalBody, Dropdown, Button, DropdownItem, DropdownMenu, ModalFooter, useDisclosure, DropdownTrigger, ModalContent, Link, Card } from "@nextui-org/react";
 import { useFetchOrders } from '@/hooks/useIsOrders';
 import { updateOrderStatus, updatePaymentStatus } from '@/hooks/fetchOrders';
 
@@ -97,21 +97,21 @@ const Ordenes: React.FC = () => {
   return (
     <div>
       <div className="sticky top-0 z-20">
-        <div className="overflow-x-auto">
-          <Table className="min-w-full leading-normal backdrop-blur-md " fullWidth isStriped  isHeaderSticky isCompact  classNames={{ wrapper: "bg-[rgb(4, 29, 46)]/90 border-1 border-[#0ea5e9]/30" }}>
+        <Card className="overflow-x-auto p-0" isBlurred shadow='none'>
+          <Table className="min-w-full p-0 m-0"  color="primary" isStriped fullWidth selectionMode="single" classNames={{ wrapper: "bg-sky-950/10  border-1 border-[#0ea5e9]/30"}} >
             <TableHeader>
-              <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white w-[100px]'>N° de orden</TableColumn>
-              <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white' width="300">Cliente</TableColumn>
+              <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>N° de orden</TableColumn>
+              <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Cliente</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Fecha de compra</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Fecha de pago</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Estado</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Precio Total</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>-</TableColumn>
             </TableHeader>
-            <TableBody>
+            <TableBody >
               {orders.map((order) => (
-                <TableRow key={order._id} >
-                  <TableCell width="100">{order.orderNumber}</TableCell>
+                <TableRow key={order._id} data-odd={{}}>
+                  <TableCell>{order.orderNumber}</TableCell>
                   <TableCell>{order.clientInfo['name']}</TableCell>
                   <TableCell>{order.createdAt}</TableCell>
                   <TableCell>{order.createdAt}</TableCell>
@@ -122,16 +122,16 @@ const Ordenes: React.FC = () => {
                   </TableCell>
                   <TableCell>{order.currency === "PEN" ? "S/" : "$"} {order.total.toFixed(2)}</TableCell>
                   <TableCell className='flex gap-2'>
-                    <Button isIconOnly color='success' variant='flat' size="sm" className='p-0' onPress={() => { setOrderId(order._id); openOrderModal(); }}>
+                    <Button isIconOnly color='success' variant='solid' size="sm" className='p-0' onPress={() => { setOrderId(order._id); openOrderModal(); }}>
                       <DeliveryIcon className="hover:text-black fill-white" />
                     </Button>
-                    <Button isIconOnly color='secondary' variant='flat' size="sm" onPress={() => { setOrderId(order._id); openPaymentModal(); }}>
+                    <Button isIconOnly color='secondary' variant='solid' size="sm" onPress={() => { setOrderId(order._id); openPaymentModal(); }}>
                       <PaymentIcon className="hover:text-black fill-white" />
                     </Button>
                     <Button
                       isIconOnly
                       color="primary"
-                      variant="flat"
+                      variant="solid"
                       size="sm"
                       as={Link}
                       href={`/dashboard/orders/details/${order.orderNumber}`}
@@ -144,7 +144,7 @@ const Ordenes: React.FC = () => {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </Card>
       </div>
 
 
