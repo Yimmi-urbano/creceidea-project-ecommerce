@@ -20,9 +20,9 @@ export const siteConfig = {
       icon: "ProductIcon"
     },
     {
-      label: "Ordenes",
+      label: "Pedidos",
       href: "/dashboard/orders",
-      icon: "ProductIcon"
+      icon: "OrderIcon"
     }
   ],
   navMenuItems: [

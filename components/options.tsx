@@ -1,15 +1,16 @@
 import React from "react";
 import { Link } from "@nextui-org/react";
 import { siteConfig } from "@/config/site";
-import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, BlogIcon } from './icons';
+import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, BlogIcon, OrderIcon } from './icons';
 
-type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "BlogIcon";
+type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "BlogIcon" | "OrderIcon";
 
 const iconsMap: Record<IconKey, JSX.Element> = {
   DashboardIcon: <DashboardIcon size={20} />,  
   CategoriesIcon: <CategoriesIcon size={20} />,
   PagesIcon: <PagesIcon size={20} />,
   ProductIcon: <ProductIcon size={20} />,
+  OrderIcon: <OrderIcon size={20} />,
   BlogIcon: <BlogIcon size={20} />,
 };
 

@@ -35,13 +35,16 @@ export default function OptionsToolbar() {
                             </Link>
                         </div>
                         <div className="flex-1 group">
-                            <Link href="/configuration/home" className="text-white">
+                            <Link href="/dashboard/orders" className="text-white">
                                 <span className="block">
-                                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M17 8.25V6C17 4.75736 15.9926 3.75 14.75 3.75H6.5C5.25736 3.75 4.25 4.75736 4.25 6V14.25C4.25 15.4926 5.25736 16.5 6.5 16.5H8.75M17 8.25H18.5C19.7426 8.25 20.75 9.25736 20.75 10.5V18C20.75 19.2426 19.7426 20.25 18.5 20.25H11C9.75736 20.25 8.75 19.2426 8.75 18V16.5M17 8.25H11C9.75736 8.25 8.75 9.25736 8.75 10.5V16.5" stroke="#E5E7EA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
+                                <svg width="24px" height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="4" width="14" height="17" rx="2" stroke="#ffffff"/>
+                                <path d="M9 9H15" stroke="#ffffff" stroke-linecap="round"/>
+                                <path d="M9 13H15" stroke="#ffffff" stroke-linecap="round"/>
+                                <path d="M9 17H13" stroke="#ffffff" stroke-linecap="round"/>
+                                </svg>
 
-                                    <span className="block text-xs">Banners</span>
+                                    <span className="block text-xs">Pedidos</span>
 
                                 </span>
                             </Link>
