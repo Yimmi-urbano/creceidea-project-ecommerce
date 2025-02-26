@@ -15,7 +15,7 @@ export default function DashboardLayoutPage() {
 
     <div className="z-index gap-4 grid ">
 
-      
+      {/**? 
 <Card shadow="none" className="p-0 h-full  border-[#0ea5e9]/0 bg-[#0c4a6e]/0 ">
 
       <CardHeader className="bg-transparent flex justify-between">
@@ -32,14 +32,14 @@ export default function DashboardLayoutPage() {
         </CardFooter>
       </ProductProvider>
     </Card>
+*/}
 
-{/**? 
       <div className="grid  grid-cols-2 md:grid-cols-4 gap-4 h-[12rem] md:h-[12rem]">
         <CardProgressViews />
         <AreaChartComponent />
         <TopProductComponent />
       </div>
-*/}
+
     </div>
   );
 }
