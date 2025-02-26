@@ -4,7 +4,7 @@ import { fetchOrdersFromAPI } from '@/hooks/fetchOrders';
 interface Order {
   _id: string;
   orderNumber: string;
-  paymentStatus: { typeStatus: string };
+  paymentStatus: { typeStatus: string, date: string };
   total: number;
   currency: string;
   createdAt: string;

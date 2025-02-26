@@ -67,11 +67,34 @@ export const handleRemoveImage = (
     }));
 };
 
-export const handleNext = (activeTab: string, setActiveTab: React.Dispatch<React.SetStateAction<string>>) => {
-    if (parseInt(activeTab) < 3) {
+export const handleNext = (
+    activeTab: string, 
+    setActiveTab: React.Dispatch<React.SetStateAction<string>>, 
+    formData: FormData
+) => {
+    const tabIndex = parseInt(activeTab);
+
+    // Validar campos requeridos por cada tab
+    const isValid = () => {
+        switch (tabIndex) {
+            case 0: // Información Básica
+                return formData.name.trim() !== '' && formData.category.length > 0;
+            case 1: // Detalles del Producto
+                return  String(formData.price).trim() !== '' && formData.description.trim() !== '';
+            case 2: // Imágenes
+                return formData.imageUrls.length > 0;
+            default:
+                return true;
+        }
+    };
+
+    if (isValid() && tabIndex < 3) {
         setActiveTab((prev) => (parseInt(prev) + 1).toString());
+    } else {
+        alert("Por favor, complete todos los campos requeridos antes de continuar.");
     }
 };
+
 
 export const handleBack = (activeTab: string, setActiveTab: React.Dispatch<React.SetStateAction<string>>) => {
     if (parseInt(activeTab) > 0) {

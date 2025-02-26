@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EyeIcon, DeliveryIcon, PaymentIcon } from './icons';
 import withPermission from "./withPermission";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Modal, ModalHeader, ModalBody, Dropdown, Button, DropdownItem, DropdownMenu, ModalFooter, useDisclosure, DropdownTrigger, ModalContent, Link, Card } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Modal, ModalHeader, ModalBody, Dropdown, Button, DropdownItem, DropdownMenu, ModalFooter, useDisclosure, DropdownTrigger, ModalContent, Link, Card, CardBody } from "@nextui-org/react";
 import { useFetchOrders } from '@/hooks/useIsOrders';
 import { updateOrderStatus, updatePaymentStatus } from '@/hooks/fetchOrders';
 
@@ -97,8 +97,9 @@ const Ordenes: React.FC = () => {
   return (
     <div>
       <div className="sticky top-0 z-20">
-        <Card className="overflow-x-auto p-0" isBlurred shadow='none'>
-          <Table className="min-w-full p-0 m-0"  color="primary" isStriped fullWidth selectionMode="single" classNames={{ wrapper: "bg-sky-950/10  border-1 border-[#0ea5e9]/30"}} >
+      <Card isBlurred className="md:col-span-2 md:flex border-none bg-background/50 p-0 dark:bg-sky-950/30">
+          <CardBody className="p-0">
+          <Table className="min-w-full p-0 m-0"  color="primary" isStriped fullWidth selectionMode="single" classNames={{ wrapper: "bg-sky-950/10"}} >
             <TableHeader>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>N° de orden</TableColumn>
               <TableColumn className='bg-[#E0EDF499] text-[#25556D] dark:bg-sky-950/40 dark:text-white'>Cliente</TableColumn>
@@ -114,7 +115,7 @@ const Ordenes: React.FC = () => {
                   <TableCell>{order.orderNumber.substring(0, 10)}...</TableCell>
                   <TableCell>{order.clientInfo['name']}</TableCell>
                   <TableCell>{order.createdAt}</TableCell>
-                  <TableCell>{order.createdAt}</TableCell>
+                  <TableCell>{order.paymentStatus['date']??"-----"}</TableCell>
                   <TableCell>
                     <Chip color={getStatusClass(order.paymentStatus['typeStatus'])} size="sm" variant="flat">
                       {getStatusLabel(order.paymentStatus['typeStatus'])}
@@ -144,7 +145,10 @@ const Ordenes: React.FC = () => {
               ))}
             </TableBody>
           </Table>
+        
+          </CardBody>
         </Card>
+       
       </div>
 
 

@@ -6,6 +6,10 @@ import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIcon
 import { useConfig } from '@/hooks/ConfigContext';
 import CategorySelector from "@/components/CategorySelect";
 import { useRouter } from "next/navigation";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css'; // Importa el tema bubble
+import 'react-quill/dist/quill.snow.css'; // Opcional, por si quieres probar otro tema
+import DOMPurify from 'dompurify';
 
 interface Category {
     _id: string;
@@ -25,8 +29,6 @@ const ProductForm: React.FC = () => {
     const [successcreate, setSuccessCreate] = useState(false);
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     const router = useRouter();
-    
-
     const { config } = useConfig();
     const integrations = config?.integrations;
 
@@ -41,8 +43,6 @@ const ProductForm: React.FC = () => {
         integrations: integrations ?? []
     });
 
-
-
     useEffect(() => {
         const loadCategories = async () => {
             try {
@@ -56,7 +56,16 @@ const ProductForm: React.FC = () => {
     }, []);
 
 
-    const handleTabChange = (key: any) => setActiveTab(key);
+    //const handleTabChange = (key: any) => setActiveTab(key);
+
+    const modules = {
+        toolbar: [
+            [{ color: [] }],
+            ['bold', 'italic', 'underline'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+        ]
+    };
+
 
     useEffect(() => {
         if (successcreate) {
@@ -65,7 +74,28 @@ const ProductForm: React.FC = () => {
     }, [successcreate, router]);
 
 
+    const isNextDisabled = () => {
+        const tabIndex = parseInt(activeTab);
+
+        switch (tabIndex) {
+            case 0: // Información Básica
+                return formData.name.trim() === '' || formData.category.length === 0;
+            case 1: // Detalles del Producto
+                return formData.price.trim() === '' || formData.description.trim() === '';
+            case 2: // Imágenes
+                return formData.imageUrls.length === 0;
+            default:
+                return false;
+        }
+    };
+
+    const handleTabChange = (key: any) => {
+        if (parseInt(key) === 3 && isNextDisabled()) return;
+        setActiveTab(key);
+    };
+
     return (
+
         <Card isBlurred className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
             <CardBody>
                 <Tabs
@@ -78,6 +108,7 @@ const ProductForm: React.FC = () => {
                     color='warning'
                     variant="light"
                 >
+
                     <Tab key="0"
 
                         title={
@@ -91,7 +122,7 @@ const ProductForm: React.FC = () => {
                         <div className='flex flex-wrap gap-3'>
 
                             <Input
-                                label="Nombre del Producto"
+                                label="Nombre del Producto * "
                                 name="name"
                                 classNames={
                                     {
@@ -121,7 +152,7 @@ const ProductForm: React.FC = () => {
 
                             />
                             <Card className='w-full bg-[#0c4a6e]/40'>
-                                <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
+                                <CardHeader className="flex gap-3">Selecciona categorias *</CardHeader>
 
                                 <CardBody>
                                     <ScrollShadow className="w-full h-[170px] lg:h-[250px]">
@@ -149,7 +180,7 @@ const ProductForm: React.FC = () => {
                         <div className='grid grid-cols-2 gap-4' key={1}>
 
                             <Input
-                                label="Precio"
+                                label="Precio *"
                                 name="price"
                                 value={formData.price}
                                 classNames={
@@ -255,37 +286,15 @@ const ProductForm: React.FC = () => {
                                 onChange={(e) => handleChange(e, setFormData, formData)}
                                 type="number"
                             />
-                            <Textarea
-                                label="Descripción"
-                                name="description"
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                value={formData.description}
-                                onChange={(e) => handleChange(e, setFormData, formData)}
-                                className='col-span-2'
-
-                            />
+                            <div className='col-span-2 bg-[#ffffff] overflow-hidden rounded-xl'>
+                                <ReactQuill
+                                    value={formData.description}
+                                    modules={modules}
+                                    className="text-black"
+                                    onChange={(value) => setFormData({ ...formData, description: value })}
+                                    placeholder="Describe tu producto..."
+                                />
+                            </div>
                         </div>
                     </Tab>
                     <Tab key="2" title={
@@ -295,7 +304,7 @@ const ProductForm: React.FC = () => {
 
                         </div>
                     } >
-                        <div  key={1} style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
+                        <div key={1} style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <input
                                 type="file"
@@ -382,12 +391,15 @@ const ProductForm: React.FC = () => {
                                     ))}
                                 </small>
 
-
-                                <p className="text-tiny text-slate-800" >{formData.description}</p>
+                                <p
+                                    className="text-tiny text-slate-800"
+                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formData.description) }}
+                                />
                             </CardBody>
 
                         </Card>
                     </Tab>
+
                 </Tabs>
 
             </CardBody>
@@ -399,9 +411,8 @@ const ProductForm: React.FC = () => {
                 {parseInt(activeTab) !== 3 && (
                     <Button
                         color="warning"
-
-                        onClick={() => handleNext(activeTab, setActiveTab)}
-                        disabled={parseInt(activeTab) === 3}
+                        onClick={() => handleNext(activeTab, setActiveTab, formData)}
+                        isDisabled={isNextDisabled()}
                     >
                         {parseInt(activeTab) === 3 ? 'Finalizar' : 'Siguiente'}
                     </Button>
@@ -411,7 +422,7 @@ const ProductForm: React.FC = () => {
                     <Button
 
                         color='success'
-                        onClick={() => handleSubmit(setSubmitting, formData,setSuccessCreate)}
+                        onClick={() => handleSubmit(setSubmitting, formData, setSuccessCreate)}
                         disabled={submitting}
                     >
                         {submitting ? 'Publicando...' : 'Crear Producto'}
