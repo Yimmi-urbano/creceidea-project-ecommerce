@@ -12,8 +12,6 @@ import withPermission from "./withPermission";
 import moment from "moment-timezone";
 
 
-const API_URL = "https://api-orders.creceidea.pe/api/orders/sell/month";
-const domain = localStorage.getItem("domainSelect") ?? '';
 
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -33,6 +31,9 @@ const AreaChartComponent: React.FC = () => {
   const [totalSales, setTotalSales] = useState<number | null>(null);
   const [lastMonth, setLastMonth] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+const API_URL = "https://api-orders.creceidea.pe/api/orders/sell/month";
+const domain = localStorage.getItem("domainSelect") ?? '';
 
   useEffect(() => {
     const fetchSalesData = async () => {
