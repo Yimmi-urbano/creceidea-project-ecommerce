@@ -93,7 +93,9 @@ export const updatePaymentStatus = async (orderId: string, status: string, payme
   const raw = JSON.stringify({
     typeStatus: status,
     message: `El pago fue actualizado a ${status}`,
+    data: "Transacción exitosa",
     methodPayment: paymentMethod,
+    date: new Date().toISOString()
   });
 
   try {
