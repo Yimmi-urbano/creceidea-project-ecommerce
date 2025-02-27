@@ -1,11 +1,9 @@
 import { ChangeEvent } from 'react';
 import { uploadImage, updateProduct,postProduct } from '@/hooks/fetchProducts';
-
-
-
 export interface FormData {
     name: string;
-    description: string;
+    description_corta: string;
+    description_long:string;
     price: string;
     sale: string;
     category: { idcat: string, slug: string }[];
@@ -136,8 +134,8 @@ export const handleSubmit = async (
                 price: { regular: 160, sale: 90, tag: "x 12 meses" },
             },
         ],
-        description_long: "descripcion larga",
-        description_short: formData.description,
+        description_long: formData.description_long,
+        description_short: formData.description_corta,
     };
 
     try {
@@ -208,8 +206,8 @@ export const handleSubmitUpdate = async (
                 price: { regular: 160, sale: 90, tag: "x 12 meses" },
             },
         ],
-        description_long: "descripcion larga",
-        description_short: formData.description,
+        description_long: formData.description_long,
+        description_short: formData.description_corta,
     };
 
     try {

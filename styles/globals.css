@@ -52,7 +52,20 @@
    
 }
 
+.ql-snow .ql-stroke {
+    stroke: #fff !important;
+  }
 
+  .ql-toolbar.ql-snow {
+    border: 0px !important;
+    border-bottom: 1px solid #075d99 !important;
+    background-color: #073a5eb5 !important;
+  }
+
+  .ql-container.ql-snow {
+    border: 0px !important;
+    background-color: #ffffff;
+  }
 
 .logo-crece-dash {
     position: absolute;

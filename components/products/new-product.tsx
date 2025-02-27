@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Tabs, Tab, Spinner, SelectItem, Select, Textarea, Card, CardHeader, CardBody, Image, CardFooter, Chip, ScrollShadow } from '@nextui-org/react';
 import { fetchCategories } from '@/hooks/fetchProducts';
+import dynamic from 'next/dynamic';
 import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData } from '@/hooks/formHandlers';
 import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from '../icons';
 import { useConfig } from '@/hooks/ConfigContext';
 import CategorySelector from "@/components/CategorySelect";
 import { useRouter } from "next/navigation";
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
+import DOMPurify from 'dompurify';
 
 interface Category {
     _id: string;
@@ -14,7 +18,6 @@ interface Category {
     slug: string;
     __v: number;
 }
-
 
 const ProductForm: React.FC = () => {
     const [activeTab, setActiveTab] = useState('0');
@@ -25,14 +28,13 @@ const ProductForm: React.FC = () => {
     const [successcreate, setSuccessCreate] = useState(false);
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     const router = useRouter();
-    
-
     const { config } = useConfig();
     const integrations = config?.integrations;
 
     const [formData, setFormData] = useState<FormData>({
         name: '',
-        description: '',
+        description_corta: '',
+        description_long: '',
         price: '',
         sale: '',
         category: [],
@@ -41,7 +43,52 @@ const ProductForm: React.FC = () => {
         integrations: integrations ?? []
     });
 
+    const [isFormValid, setIsFormValid] = useState(false);
 
+    useEffect(() => {
+        const validateForm = () => {
+            switch (activeTab) {
+                case "0": // Información Básica
+                    setIsFormValid(
+                        formData.name.trim() !== "" &&
+                        formData.category.length > 0
+                    );
+                    break;
+                case "1": // Detalles del Producto
+                    setIsFormValid(
+                        formData.price.trim() !== "" &&
+                        formData.description_corta.trim() !== "" 
+                    );
+                    break;
+                case "2": // Imágenes
+                    setIsFormValid(formData.imageUrls.length > 0);
+                    break;
+                case "3": // Finalizar
+                    setIsFormValid(
+                        formData.name.trim() !== "" &&
+                        formData.category.length > 0 &&
+                        formData.price.trim() !== "" &&
+                        formData.description_corta.trim() !== "" &&
+                        formData.imageUrls.length > 0
+                    );
+                    break;
+                default:
+                    setIsFormValid(false);
+            }
+        };
+
+        validateForm();
+    }, [formData, activeTab]);
+
+
+
+    const modules = {
+        toolbar: [
+            [{ color: [] }],
+            ['bold', 'italic', 'underline'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+        ]
+    };
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -60,7 +107,7 @@ const ProductForm: React.FC = () => {
 
     useEffect(() => {
         if (successcreate) {
-            router.push('/dashboard/products'); // Redirige a la página de productos
+            router.push('/dashboard/products');
         }
     }, [successcreate, router]);
 
@@ -77,6 +124,7 @@ const ProductForm: React.FC = () => {
                     className='w-full p-3 '
                     color='warning'
                     variant="light"
+                    disabledKeys={isFormValid ? [] : ["3"]}
                 >
                     <Tab key="0"
 
@@ -87,11 +135,9 @@ const ProductForm: React.FC = () => {
                             </div>
                         } >
 
-
                         <div className='flex flex-wrap gap-3'>
-
                             <Input
-                                label="Nombre del Producto"
+                                label="Nombre del Producto (*)"
                                 name="name"
                                 classNames={
                                     {
@@ -121,7 +167,7 @@ const ProductForm: React.FC = () => {
 
                             />
                             <Card className='w-full bg-[#0c4a6e]/40'>
-                                <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
+                                <CardHeader className="flex gap-3">Selecciona categorias (*)</CardHeader>
 
                                 <CardBody>
                                     <ScrollShadow className="w-full h-[170px] lg:h-[250px]">
@@ -144,12 +190,10 @@ const ProductForm: React.FC = () => {
                             </div>
                         } >
 
-
-
-                        <div className='grid grid-cols-2 gap-4' key={1}>
+                        <div className='grid grid-cols-3 gap-4' key={1}>
 
                             <Input
-                                label="Precio"
+                                label="Precio (*)"
                                 name="price"
                                 value={formData.price}
                                 classNames={
@@ -227,7 +271,7 @@ const ProductForm: React.FC = () => {
                             <Input
                                 label="Stock"
                                 name="stock"
-                                className='col-span-2'
+
                                 classNames={
                                     {
                                         label: "text-black/50 dark:text-white/90",
@@ -255,9 +299,10 @@ const ProductForm: React.FC = () => {
                                 onChange={(e) => handleChange(e, setFormData, formData)}
                                 type="number"
                             />
+
                             <Textarea
-                                label="Descripción"
-                                name="description"
+                                label="Descripción Corta (*)"
+                                name="description_corta"
                                 classNames={
                                     {
                                         label: "text-black/50 dark:text-white/90",
@@ -281,11 +326,22 @@ const ProductForm: React.FC = () => {
                                         ],
                                     }
                                 }
-                                value={formData.description}
+                                value={formData.description_corta}
                                 onChange={(e) => handleChange(e, setFormData, formData)}
-                                className='col-span-2'
+                                className='col-span-3'
 
                             />
+
+                            <div className='col-span-3 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 overflow-hidden rounded-xl'>
+                                <ReactQuill
+                                    value={formData.description_long}
+                                    modules={modules}
+                                    className="text-black h-60"
+                                    onChange={(value) => setFormData({ ...formData, description_long: value })}
+                                    placeholder="Detalle mayor información de su producto..."
+                                />
+                            </div>
+
                         </div>
                     </Tab>
                     <Tab key="2" title={
@@ -295,13 +351,11 @@ const ProductForm: React.FC = () => {
 
                         </div>
                     } >
-                        <div  key={1} style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
-
+                        <div key={1} style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
                             <input
                                 type="file"
                                 accept="image/*"
                                 className='hidden'
-
                                 ref={fileInputRef}
                                 onChange={(e) => handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)}
                             />
@@ -327,8 +381,6 @@ const ProductForm: React.FC = () => {
                                                 position: 'absolute',
                                                 top: '6px',
                                                 right: '6px',
-
-
                                             }}
 
                                         >
@@ -338,7 +390,6 @@ const ProductForm: React.FC = () => {
                                 ))}
                                 <Button
                                     isIconOnly
-
                                     color='success'
                                     variant='flat'
                                     className='h-[80px] w-full min-w-20 md:h-[200px] md:w-[200px]'
@@ -382,8 +433,10 @@ const ProductForm: React.FC = () => {
                                     ))}
                                 </small>
 
+                                <p className="text-tiny text-slate-800">
+                                    {formData.description_corta ? <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formData.description_corta) }} /> : "Sin descripción"}
+                                </p>
 
-                                <p className="text-tiny text-slate-800" >{formData.description}</p>
                             </CardBody>
 
                         </Card>
@@ -401,7 +454,7 @@ const ProductForm: React.FC = () => {
                         color="warning"
 
                         onClick={() => handleNext(activeTab, setActiveTab)}
-                        disabled={parseInt(activeTab) === 3}
+                        isDisabled={!isFormValid}
                     >
                         {parseInt(activeTab) === 3 ? 'Finalizar' : 'Siguiente'}
                     </Button>
@@ -409,13 +462,13 @@ const ProductForm: React.FC = () => {
 
                 {parseInt(activeTab) === 3 && (
                     <Button
-
                         color='success'
-                        onClick={() => handleSubmit(setSubmitting, formData,setSuccessCreate)}
-                        disabled={submitting}
+                        onClick={() => handleSubmit(setSubmitting, formData, setSuccessCreate)}
+                        isDisabled={!isFormValid || submitting}
                     >
                         {submitting ? 'Publicando...' : 'Crear Producto'}
                     </Button>
+
 
                 )}
 
