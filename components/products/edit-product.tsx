@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Tabs, Tab, Spinner, SelectItem, Select, Textarea, Card, CardHeader, CardBody, Image, CardFooter, Chip, ScrollShadow } from '@nextui-org/react';
 import { fetchCategories, getProductById } from '@/hooks/fetchProducts';
+import dynamic from 'next/dynamic';
 import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData, handleSubmitUpdate } from '@/hooks/formHandlers';
 import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from '../icons';
 import CategorySelector from "@/components/CategorySelect";
 import { useRouter } from 'next/navigation';
-
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
+import DOMPurify from 'dompurify';
 interface Category {
     _id: string;
     title: string;
@@ -27,7 +30,8 @@ function ProductForm() {
 
     const [formData, setFormData] = useState<FormData>({
         name: '',
-        description: '',
+        description_corta: '',
+        description_long:'',
         price: '',
         sale: '',
         category: [],
@@ -36,6 +40,42 @@ function ProductForm() {
         integrations: []
     });
 
+   const [isFormValid, setIsFormValid] = useState(false);
+
+    useEffect(() => {
+        const validateForm = () => {
+            switch (activeTab) {
+                case "0": // Información Básica
+                    setIsFormValid(
+                        formData.name.trim() !== "" &&
+                        formData.category.length > 0
+                    );
+                    break;
+                case "1": // Detalles del Producto
+                    setIsFormValid(
+                        String(formData.price).trim() !== "" &&
+                        formData.description_corta.trim() !== "" 
+                    );
+                    break;
+                case "2": // Imágenes
+                    setIsFormValid(formData.imageUrls.length > 0);
+                    break;
+                case "3": // Finalizar
+                    setIsFormValid(
+                        formData.name.trim() !== "" &&
+                        formData.category.length > 0 &&
+                        String(formData.price).trim() !== "" &&
+                        formData.description_corta.trim() !== "" &&
+                        formData.imageUrls.length > 0
+                    );
+                    break;
+                default:
+                    setIsFormValid(false);
+            }
+        };
+
+        validateForm();
+    }, [formData, activeTab]);
 
 
     useEffect(() => {
@@ -71,7 +111,8 @@ function ProductForm() {
         if (detailproduct) {
             setFormData({
                 name: detailproduct.title || '',
-                description: detailproduct.description_short || '',
+                description_corta: detailproduct.description_short || '',
+                description_long: detailproduct.description_long || '',
                 price: detailproduct.price['regular'] || '',
                 sale: detailproduct.price['sale'] || '',
                 category: detailproduct.category || '',
@@ -88,6 +129,13 @@ function ProductForm() {
         }
     }, [successcreate, router]);
     const handleTabChange = (key: any) => setActiveTab(key);
+    const modules = {
+        toolbar: [
+            [{ color: [] }],
+            ['bold', 'italic', 'underline'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+        ]
+    };
     return (
 
         <Card  key={1}  isBlurred className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
@@ -101,6 +149,7 @@ function ProductForm() {
                     className='w-full p-3 '
                     color='warning'
                     variant="light"
+                    disabledKeys={isFormValid ? [] : ["3"]}
                 >
                     <Tab key="0"
 
@@ -115,7 +164,7 @@ function ProductForm() {
                         <div key="0" style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
 
                             <Input
-                                label="Nombre del Producto"
+                                label="Nombre del Producto (*)"
                                 name="name"
                                 classNames={
                                     {
@@ -145,7 +194,7 @@ function ProductForm() {
 
                             />
                             <Card className='w-full bg-[#0c4a6e]/40'>
-                                <CardHeader className="flex gap-3">Selecciona categorias</CardHeader>
+                                <CardHeader className="flex gap-3">Selecciona categorias (*)</CardHeader>
 
                                 <CardBody>
                                     <ScrollShadow className="w-full h-[170px]">
@@ -170,10 +219,10 @@ function ProductForm() {
 
 
 
-                        <div key="0" style={{ padding: '10px' }} className='grid grid-cols-2 gap-4'>
+                        <div key="0" style={{ padding: '10px' }} className='grid grid-cols-3 gap-4'>
 
                             <Input
-                                label="Precio Normal"
+                                label="Precio Normal (*)"
                                 name="price"
                                 className=''
                                 value={formData.price}
@@ -250,7 +299,7 @@ function ProductForm() {
                             <Input
                                 label="Stock"
                                 name="stock"
-                                 className='col-span-2'
+                                
                                 classNames={
                                     {
                                         label: "text-black/50 dark:text-white/90",
@@ -278,37 +327,48 @@ function ProductForm() {
                                 onChange={(e) => handleChange(e, setFormData, formData)}
                                 type="number"
                             />
-                             <Textarea
-                                label="Descripción"
-                                name="description"
-                                className='col-span-2'
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                value={formData.description}
-                                onChange={(e) => handleChange(e, setFormData, formData)}
+                               <Textarea
+                                                        label="Descripción corta (*)"
+                                                        name="description_corta"
+                                                        classNames={
+                                                            {
+                                                                label: "text-black/50 dark:text-white/90",
+                                                                innerWrapper: "bg-transparent",
+                                                                input: [
+                                                                    "bg-transparent",
+                                                                    "text-black/90 dark:text-white/90",
+                                                                    "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                                                ],
+                                                                inputWrapper: [
+                                                                    "shadow-xl",
+                                                                    "bg-cyan-500/50",
+                                                                    "dark:bg-cyan-600/10",
+                                                                    "backdrop-blur-xl",
+                                                                    "backdrop-saturate-200",
+                                                                    "hover:bg-default-200/70",
+                                                                    "dark:hover:bg-default/70",
+                                                                    "group-data-[focus=true]:bg-default-200/50",
+                                                                    "dark:group-data-[focus=true]:bg-default/60",
+                                                                    "!cursor-text",
+                                                                ],
+                                                            }
+                                                        }
+                                                        value={formData.description_corta}
+                                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                                        className='col-span-3'
+                        
+                                                    />
+                        
+                                                   <div className='col-span-3 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 overflow-hidden rounded-xl'>
+                                                        <ReactQuill
+                                                            value={formData.description_long}
+                                                            modules={modules}
+                                                            className="text-black h-60"
+                                                            onChange={(value) => setFormData({ ...formData, description_long: value })}
+                                                            placeholder="Describe tu producto..."
+                                                        />
+                                                    </div>
 
-                            />
                         </div>
                     </Tab>
                     <Tab key="2" title={
@@ -401,7 +461,9 @@ function ProductForm() {
                                 </small>
 
 
-                                <p className="text-tiny text-slate-800" >{formData.description}</p>
+                               <p className="text-tiny text-slate-800">
+                                                               {formData.description_corta ? <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formData.description_corta) }} /> : "Sin descripción"}
+                                                           </p>
                             </CardBody>
 
                         </Card>
@@ -420,7 +482,7 @@ function ProductForm() {
                         color="warning"
 
                         onClick={() => handleNext(activeTab, setActiveTab)}
-                        disabled={parseInt(activeTab) === 3}
+                        isDisabled={!isFormValid}
                     >
                         {parseInt(activeTab) === 3 ? 'Finalizar' : 'Siguiente'}
                     </Button>
@@ -431,7 +493,7 @@ function ProductForm() {
 
                         color='success'
                         onClick={() => handleSubmitUpdate(setSubmittingEdit, formData, setSuccessCreate)}
-                        disabled={submitting}
+                        isDisabled={!isFormValid || submitting}
                     >
                         {submitting ? 'Actualizando...' : 'Actualizar Producto'}
                     </Button>
