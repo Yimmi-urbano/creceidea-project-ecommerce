@@ -114,7 +114,7 @@ const Ordenes: React.FC = () => {
                   <TableCell>{order.orderNumber.substring(0, 10)}...</TableCell>
                   <TableCell>{order.clientInfo['name']}</TableCell>
                   <TableCell>{order.createdAt}</TableCell>
-                  <TableCell>{order.createdAt}</TableCell>
+                  <TableCell>{order.paymentStatus['date']}</TableCell>
                   <TableCell>
                     <Chip color={getStatusClass(order.paymentStatus['typeStatus'])} size="sm" variant="flat">
                       {getStatusLabel(order.paymentStatus['typeStatus'])}
