@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Spinner } from '@nextui-org/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Spinner, Checkbox } from '@nextui-org/react';
 import { CameraIcon, MiniTrashIcon } from '../icons';
 import { submitBanner, updateBanner, Banner } from '@/hooks/bannerService';
 import { uploadImage } from '@/hooks/fetchProducts';
@@ -9,7 +9,7 @@ import { uploadImage } from '@/hooks/fetchProducts';
 interface BannerModalProps {
     isOpen: boolean;
     onClose: () => void;
-    banner?: Banner; 
+    banner?: Banner;
 }
 
 const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) => {
@@ -17,27 +17,46 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [text, setText] = useState('');
     const [action, setAction] = useState('href');
-    const [destino, setDestino] = useState('/catalog');
-    const [textButton, setTextButton] = useState('Ver Ofertas');
+    const [destino, setDestino] = useState('');
+    const [textButton, setTextButton] = useState('');
     const [loading, setLoading] = useState(false);
-
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    // Estados de activación de los checkboxes
+    const [isActiveTextBanner, setActiveTextBanner] = useState(false);
+    const [isActiveLinkBanner, setActiveLinkBanner] = useState(false);
+    const [isActiveButtonBanner, setActiveButtonBanner] = useState(false);
+
+    // Al abrir el modal, establecer los valores y activar los checkboxes si hay datos
     useEffect(() => {
         if (banner) {
             setImageUrl(banner.image);
-            setText(banner.text);
-            setAction(banner.button[0]?.action || 'href');
-            setDestino(banner.button[0]?.destino || '/catalog');
-            setTextButton(banner.button[0]?.text_button || 'Ver Ofertas');
+            setText(banner.text || '');
+            setDestino(banner.button?.[0]?.destino || '');
+            setTextButton(banner.button?.[0]?.text_button || '');
+
+            // Activar checkboxes solo si los valores existen
+            setActiveTextBanner(!!banner.text);
+            setActiveLinkBanner(!!banner.button?.[0]?.destino);
+            setActiveButtonBanner(!!banner.button?.[0]?.text_button);
         } else {
+            // Restablecer valores si es un nuevo banner
             setImageUrl(null);
             setText('');
-            setAction('href');
-            setDestino('/catalog');
-            setTextButton('Ver Ofertas');
+            setDestino('');
+            setTextButton('');
+            setActiveTextBanner(false);
+            setActiveLinkBanner(false);
+            setActiveButtonBanner(false);
         }
     }, [banner]);
+
+    // Limpiar los campos cuando se desactiva el checkbox
+    useEffect(() => {
+        if (!isActiveTextBanner) setText('');
+        if (!isActiveLinkBanner) setDestino('');
+        if (!isActiveButtonBanner) setTextButton('');
+    }, [isActiveTextBanner, isActiveLinkBanner, isActiveButtonBanner]);
 
     const handleAddImageClick = () => {
         fileInputRef.current?.click();
@@ -65,16 +84,14 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
     };
 
     const handleSubmit = async () => {
-        if (!text || !action || !destino || !textButton) return;
+       // if (!text || !action || !destino || !textButton) return;
 
         setLoading(true);
 
         try {
             if (banner?._id) {
-              
                 await updateBanner(banner._id, file, imageUrl || banner.image, text, action, destino, textButton);
             } else {
-
                 await submitBanner(file as File, text, action, destino, textButton);
             }
             onClose();
@@ -94,19 +111,8 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
                 <ModalBody>
                     {!imageUrl && (
                         <>
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                style={{ display: 'none' }}
-                                onChange={handleFileChange}
-                            />
-                            <Button
-                                isIconOnly
-                                color='warning'
-                                variant='flat'
-                                className='h-[80px] w-full min-w-20'
-                                onClick={handleAddImageClick}
-                            >
+                            <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleFileChange} />
+                            <Button isIconOnly color='warning' variant='flat' className='h-[80px] w-full min-w-20' onClick={handleAddImageClick}>
                                 {!loading ? <CameraIcon /> : <Spinner size="lg" color="warning" />}
                             </Button>
                         </>
@@ -114,42 +120,55 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 
                     {imageUrl && (
                         <>
-                            <img src={imageUrl} alt="Banner Preview" className="w-full h-[200px] rounded-xl object-cover mb-4"/>
-                            <Button
-                                color='danger'
-                                
-                                onClick={handleRemoveImage}
-                            >
-                                Eliminar Imagen  <MiniTrashIcon />
+                            <img src={imageUrl} alt="Banner Preview" className="w-full h-[200px] rounded-xl object-cover mb-4" />
+                            <Button color='danger' onClick={handleRemoveImage}>
+                                Eliminar Imagen <MiniTrashIcon />
                             </Button>
-                            <Input
-                                fullWidth
-                                value={text}
-                                onChange={(e) => setText(e.target.value)}
-                                placeholder="Texto del banner"
-                            />
-                          
-                            <Input
-                                fullWidth
-                                value={destino}
-                                onChange={(e) => setDestino(e.target.value)}
-                                placeholder="Destino del botón (e.g., /catalog)"
-                            />
-                            <Input
-                                fullWidth
-                                value={textButton}
-                                onChange={(e) => setTextButton(e.target.value)}
-                                placeholder="Texto del botón (e.g., Ver Ofertas)"
-                            />
+
+                            {/* Checkbox e Input para el texto del banner */}
+                            <label className='flex items-center gap-2'>
+                                <Checkbox isSelected={isActiveTextBanner} onChange={() => setActiveTextBanner(!isActiveTextBanner)} />
+                                <Input
+                                    fullWidth
+                                    value={text}
+                                    onChange={(e) => setText(e.target.value)}
+                                    placeholder="Texto del banner"
+                                    isDisabled={!isActiveTextBanner}
+                                />
+                            </label>
+
+                            {/* Checkbox e Input para el destino del botón */}
+                            <label className='flex items-center gap-2'>
+                                <Checkbox isSelected={isActiveLinkBanner} onChange={() => setActiveLinkBanner(!isActiveLinkBanner)} />
+                                <Input
+                                    fullWidth
+                                    value={destino}
+                                    onChange={(e) => setDestino(e.target.value)}
+                                    placeholder="Destino del botón (e.g., /catalog)"
+                                    isDisabled={!isActiveLinkBanner}
+                                />
+                            </label>
+
+                            {/* Checkbox e Input para el texto del botón */}
+                            <label className='flex items-center gap-2'>
+                                <Checkbox isSelected={isActiveButtonBanner} onChange={() => setActiveButtonBanner(!isActiveButtonBanner)} />
+                                <Input
+                                    fullWidth
+                                    value={textButton}
+                                    onChange={(e) => setTextButton(e.target.value)}
+                                    placeholder="Texto del botón (e.g., Ver Ofertas)"
+                                    isDisabled={!isActiveButtonBanner}
+                                />
+                            </label>
                         </>
                     )}
                 </ModalBody>
                 <ModalFooter>
-                    <Button color='danger' className='hidden' variant='flat' onClick={onClose} disabled={loading}>
+                    <Button color='danger' variant='flat' onClick={onClose} disabled={loading}>
                         Cancelar
                     </Button>
                     {imageUrl && (
-                        <Button color='warning'  onClick={handleSubmit} disabled={loading || !text || !action || !destino || !textButton}>
+                        <Button color='warning' onClick={handleSubmit} disabled={loading}>
                             {loading ? 'Subiendo...' : (banner ? 'Actualizar Banner' : 'Crear Banner')}
                         </Button>
                     )}
