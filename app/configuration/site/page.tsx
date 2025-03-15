@@ -2,6 +2,7 @@
 import { Accordion, AccordionItem } from '@nextui-org/react';
 import UploadLogo from '@/components/uploadLogo';
 import UpdateMetadata from '@/components/updateMetaSeo';
+import WhatsappSettings from '@/components/whatsappHome';
 import ColorPicker from '@/components/ColorPicker';
 import { ConfigProvider } from '@/hooks/ConfigContext';
 
@@ -19,6 +20,9 @@ export default function Site() {  // Cambia a `export default`
           </AccordionItem>
           <AccordionItem key="3" aria-label="Accordion 3" title="SEO (Titulo, Slogan, Descripcion, KeyWords)">
             <UpdateMetadata />
+          </AccordionItem>
+          <AccordionItem key="4" aria-label="Accordion 3" title="Configura WhatsApp Flotante">
+            <WhatsappSettings />
           </AccordionItem>
         </Accordion>
       </div>

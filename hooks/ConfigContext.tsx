@@ -6,7 +6,12 @@ interface ConfigData {
   meta_keyword?: string;
   title?: string;
   slogan?: string;
-  theme?:String;
+  theme?: String;
+  whatsapp_home: {
+    number: string;
+    message_custom: string;
+    isActive: boolean;
+  };
   catalogo?: {
     button: {
       text: string;
@@ -16,13 +21,15 @@ interface ConfigData {
     };
     whatsapp: {
       number: string;
+      message_custom: string;
+      isActive: boolean;
     };
     currency: {
       code: string;
       symbol: string;
     };
   };
-  integrations?:[]
+  integrations?: []
 }
 
 interface ConfigContextType {
