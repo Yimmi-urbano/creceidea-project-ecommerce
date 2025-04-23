@@ -23,6 +23,11 @@ export const siteConfig = {
       label: "Pedidos",
       href: "/dashboard/orders",
       icon: "OrderIcon"
+    },
+    {
+      label: "Metodos de Pago",
+      href: "/module/payment_methods",
+      icon: "OrderIcon"
     }
   ],
   navMenuItems: [
