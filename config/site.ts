@@ -25,9 +25,9 @@ export const siteConfig = {
       icon: "OrderIcon"
     },
     {
-      label: "Metodos de Pago",
+      label: "Métodos de Pago",
       href: "/module/payment_methods",
-      icon: "OrderIcon"
+      icon: "PaymentIcon"
     }
   ],
   navMenuItems: [

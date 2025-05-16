@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { Input, Button, Card, CardBody, Textarea, Switch } from "@nextui-org/react";
 import { getPayment, addPayment, editPayment } from "@/application/payments_methods/paymentsServices";
 import { Payment } from "@/domain/payments_methods/Payment";
-import UploadQrImage from "@/ui/payments_methods/yape_qr_offline/UploadQrImage";
-
 
 function usePaymentForm(nameId: string) {
+
 
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -17,11 +16,9 @@ function usePaymentForm(nameId: string) {
     name: "",
     nameId: nameId,
     isActive: isSelected,
-    details: { number_yape: "", urlQR: "", description: "" },
-    credentials: { publicKey: "999888777", privateKey: "999888777", clientId: "", secretKey: "", merchantId: "" },
+    details: { number_whatsapp: "", description: "" },
+    credentials: { publicKey: "--", privateKey: "--", clientId: "--", secretKey: "--", merchantId: "--" },
   });
-
-
 
   useEffect(() => {
     if (nameId) fetchPayment();
@@ -48,10 +45,9 @@ function usePaymentForm(nameId: string) {
     if (result) {
       setForm({
         name: result.name ?? "",
-        isActive: result.isActive ?? false,
+        isActive: result.isActive ?? true,
         details: {
-          number_yape: result.details?.number_yape ?? "",
-          urlQR: result.details?.urlQR ?? "",
+          number_whatsapp: result.details?.number_whatsapp ?? "",
           description: result.details?.description ?? ""
         },
         credentials: {
@@ -90,6 +86,7 @@ function usePaymentForm(nameId: string) {
       return;
     }
 
+
     setLoading(true);
 
     const result = await editPayment(nameId, form);
@@ -100,18 +97,20 @@ function usePaymentForm(nameId: string) {
     setLoading(false);
   };
 
+
   return { form, loading, handleChange, createPayment, updatePayment, isUpdate, setForm };
 }
 
-export default function YapeQRForm({ nameId }: { nameId: string }) {
+export default function CoordinaWhatsApp({ nameId }: { nameId: string }) {
   const { form, loading, handleChange, createPayment, updatePayment, isUpdate, setForm } = usePaymentForm(nameId);
+
 
   return (
     <div className="w-full p-0">
       <Card shadow="none" className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]" isBlurred>
         <CardBody className="flex flex-row gap-3">
           <div className="flex flex-col gap-3 w-full">
-            <Input label="Nombre" placeholder="Ej: Paga con Yape" value={form.name ?? ""} onChange={(e) => handleChange(e, undefined, "name")} classNames={
+            <Input label="Nombre" placeholder="Ej: Coordinar pago por WhatsApp" value={form.name ?? ""} onChange={(e) => handleChange(e, undefined, "name")} classNames={
               {
                 label: "text-black/50 dark:text-white/90",
                 innerWrapper: "bg-transparent",
@@ -134,7 +133,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
                 ],
               }
             } />
-            <Input label="Numero de Yape" placeholder="Ej: 999 888 777" value={form.details?.number_yape ?? ""} onChange={(e) => handleChange(e, "details", "number_yape")} classNames={
+            <Input label="Numero de WhatsApp" placeholder="Ej: 999888777" value={form.details?.number_whatsapp ?? ""} onChange={(e) => handleChange(e, "details", "number_whatsapp")} classNames={
               {
                 label: "text-black/50 dark:text-white/90",
                 innerWrapper: "bg-transparent",
@@ -157,7 +156,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
                 ],
               }
             } />
-            <Input className="hidden" label="URL QR" placeholder="Ej: https://media.qr.com" value={form.details?.urlQR ?? ""} onChange={(e) => handleChange(e, "details", "urlQR")} />
+
             <Textarea label="Descripcion" placeholder="Ej: Descripcion" value={form.details?.description ?? ""} onChange={(e) => handleChange(e, "details", "description")} classNames={
               {
                 label: "text-black/50 dark:text-white/90",
@@ -184,6 +183,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
             <Button color="success" variant="flat" onClick={isUpdate ? updatePayment : createPayment} isLoading={loading} className="mt-4">
               {isUpdate ? "Actualizar Método de Pago" : "Crear Método de Pago"}
             </Button>
+
             <Switch
               isSelected={form.isActive ?? false}
               onValueChange={async (val) => {
@@ -196,13 +196,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
             >
               ¿Activo?
             </Switch>
-          </div>
-          <div className="w-full text-center flex">
-            <UploadQrImage
-              onImageUpload={(url) => setForm((prev) => ({ ...prev, details: { ...prev.details, urlQR: url } }))}
-              initialImage={form.details?.urlQR}
 
-            />
           </div>
         </CardBody>
       </Card>
