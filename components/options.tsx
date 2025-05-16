@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "@nextui-org/react";
 import { siteConfig } from "@/config/site";
-import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, BlogIcon, OrderIcon } from './icons';
+import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, PaymentIcon, OrderIcon } from './icons';
 
-type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "BlogIcon" | "OrderIcon";
+type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "PaymentIcon" | "OrderIcon";
 
 const iconsMap: Record<IconKey, JSX.Element> = {
   DashboardIcon: <DashboardIcon size={20} />,  
@@ -11,7 +11,7 @@ const iconsMap: Record<IconKey, JSX.Element> = {
   PagesIcon: <PagesIcon size={20} />,
   ProductIcon: <ProductIcon size={20} />,
   OrderIcon: <OrderIcon size={20} />,
-  BlogIcon: <BlogIcon size={20} />,
+  PaymentIcon: <PaymentIcon size={20} />,
 };
 
 export default function Options() {

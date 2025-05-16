@@ -1,6 +1,7 @@
 export interface Payment {
   name?: string;
   nameId?: string;
+  isActive?:boolean;
   details?: Record<string, any>;
   credentials?: {
     publicKey?: string;
