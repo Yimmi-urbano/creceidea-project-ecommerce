@@ -2,9 +2,10 @@ import { getDomainFromLocalStorage } from "@/config/utils";
 import { Payment } from "@/domain/payments_methods/Payment";
 
 const API_URL = "https://api-payment-method.creceidea.pe/api/payments";
-const DOMAIN = getDomainFromLocalStorage();
 
 const getHeaders = () => {
+
+  const DOMAIN = getDomainFromLocalStorage();
   return {
     "Content-Type": "application/json",
     domain: DOMAIN,
