@@ -12,7 +12,8 @@ export interface OrderData {
   domain: string;
   products: Product[];
   clientInfo: {
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
     phone: string;
   };

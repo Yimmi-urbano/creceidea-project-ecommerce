@@ -112,7 +112,7 @@ const Ordenes: React.FC = () => {
               {orders.map((order) => (
                 <TableRow key={order._id} data-odd={{}}>
                   <TableCell>{order.orderNumber.substring(0, 10)}...</TableCell>
-                  <TableCell>{order.clientInfo['name']}</TableCell>
+                  <TableCell>{order.clientInfo['first_name']}, {order.clientInfo['last_name']}</TableCell>
                   <TableCell>{order.createdAt}</TableCell>
                   <TableCell>{order.paymentStatus['date']}</TableCell>
                   <TableCell>

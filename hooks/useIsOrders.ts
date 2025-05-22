@@ -8,7 +8,7 @@ interface Order {
   total: number;
   currency: string;
   createdAt: string;
-  clientInfo: { name: string };
+  clientInfo: { first_name: string, last_name: string };
 }
 
 export const useFetchOrders = () => {
