@@ -10,6 +10,12 @@
 
 }
 
+.light{
+
+background-color: #d2d2d2;
+
+}
+
 .flexbox-fix input {
     background-color: #ffffff !important;
 }
