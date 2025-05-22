@@ -37,7 +37,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                         <strong>Estado:</strong> {orderData?.orderStatus.message}
                     </p>
                     <p>
-                        <strong>Cliente:</strong> {orderData?.clientInfo.name}
+                        <strong>Cliente:</strong> {orderData?.clientInfo.first_name} {orderData?.clientInfo.last_name}
                     </p>
                     <p>
                         <strong>Email:</strong> {orderData?.clientInfo.email}
