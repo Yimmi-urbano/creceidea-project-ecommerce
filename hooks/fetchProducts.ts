@@ -1,6 +1,5 @@
 import axios from "axios";
 import imageCompression from 'browser-image-compression';
-import { addProductToWooCommerceService } from '@/hooks/woocommerce/postProduct';
 const DEFAULT_ICON_URL = 'https://example.com/icons/placeholder.png';
 const API_URL_PRODUCTS = process.env.NEXT_PUBLIC_PRODUCTS;
 
@@ -79,7 +78,7 @@ export const postProduct = async (data: any) => {
   const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain;
   try {
-    const response = await fetch('https://api-products.creceidea.pe/api/products', {
+    const response = await fetch(`${API_URL_PRODUCTS}/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -91,10 +90,6 @@ export const postProduct = async (data: any) => {
 
     if (!response.ok) {
       throw new Error('Error al enviar los datos del producto');
-    }
-
-    if (domainPrimary == 'identidadmovil') {
-      await addProductToWooCommerceService(data);
     }
 
     return await response.json();
@@ -113,7 +108,7 @@ export const updateProduct = async (data: any) => {
     throw new Error("Domain not selected");
   }
   try {
-    const response = await fetch(`https://api-products.creceidea.pe/api/products/${productId}`, {
+    const response = await fetch(`${API_URL_PRODUCTS}/${productId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -126,11 +121,6 @@ export const updateProduct = async (data: any) => {
     if (!response.ok) {
       throw new Error('Error al enviar los datos del producto');
     }
-    /*
-        if (domainPrimary == 'identidadmovil') {
-          await addProductToWooCommerceService(data);
-        }
-          */
 
     return await response.json();
   } catch (error) {
@@ -273,7 +263,7 @@ export const deleteProduct = async (productId: string): Promise<void> => {
 
   const domainPrimary = domain;
 
-  const url = `https://api-products.creceidea.pe/api/products/${productId}/trash`;
+  const url = `${API_URL_PRODUCTS}/${productId}/trash`;
 
   try {
     await axios.delete(url, {
@@ -297,7 +287,7 @@ export const getProductById = async (): Promise<void> => {
 
   const domainPrimary = domain;
 
-  const response = await fetch(`https://api-products.creceidea.pe/api/products/${productId}`, {
+  const response = await fetch(`${API_URL_PRODUCTS}/${productId}`, {
     headers: {
       Domain: domainPrimary,
     }
@@ -307,4 +297,29 @@ export const getProductById = async (): Promise<void> => {
   }
   const data = await response.json();
   return data;
+};
+
+export const updateOrderList = async (data: any) => {
+  const domain = localStorage.getItem("domainSelect") ?? '';
+  const domainPrimary = domain;
+  try {
+    const response = await fetch(`${API_URL_PRODUCTS}/sorter_custom`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'domain': domainPrimary,
+      },
+      body: JSON.stringify(data),
+    });
+
+
+    if (!response.ok) {
+      throw new Error('Error al enviar los datos del producto');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error en la solicitud POST:', error);
+    throw error;
+  }
 };
