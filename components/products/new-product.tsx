@@ -7,6 +7,7 @@ import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIcon
 import { useConfig } from '@/hooks/ConfigContext';
 import CategorySelector from "@/components/CategorySelect";
 import { useRouter } from "next/navigation";
+import SortableImageList from './SortableImageList';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 import DOMPurify from 'dompurify';
@@ -360,46 +361,25 @@ const ProductForm: React.FC = () => {
                                 onChange={(e) => handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)}
                             />
 
-                            <div className='grid grid-cols-3 gap-4' key={1}>
-
-                                {formData.imageUrls.map((url, index) => (
-                                    <div key={index} style={{ display: 'inline-block', position: 'relative' }}>
-                                        <Image
-                                            src={url}
-
-                                            className='object-cover border-1 border-[#0ea5e9]/30 h-[80px] min-w-20 md:h-[200px] md:w-[200px] w-full'
-                                            isBlurred
-
-                                        />
-                                        <Button
-                                            isIconOnly
-                                            size="sm"
-                                            color="danger"
-                                            className='p-1 w-[1rem] h-[1.5rem] z-10 absolute'
-                                            onClick={() => handleRemoveImage(index, setFormData, formData)}
-                                            style={{
-                                                position: 'absolute',
-                                                top: '6px',
-                                                right: '6px',
-                                            }}
-
-                                        >
-                                            <MiniTrashIcon size={16} />
-                                        </Button>
-                                    </div>
-                                ))}
+                            <div className='w-full '>
+                                {formData.imageUrls.length > 0 ? (
+                                    <SortableImageList
+                                        images={formData.imageUrls}
+                                        onRemove={(index) => handleRemoveImage(index, setFormData, formData)}
+                                        onReorder={(newOrder) => setFormData({ ...formData, imageUrls: newOrder })}
+                                    />
+                                ) : null}
+                                
                                 <Button
                                     isIconOnly
                                     color='success'
                                     variant='flat'
-                                    className='h-[80px] w-full min-w-20 md:h-[200px] md:w-[200px]'
+                                    className='h-[80px] w-full min-w-20 md:h-[200px] md:w-[200px] mt-4'
                                     onClick={() => handleAddImageClick(fileInputRef)}
                                 >
                                     {!loading && <CameraIcon />}
                                     {loading && (
-
                                         <Spinner size="lg" color="success" />
-
                                     )}
                                 </Button>
                             </div>
