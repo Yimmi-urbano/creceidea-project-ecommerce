@@ -76,9 +76,18 @@ export const ProductTableView: React.FC<ProductTableViewProps> = ({ searchTerm =
                         </td>
                         <td className="px-6 py-4 font-medium">
                             {product.price?.sale > 0 && product.price.sale !== product.price.regular ? (
-                                <span>S/ {product.price.sale.toFixed(2)}</span>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs line-through text-zinc-400 dark:text-zinc-500">
+                                        S/ {product.price.regular.toFixed(2)}
+                                    </span>
+                                    <span className="text-sm font-bold text-[#00A09D]">
+                                        S/ {product.price.sale.toFixed(2)}
+                                    </span>
+                                </div>
                             ) : (
-                                <span>S/ {product.price?.regular?.toFixed(2) || '0.00'}</span>
+                                <span className="text-sm font-medium">
+                                    S/ {product.price?.regular?.toFixed(2) || '0.00'}
+                                </span>
                             )}
                         </td>
                         <td className="px-6 py-4 text-right">

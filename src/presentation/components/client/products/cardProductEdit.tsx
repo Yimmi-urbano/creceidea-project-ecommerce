@@ -42,8 +42,6 @@ async function updateOrderApi(id_product: string, order: number, order_type: str
   });
 }
 
-302188495
-
 const SortableItem = ({
   item,
   isOrdering,
@@ -69,24 +67,23 @@ const SortableItem = ({
 
   return (
     <div ref={setNodeRef} style={style} {...(isOrdering ? { ...attributes, ...listeners } : {})}>
-      <Card
-        isBlurred
-        shadow="none"
-        className={`w-full rounded-lg flex flex-row border-1 border-[#0ea5e9]/30 ${isOrdering ? "cursor-grab" : ""} bg-[#0891b2]`}
+      <div
+        className={`w-full rounded-xl flex flex-row border transition-all ${isOrdering ? "cursor-grab hover:border-[#00A09D]" : ""} bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 hover:shadow-md`}
       >
         <div
           className="flex items-center gap-4 p-2 flex-grow"
           onClick={() => !isOrdering && handlePress(item._id)}
         >
           {isOrdering && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mr-2">
+              {/* Drag Handle */}
               <svg
-                {...listeners}   // 🔥 solo aquí
-                {...attributes}  // 🔥 solo aquí
-                className="drag-handle cursor-grab touch-none"
+                {...listeners}
+                {...attributes}
+                className="drag-handle cursor-grab touch-none text-zinc-400 hover:text-[#00A09D] transition-colors"
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -102,108 +99,88 @@ const SortableItem = ({
                 <circle cx="15" cy="19" r="1"></circle>
               </svg>
 
-              <div className="flex items-center gap-1">
-                <Tooltip content="Subir una posición">
-                  <Button
-                    isIconOnly
-                    size="sm"
-                    variant="flat"
-                    onPress={(e) => {
-                      (e as any).target?.dispatchEvent(new Event("stop"))
+              {/* Order Controls */}
+              <div className="flex flex-col gap-0.5">
+                <Tooltip content="Subir">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
                       bumpOrder(item._id, -1, { pageStart, pageEnd }, 'prev');
                     }}
-                    isDisabled={disableUp}
-                    className="min-w-6 w-6 h-6"
+                    disabled={disableUp}
+                    className="w-6 h-5 rounded flex items-center justify-center text-xs transition-all bg-transparent hover:bg-[#00A09D]/10 text-zinc-600 dark:text-zinc-400 hover:text-[#00A09D] disabled:opacity-20 disabled:cursor-not-allowed"
                   >
-                    ↑
-                  </Button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </button>
                 </Tooltip>
 
-                <Input
-                  type="tel"
-                  size="sm"
-                  className="w-7 text-[13px] hidden"
-                  value={String(item.order)}
-                  min={1}
-                  max={maxOrder}
-                  onChange={(e) => {
-                    (e as any).target?.dispatchEvent(new Event("stop"))
-                    const v = Number(e.target.value);
-                    if (Number.isNaN(v)) return;
-                    updateOrderDirect(item._id, v, { pageStart, pageEnd });
-                  }}
-                />
-
-                <Tooltip content="Bajar una posición">
-                  <Button
-                    isIconOnly
-                    size="sm"
-                    variant="flat"
-                    onPress={(e) => {
-                      (e as any).target?.dispatchEvent(new Event("stop"))
+                <Tooltip content="Bajar">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
                       bumpOrder(item._id, +1, { pageStart, pageEnd }, 'next');
                     }}
-                    isDisabled={disableDown}
-                    className="min-w-6 w-6 h-6"
+                    disabled={disableDown}
+                    className="w-6 h-5 rounded flex items-center justify-center text-xs transition-all bg-transparent hover:bg-[#00A09D]/10 text-zinc-600 dark:text-zinc-400 hover:text-[#00A09D] disabled:opacity-20 disabled:cursor-not-allowed"
                   >
-                    ↓
-                  </Button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
                 </Tooltip>
               </div>
             </div>
           )}
-          <Image
-            src={item.image_default?.[0]}
-            alt={item.title}
-            className="w-10 h-10 border-1 border-[#0ea5e9]/30 rounded-md object-cover"
-          />
-          <div>
-            <h3 className="font-bold text-left mb-1 text-xs">{item.title}</h3>
-            <div className="flex items-baseline gap-2">
-              {item.price.sale > 0 && item.price.sale !== item.price.regular ? (
-                <>
-                  <p className="text-xs line-through text-red-500 dark:text-red-300">
+          <div className="flex items-center gap-3 flex-1">
+            <img
+              src={item.image_default?.[0]}
+              alt={item.title}
+              className="w-14 h-14 rounded-xl object-cover border border-zinc-200 dark:border-zinc-700 shadow-sm"
+            />
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100 mb-1 truncate">{item.title}</h3>
+              <div className="flex items-baseline gap-2">
+                {item.price.sale > 0 && item.price.sale !== item.price.regular ? (
+                  <>
+                    <p className="text-xs line-through text-zinc-400 dark:text-zinc-500">
+                      S/ {item.price.regular.toFixed(2)}
+                    </p>
+                    <p className="text-sm font-bold text-[#00A09D]">
+                      S/ {item.price.sale.toFixed(2)}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">
                     S/ {item.price.regular.toFixed(2)}
                   </p>
-                  <p className="text-xs font-bold text-green-600 dark:text-green-300">
-                    S/ {item.price.sale.toFixed(2)}
-                  </p>
-                </>
-              ) : (
-                <p className="text-xs font-bold text-green-600 dark:text-green-300">
-                  S/ {item.price.regular.toFixed(2)}
-                </p>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Acciones */}
         {!isOrdering && (
-          <div className="flex flex-col md:flex-row justify-center items-center gap-3 pr-3">
-            <Button
-              isIconOnly
-              color="success"
-              variant="flat"
-              onPress={() => handlePress(item._id)}
-              className="p-0 min-w-6 w-6 h-6 rounded-md"
+          <div className="flex flex-col md:flex-row justify-center items-center gap-2 pr-4">
+            <button
+              onClick={() => handlePress(item._id)}
+              className="p-2 rounded-lg text-zinc-400 hover:text-[#00A09D] hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               aria-label="Ver Detalles"
             >
               <MiniEyeIcon size={18} />
-            </Button>
-            <Button
-              isIconOnly
-              color="danger"
-              variant="flat"
-              className="p-0 min-w-6 w-6 h-6 rounded-md"
+            </button>
+            <button
+              onClick={() => openModal(item._id)}
+              className="p-2 rounded-lg text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
               aria-label="Eliminar"
-              onPress={() => openModal(item._id)}
             >
               <MiniTrashIcon size={18} />
-            </Button>
+            </button>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };
@@ -291,9 +268,9 @@ const CardProducts: React.FC = () => {
     if (newOrder < pageStart || newOrder > pageEnd) {
       try {
         await updateOrderApi(id, newOrder, order_type);
-         fetchProducts();
+        fetchProducts();
       } finally {
-         fetchProducts(); 
+        fetchProducts();
       }
       return;
     }

@@ -28,14 +28,14 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-  
+
 }) {
 
   return (
-    
+
     <html suppressHydrationWarning lang="es">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        <link rel="icon" href="/creceidea.svg" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <link rel="icon" href="/creceidea.svg" />
 
       <head />
       <body
@@ -45,10 +45,8 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="h-full lg:h-[99vh] md:w-[85%] m-auto">
-
+          <div className="h-full lg:h-[99vh]">
             {children}
-
           </div>
         </Providers>
       </body>

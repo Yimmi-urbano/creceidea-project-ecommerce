@@ -31,11 +31,24 @@ const AddCategory: React.FC = () => {
 
       <Button isIconOnly color='warning' className='text-lg' onPress={onOpen}>+</Button>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/40'>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        className='bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800'
+        classNames={{
+          backdrop: "bg-black/60 backdrop-blur-sm",
+          base: "rounded-2xl shadow-2xl",
+          header: "border-b border-zinc-200 dark:border-zinc-800",
+          body: "py-6",
+          footer: "border-t border-zinc-200 dark:border-zinc-800"
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Agregar Categoría</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 text-zinc-900 dark:text-zinc-100">
+                Agregar Categoría
+              </ModalHeader>
               <ModalBody>
                 <Input
                   isClearable
@@ -46,27 +59,24 @@ const AddCategory: React.FC = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   classNames={
                     {
-                        label: "text-black/50 dark:text-white/90",
-                        innerWrapper: "bg-transparent",
-                        input: [
-                            "bg-transparent",
-                            "text-black/90 dark:text-white/90",
-                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                        ],
-                        inputWrapper: [
-                            
-                            "bg-cyan-500/50",
-                            "dark:bg-cyan-600/10",
-                            "backdrop-blur-xl",
-                            "backdrop-saturate-200",
-                            "hover:bg-default-200/70",
-                            "dark:hover:bg-default/70",
-                            "group-data-[focus=true]:bg-default-200/50",
-                            "dark:group-data-[focus=true]:bg-default/60",
-                            "!cursor-text",
-                        ],
+                      label: "text-zinc-700 dark:text-zinc-300",
+                      innerWrapper: "bg-transparent",
+                      input: [
+                        "bg-transparent",
+                        "text-zinc-900 dark:text-zinc-100",
+                        "placeholder:text-zinc-400 dark:placeholder:text-zinc-500",
+                      ],
+                      inputWrapper: [
+                        "bg-white dark:bg-[#13161c]",
+                        "border",
+                        "border-zinc-200 dark:border-zinc-800",
+                        "hover:border-zinc-300 dark:hover:border-zinc-700",
+                        "group-data-[focus=true]:border-[#00A09D]",
+                        "!cursor-text",
+                        "rounded-lg",
+                      ],
                     }
-                }
+                  }
                 />
                 <Spacer y={1} />
 
@@ -76,9 +86,20 @@ const AddCategory: React.FC = () => {
                   onChange={(e) => setSelectedParent(e.target.value || null)}
                   description="Deje en blanco si es una categoría PRINCIPAL."
                   classNames={{
-                    trigger: ["bg-[#082f49]/90"],
-                    popoverContent: ["backdrop-blur-md bg-[#082f49]/80"]
-    
+                    trigger: [
+                      "bg-white dark:bg-[#13161c]",
+                      "border border-zinc-200 dark:border-zinc-800",
+                      "hover:border-zinc-300 dark:hover:border-zinc-700",
+                      "data-[focus=true]:border-[#00A09D]",
+                      "rounded-lg"
+                    ],
+                    popoverContent: [
+                      "bg-white dark:bg-[#13161c]",
+                      "border border-zinc-200 dark:border-zinc-800",
+                      "rounded-lg"
+                    ],
+                    label: "text-zinc-700 dark:text-zinc-300",
+                    value: "text-zinc-900 dark:text-zinc-100"
                   }}
                 >
                   {allCategories.map((category) => (
@@ -87,15 +108,32 @@ const AddCategory: React.FC = () => {
                     </SelectItem>
                   ))}
                 </Select>
-                {selectedParent && <Button color='danger' variant='flat' onClick={clearSelection}>Limpiar selección</Button>}
+                {selectedParent && (
+                  <Button
+                    color='danger'
+                    variant='flat'
+                    onClick={clearSelection}
+                    className="mt-2"
+                  >
+                    Limpiar selección
+                  </Button>
+                )}
                 <Spacer y={1} />
-                {message && <div>{message}</div>}
+                {message && <div className="text-sm text-amber-600 dark:text-amber-500">{message}</div>}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={onClose}
+                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                >
                   Cerrar
                 </Button>
-                <Button color="warning" onPress={handleAddNewCategory}>
+                <Button
+                  onPress={handleAddNewCategory}
+                  className="bg-[#00A09D] hover:bg-[#008f8c] text-white font-medium"
+                >
                   Agregar
                 </Button>
               </ModalFooter>

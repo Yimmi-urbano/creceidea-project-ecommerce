@@ -12,7 +12,7 @@ const useIsOrders = () => {
       try {
         const ordersData = await getOrders();
         // Ensure we always set an array
-        setOrders(Array.isArray(ordersData) ? ordersData : []);
+        setOrders(Array.isArray(ordersData?.data) ? ordersData.data : []);
       } catch (err: any) {
         setError(err.message || 'Error desconocido.');
         setOrders([]); // Set empty array on error
@@ -28,7 +28,7 @@ const useIsOrders = () => {
     setLoading(true);
     try {
       const ordersData = await getOrders();
-      setOrders(Array.isArray(ordersData) ? ordersData : []);
+      setOrders(Array.isArray(ordersData?.data) ? ordersData.data : []);
     } catch (err: any) {
       setError(err.message || 'Error desconocido.');
       setOrders([]);

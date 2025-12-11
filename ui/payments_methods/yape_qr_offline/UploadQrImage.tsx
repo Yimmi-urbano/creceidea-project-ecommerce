@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, CardBody, Spinner, Image } from "@nextui-org/react";
-import { CameraIcon, MiniTrashIcon } from "@/components/icons";
+import { Camera, Trash2 } from "lucide-react";
 import { postUploadImage } from "@/src/application/upload/uploadServices";
 
 interface UploadQrImageProps {
@@ -21,13 +21,13 @@ const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialIma
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || event.target.files.length === 0) return;
-  
+
     const file = event.target.files[0];
     setLoading(true);
-  
+
     try {
       const uploadedImageUrl = await postUploadImage(file);
-  
+
       if (uploadedImageUrl && typeof uploadedImageUrl === "string") {
         setImageUrl(uploadedImageUrl);
         onImageUpload(uploadedImageUrl);
@@ -38,10 +38,10 @@ const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialIma
       console.error("Error al subir la imagen:", error);
       alert("Hubo un problema al subir la imagen.");
     }
-  
+
     setLoading(false);
   };
-  
+
 
   const handleAddImageClick = () => {
     fileInputRef.current?.click();
@@ -65,14 +65,14 @@ const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialIma
               className="h-full w-full min-w-[200px]"
               onClick={handleAddImageClick}
             >
-              {!loading ? <CameraIcon /> : <Spinner size="lg" color="success" />}
+              {!loading ? <Camera /> : <Spinner size="lg" color="success" />}
             </Button>
           </>
         ) : (
           <div className="w-full block">
-            <Image isBlurred src={imageUrl} alt="Código QR"   className='object-contain border-1 border-[#0ea5e9]/30 h-[80px] min-w-20 md:h-[200px] md:w-[200px] w-full' />
+            <Image isBlurred src={imageUrl} alt="Código QR" className='object-contain border-1 border-[#0ea5e9]/30 h-[80px] min-w-20 md:h-[200px] md:w-[200px] w-full' />
             <Button color="warning" variant="flat" onClick={handleDeleteImage} className="mt-3 w-full">
-              Reemplazar QR <MiniTrashIcon />
+              Reemplazar QR <Trash2 size={18} />
             </Button>
           </div>
         )}

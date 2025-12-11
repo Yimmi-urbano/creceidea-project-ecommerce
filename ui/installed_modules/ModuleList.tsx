@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getModules } from "@/src/application/installed_modules/getModules";
 import { Module } from "@/src/domain/installed_modules/Module";
-import { Card, CardBody, CardHeader, Image, Button } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react"; // Assuming we still use NextUI for generic components or replaced by custom if preferred
 import { getDomainFromLocalStorage } from "@/config/utils";
+import { CreditCard, Settings, ChevronRight, AlertCircle } from "lucide-react";
 
 export default function ModuleList() {
     const [modules, setModules] = useState<Module[]>([]);
@@ -29,29 +30,82 @@ export default function ModuleList() {
         loadModules();
     }, []);
 
-    if (loading) return <p className="text-center text-gray-500">Cargando módulos...</p>;
-    if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center py-20">
+                <Spinner color="primary" size="lg" />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+                <div className="p-4 rounded-full bg-rose-100 dark:bg-rose-900/20 mb-4">
+                    <AlertCircle className="w-8 h-8 text-rose-600 dark:text-rose-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Error al cargar módulos</h3>
+                <p className="text-zinc-500 dark:text-zinc-400 max-w-md mt-2">{error}</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="mt-6 px-4 py-2 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium hover:opacity-90 transition-opacity"
+                >
+                    Reintentar
+                </button>
+            </div>
+        );
+    }
+
+    if (modules.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+                <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 mb-4">
+                    <CreditCard className="w-8 h-8 text-zinc-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">No hay módulos disponibles</h3>
+                <p className="text-zinc-500 dark:text-zinc-400 max-w-md mt-2">
+                    Actualmente no hay métodos de pago disponibles para configurar.
+                </p>
+            </div>
+        );
+    }
 
     return (
-        <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-1 gap-4 p-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-2">
             {modules.map((module) => (
-                <Card key={module.id} className="p-1 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40" isBlurred>
-                    <CardHeader className="flex gap-4">
-                        <Image src={module.logo} width={40} height={40} alt={module.title} className="object-contain" />
-                        <h5 className="text-sm font-semibold">{module.title}</h5>
-                    </CardHeader>
-                    <CardBody>
-                        <p className="text-white-600">{module.description}</p>
-                        <Button
-                            color="success"
-                            variant="flat"
-                            className="mt-2 w-full"
+                <div
+                    key={module.id}
+                    className="group flex flex-col bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300"
+                >
+                    <div className="p-6 flex-1">
+                        <div className="w-12 h-12 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 flex items-center justify-center mb-4 p-2">
+                            <img
+                                src={module.logo}
+                                alt={module.title}
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+
+                        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                            {module.title}
+                        </h3>
+
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2">
+                            {module.description}
+                        </p>
+                    </div>
+
+                    <div className="p-6 pt-0 mt-auto">
+                        <button
                             onClick={() => router.push(`/configuration/module/payments_method/${module.nameId}`)}
+                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#00A09D]/10 hover:bg-[#00A09D]/20 text-[#00A09D] font-medium transition-colors group-hover:bg-[#00A09D] group-hover:text-white"
                         >
+                            <Settings size={18} />
                             Configurar
-                        </Button>
-                    </CardBody>
-                </Card>
+                            <ChevronRight size={16} className="ml-auto opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                        </button>
+                    </div>
+                </div>
             ))}
         </div>
     );
