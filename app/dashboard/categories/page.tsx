@@ -1,10 +1,10 @@
 "use client";
 
 import React from 'react';
-import AddCategory from '@/components/category/addCategory';
+import AddCategory from '@/src/presentation/components/client/category/addCategory';
 import { Card, CardBody, CardHeader, ScrollShadow } from '@nextui-org/react';
-import CategoryList from '@/components/category/CategoryList';
-import { CategoryProvider } from '@/components/category/CategoryContext';
+import CategoryList from '@/src/presentation/components/client/category/CategoryList';
+import { CategoryProvider } from '@/src/presentation/components/client/category/CategoryContext';
 
 const PageCategories: React.FC = () => {
   return (

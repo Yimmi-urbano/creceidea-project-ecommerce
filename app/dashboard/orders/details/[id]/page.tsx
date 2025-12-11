@@ -3,7 +3,7 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
-import OrderDetails from '@/components/orderDetails/OrderDetails';
+import OrderDetails from '@/src/presentation/components/client/orderDetails/OrderDetails';
 
 const PageOrdersDetail: React.FC = () => {
   const params = useParams();

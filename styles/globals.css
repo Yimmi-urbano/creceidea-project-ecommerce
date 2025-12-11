@@ -2,143 +2,174 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* Light Theme Variables */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --primary: 180 100% 31%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 240 4.8% 95.9%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 180 100% 31%;
+  }
+
+  .dark {
+    /* Dark Theme Variables */
+    --background: 222 47% 5%;
+    --foreground: 0 0% 95%;
+    --card: 220 40% 8%;
+    --card-foreground: 0 0% 95%;
+    --primary: 180 100% 31%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 217 33% 17%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 180 100% 31%;
+  }
+
+  body {
+    @apply bg-light-bg dark:bg-dark-bg text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Dark theme background */
 .dark {
-
-    background-image: url('https://media-static.creceidea.pe/images/background-creceidea.jpg');
-    background-size: cover;
-    background-position: top center;
-
+  /*background-image: url('https://media-static.creceidea.pe/images/background-creceidea.jpg');
+  background-size: cover;
+  background-position: top center;*/
 }
 
-.light{
-
-background-color: #d2d2d2;
-
+.dark:before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: linear-gradient(335deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.71) 100%);
+  pointer-events: none;
 }
 
+/* Light theme background */
+.light {
+  background-color: #F9FAFA;
+}
+
+/* Chrome color picker fix */
 .flexbox-fix input {
-    background-color: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 .chrome-picker {
-    z-index: 999999 !important;
-    position: absolute;
+  z-index: 999999 !important;
+  position: absolute;
 }
 
+/* Z-index utilities */
 .z-index {
-    z-index: 1;
-    position: relative;
+  z-index: 1;
+  position: relative;
 }
 
 .z-index-3 {
-    z-index: 3;
-    position: relative;
+  z-index: 3;
+  position: relative;
 }
 
-.dark .login-page:before,
-.dark body:before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    background: rgb(0, 0, 0);
-    background: linear-gradient(335deg, rgba(0, 0, 0, 0.02703088071165971) 0%, rgba(0, 0, 0, 0.7133053905155813) 100%);
-}
-
+/* Logo styles */
 .dark .logo-crece-style svg {
-    width: 250px;
-    height: 50px;
-    fill: #fff;
+  width: 250px;
+  height: 50px;
+  fill: #fff;
 }
 
 .logo-crece-style svg {
-    width: 250px;
-    height: 50px;
-   
+  width: 250px;
+  height: 50px;
 }
 
-.ql-snow .ql-stroke {
-    stroke: #fff !important;
-  }
-
-  .ql-toolbar.ql-snow {
-    border: 0px !important;
-    border-bottom: 1px solid #075d99 !important;
-    background-color: #073a5eb5 !important;
-  }
-
-  .ql-container.ql-snow {
-    border: 0px !important;
-    background-color: #ffffff;
-  }
+.logo-sidebar {
+  width: 100%;
+  fill: #fff;
+  position: relative;
+}
 
 .logo-crece-dash {
-    position: absolute;
-    top: 30px;
-    right: 30px;
+  position: absolute;
+  top: 30px;
+  right: 30px;
 }
 
+/* Quill editor dark theme */
+.ql-snow .ql-stroke {
+  stroke: #fff !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: 0px !important;
+  border-bottom: 1px solid #075d99 !important;
+  background-color: #073a5eb5 !important;
+}
+
+.ql-container.ql-snow {
+  border: 0px !important;
+  background-color: #ffffff;
+}
+
+/* Sidebar resizable */
 .resizable {
-    width: 12rem;
-    /* Default width */
-    min-width: 5rem;
-    /* Minimum width */
-    max-width: 24rem;
-    /* Maximum width */
-    position: relative;
+  width: 12rem;
+  min-width: 5rem;
+  max-width: 24rem;
+  position: relative;
 }
 
 .resize-handle {
-    width: 1rem;
-    height: 100%;
-    cursor: ew-resize;
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 1rem;
+  height: 100%;
+  cursor: ew-resize;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #sidebar {
-    margin: 15px;
-    border-radius: 15px;
-    overflow: hidden;
-
-}
-
-
-.logo-sidebar {
-    width: 100%;
-    fill: #fff;
-    position: relative;
+  margin: 15px;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .toolbar-footer {
-    height: 60px;
-    position: fixed;
-    bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    z-index: 10;
-    width: 100%;
+  height: 60px;
+  position: fixed;
+  bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 10;
+  width: 100%;
 }
 
 .toolbar-footer .toolbar-inner {
-    height: 60px;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+  height: 60px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .toolbar-footer .toolbar-inner svg {
-    margin: auto;
+  margin: auto;
 }
 
 .item-wrap {
-    height: 100%;
-    text-align: center;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
+  height: 100%;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }

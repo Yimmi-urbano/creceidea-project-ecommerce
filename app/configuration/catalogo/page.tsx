@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
-import { ConfigProvider } from '@/hooks/ConfigContext';
-import UpdateCatalogForm from '@/components/UpdateCatalogo';
+import { ConfigProvider } from '@/src/presentation/contexts';
+import UpdateCatalogForm from '@/src/presentation/components/client/UpdateCatalogo';
 
 export default function CatalogConfig() {
 

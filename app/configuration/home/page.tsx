@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from 'react';
-import BannerList from '@/components/home/card-banners';
-import BannerModal from '@/components/home/BannerModal';
-import { Banner } from '@/hooks/bannerService';
+import BannerList from '@/src/presentation/components/client/home/card-banners';
+import BannerModal from '@/src/presentation/components/client/home/BannerModal';
+import { Banner } from '@/src/presentation/hooks';
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Input, Button, Card, CardBody, Textarea, Switch } from "@nextui-org/react";
-import { getPayment, addPayment, editPayment } from "@/application/payments_methods/paymentsServices";
-import { Payment } from "@/domain/payments_methods/Payment";
+import { getPayment, addPayment, editPayment } from "@/src/application/payments_methods/paymentsServices";
+import { Payment } from "@/src/domain/payments_methods/Payment";
 import UploadQrImage from "@/ui/payments_methods/yape_qr_offline/UploadQrImage";
 
 

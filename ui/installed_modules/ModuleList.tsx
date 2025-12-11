@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getModules } from "@/application/installed_modules/getModules";
-import { Module } from "@/domain/installed_modules/Module";
+import { getModules } from "@/src/application/installed_modules/getModules";
+import { Module } from "@/src/domain/installed_modules/Module";
 import { Card, CardBody, CardHeader, Image, Button } from "@nextui-org/react";
 import { getDomainFromLocalStorage } from "@/config/utils";
 

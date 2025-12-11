@@ -1,6 +1,6 @@
 'use client';
 
-import SocialLinksManager from '@/components/SocialLinksManager';
+import SocialLinksManager from '@/src/presentation/components/client/SocialLinksManager';
 import { Card, CardBody } from '@nextui-org/react';
 
 

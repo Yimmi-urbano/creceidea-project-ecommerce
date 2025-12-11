@@ -1,0 +1,15 @@
+{
+  "name": "creceidea-project-ecommerce",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "migrate:imports": "node scripts/migrate-imports.js",
+    "cleanup:folders": "node scripts/cleanup-old-folders.js",
+    "reorganize:components": "node scripts/reorganize-components.js",
+    "refactor:all": "npm run migrate:imports && npm run cleanup:folders && npm run reorganize:components"
+  }
+}

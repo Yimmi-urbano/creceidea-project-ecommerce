@@ -1,10 +1,10 @@
 'use client';
 import { Accordion, AccordionItem } from '@nextui-org/react';
-import UploadLogo from '@/components/uploadLogo';
-import UpdateMetadata from '@/components/updateMetaSeo';
-import WhatsappSettings from '@/components/whatsappHome';
-import ColorPicker from '@/components/ColorPicker';
-import { ConfigProvider } from '@/hooks/ConfigContext';
+import UploadLogo from '@/src/presentation/components/client/uploadLogo';
+import UpdateMetadata from '@/src/presentation/components/client/updateMetaSeo';
+import WhatsappSettings from '@/src/presentation/components/client/whatsappHome';
+import ColorPicker from '@/src/presentation/components/client/ColorPicker';
+import { ConfigProvider } from '@/src/presentation/contexts';
 
 export default function Site() {  // Cambia a `export default`
   return (

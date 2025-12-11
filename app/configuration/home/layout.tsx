@@ -1,7 +1,7 @@
 "use client"
-import { HeadToolbar } from "@/components/headToolbar";
-import Sidebar from "@/components/sidebar";
-import OptionsToolbar from "@/components/toolbar";
+import { HeadToolbar } from "@/src/presentation/components/shared/headToolbar";
+import Sidebar from "@/src/presentation/components/shared/sidebar";
+import OptionsToolbar from "@/src/presentation/components/shared/toolbar";
 
 export default function Home({
     children,

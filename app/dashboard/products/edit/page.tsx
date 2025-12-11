@@ -1,5 +1,5 @@
 "use client"
-import ProductForm from "@/components/products/edit-product";
+import ProductForm from "@/src/presentation/components/client/products/edit-product";
 import { Card, CardBody } from "@nextui-org/react";
 
 export default function NewProducts() {

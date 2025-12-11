@@ -1,7 +1,7 @@
 'use client';
 
-import ThemesList from '@/components/Themes';
-import { ConfigProvider } from '@/hooks/ConfigContext';
+import ThemesList from '@/src/presentation/components/client/Themes';
+import { ConfigProvider } from '@/src/presentation/contexts';
 import { Card, CardBody } from '@nextui-org/react';
 
 

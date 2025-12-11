@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Card, CardBody, Spinner, Image } from "@nextui-org/react";
 import { CameraIcon, MiniTrashIcon } from "@/components/icons";
-import { postUploadImage } from "@/application/upload/uploadServices";
+import { postUploadImage } from "@/src/application/upload/uploadServices";
 
 interface UploadQrImageProps {
   onImageUpload: (url: string) => void;

@@ -6,7 +6,7 @@ import { Input } from "@nextui-org/input";
 import { getDomain, login } from "./api";
 import { Link } from "@nextui-org/link";
 import { useRouter } from "next/navigation";
-import { EyeFilledIcon, EyeSlashFilledIcon, Logo } from "@/components/icons";
+import { EyeFilledIcon, EyeSlashFilledIcon, Logo } from "@/src/presentation/components/shared/icons";
 import { Chip } from "@nextui-org/react";
 
 const CardLogin = () => {

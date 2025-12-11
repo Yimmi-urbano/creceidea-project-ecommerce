@@ -1,13 +1,13 @@
 "use client"
-import AreaChartComponent from "@/components/areachart";
-import TopProductComponent from "@/components/topproduct";
-import Ordenes from "@/components/ordenes";
-import CardProgressViews from "@/components/countViewsSite";
-import CardProducts from "@/components/products/card";
+import AreaChartComponent from "@/src/presentation/components/shared/areachart";
+import TopProductComponent from "@/src/presentation/components/client/topproduct";
+import Ordenes from "@/src/presentation/components/client/ordenes";
+import CardProgressViews from "@/src/presentation/components/client/countViewsSite";
+import CardProducts from "@/src/presentation/components/shared/products/card";
 import { Card, CardBody, CardHeader, Link, Button, CardFooter} from "@nextui-org/react";
-import { ProductProvider } from "@/hooks/contextProduct";
-import CardProductEdit from '@/components/products/cardProductEdit';
-import Paginator from '@/components/products/paginator';
+import { ProductProvider } from "@/src/presentation/contexts";
+import CardProductEdit from '@/src/presentation/components/client/products/cardProductEdit';
+import Paginator from '@/src/presentation/components/client/products/paginator';
 
 
 export default function DashboardLayoutPage() {
