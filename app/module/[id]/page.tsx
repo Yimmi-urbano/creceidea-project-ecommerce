@@ -1,4 +1,4 @@
-import ModuleList from "@/ui/installed_modules/ModuleList";
+import ModuleList from "@/src/presentation/components/dashboard/ModuleList";
 
 export default function Home() {
   return (

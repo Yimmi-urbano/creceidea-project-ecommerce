@@ -45,7 +45,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <div className="h-full lg:h-[99vh]">
             {children}
             <Toaster richColors position="bottom-right" />

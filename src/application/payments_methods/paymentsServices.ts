@@ -1,4 +1,4 @@
-import { fetchPayment, createPayment, updatePayment } from "@/src/infrastructure/repositories/payments_methods/paymentRepository";
+import { fetchPayment, createPayment, updatePayment } from "@/src/infrastructure/repositories/paymentRepository";
 import { Payment } from "@/src/domain/payments_methods/Payment";
 
 export const getPayment = async (nameId: string): Promise<Payment | null> => {

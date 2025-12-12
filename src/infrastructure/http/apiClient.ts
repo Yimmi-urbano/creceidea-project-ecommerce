@@ -7,7 +7,7 @@
  * @module apiClient
  */
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 import { getDomainFromLocalStorage } from '@/src/infrastructure/storage/localStorage';
 
 /**

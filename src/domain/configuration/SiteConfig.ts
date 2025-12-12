@@ -6,9 +6,7 @@
  * @module SiteConfig
  */
 
-import { SeoMetadata } from './SeoMetadata';
 import { WhatsappHome, WhatsappCatalog } from './WhatsappConfig';
-import { ThemeConfig } from './ThemeConfig';
 
 /**
  * Catalog button configuration

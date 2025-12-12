@@ -9,7 +9,7 @@
 
 import apiClient from '@/src/infrastructure/http/apiClient';
 import { API_ENDPOINTS } from '@/src/infrastructure/http/apiConfig';
-import { Category, CategoryFormData } from '@/src/domain/categories/Category';
+import { Category } from '@/src/domain/categories/Category';
 
 const DEFAULT_ICON_URL = 'https://example.com/icons/placeholder.png';
 
