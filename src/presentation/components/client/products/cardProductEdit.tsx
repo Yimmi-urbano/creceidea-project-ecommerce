@@ -31,11 +31,12 @@ import { useProductContext } from "@/src/presentation/contexts";
 import withPermission from "@/src/presentation/components/client/withPermission";
 import { deleteProduct } from "@/src/application/products/productServices";
 import { useRouter } from "next/navigation";
+import { API_ENDPOINTS, buildUrl } from "@/src/infrastructure/http/apiConfig";
 
 async function updateOrderApi(id_product: string, order: number, order_type: string) {
   const domain = localStorage.getItem("domainSelect") ?? '';
   const domainPrimary = domain;
-  await fetch("http://localhost:4600/api/products/sorter_custom/update-order-single", {
+  await fetch(buildUrl(API_ENDPOINTS.PRODUCTS, '/sorter_custom/update-order-single'), {
     method: "PATCH",
     headers: { "Content-Type": "application/json", 'domain': domainPrimary, },
     body: JSON.stringify({ id_product, order, order_type }),

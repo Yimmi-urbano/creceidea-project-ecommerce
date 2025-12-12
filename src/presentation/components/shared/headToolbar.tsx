@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { useTheme } from '@/src/presentation/contexts';
 import { Search, Bell, Sun, Moon } from 'lucide-react';
 

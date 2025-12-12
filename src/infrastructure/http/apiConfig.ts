@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     CONFIGURATION: process.env.NEXT_PUBLIC_CONFIGURATION || '',
     CONFIGURATIONS: 'https://api-configuration.creceidea.pe/api/configurations',
     BANNERS: 'https://api-configuration.creceidea.pe/api/banners',
+    THEMES: 'https://api-theme.creceidea.pe/api/themes',
 
     // Upload Services
     UPLOAD: 'https://api-upload.creceidea.pe',
@@ -29,12 +30,18 @@ export const API_ENDPOINTS = {
     // Payment Methods
     PAYMENT_METHODS: 'https://api-payment-method.creceidea.pe/api/payments',
 
+    // Social
+    SOCIAL_LINK: 'https://api-configuration.creceidea.pe/api/social-link',
+
     // Orders
     ORDERS: 'https://api-orders.creceidea.pe/api/orders/list',
     ORDER_BY_ID: 'https://api-orders.creceidea.pe/api/orders/id',
 
     // Domains
     DOMAINS: process.env.NEXT_PUBLIC_DOMAINS_ASSIGNED || '',
+
+    // Modules
+    INSTALLED_MODULES: 'https://api-installed-modules.creceidea.pe/modules',
 } as const;
 
 /**

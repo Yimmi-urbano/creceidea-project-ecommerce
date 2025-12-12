@@ -1,5 +1,5 @@
-'use strict'
 import React, { useState, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import { Input, Button } from '@nextui-org/react';
 import { ChromePicker } from 'react-color';
 import { useConfig } from '@/src/presentation/contexts';
@@ -82,7 +82,7 @@ const ColorPicker: React.FC = () => {
       setModalMessage('Colores actualizados correctamente!'); // Actualiza el mensaje con el resultado
       setIsModalLoading(false); // Finaliza la carga
     } catch (error) {
-      alert('Error updating colors');
+      toast.error('Error updating colors');
     }
   };
 
@@ -99,6 +99,7 @@ const ColorPicker: React.FC = () => {
           >
             <Input
               type="text"
+              variant="bordered"
               value={colorObj.hex}
               onClick={() => handlePickerToggle(index)}
               onChange={(e) => handleColorChange(e.target.value, index)}
@@ -106,24 +107,25 @@ const ColorPicker: React.FC = () => {
               isReadOnly
               maxLength={7}
               classNames={{
-                inputWrapper: [
-                  'border-1 border-[#0ea5e9]/40 bg-sky-900'
-                ]
+                inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+                input: "text-zinc-900 dark:text-zinc-100",
               }}
               startContent={
                 <div
+                  className="shadow-sm border border-zinc-200 dark:border-white/10"
                   style={{
-                    width: '20px',
-                    height: '20px',
+                    width: '24px',
+                    height: '24px',
                     backgroundColor: colorObj.hex,
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     marginRight: '8px',
                   }}
                 />
               }
             />
             {showPickers[index] && (
-              <div className="color-picker-popover">
+              <div className="absolute z-50 mt-2">
+                <div className="fixed inset-0" onClick={() => handlePickerToggle(index)} />
                 <ChromePicker
                   color={colorObj.hex}
                   disableAlpha
@@ -134,7 +136,14 @@ const ColorPicker: React.FC = () => {
           </div>
         </div>
       ))}
-      <Button onClick={handleUpdateColors} className='w-full' color='success'>Actualizar Colores</Button>
+      <Button
+        onClick={handleUpdateColors}
+        className='w-full font-medium'
+        color='primary'
+        isLoading={isModalLoading}
+      >
+        Actualizar Colores
+      </Button>
 
 
       <NotificationModal

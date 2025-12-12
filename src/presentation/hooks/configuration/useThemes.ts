@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_ENDPOINTS, buildUrl } from '@/src/infrastructure/http/apiConfig';
 
 interface Theme {
   _id: string;
@@ -21,7 +22,7 @@ export const useThemes = () => {
 
   const fetchThemes = async () => {
     try {
-      const response = await fetch('https://api-theme.creceidea.pe/api/themes');
+      const response = await fetch(API_ENDPOINTS.THEMES);
       const data = await response.json();
       setThemes(data);
       setLoading(false);
@@ -41,7 +42,7 @@ export const useThemes = () => {
       const domain = localStorage.getItem('domainSelect') || 'donguston.creceidea.pe';
       console.log('Enviando actualización a la API con theme:', themeName);
 
-      const response = await fetch('https://api-configuration.creceidea.pe/api/config/theme', {
+      const response = await fetch(buildUrl(API_ENDPOINTS.CONFIGURATION, '/config/theme'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -56,16 +57,16 @@ export const useThemes = () => {
       }
 
       console.log('Tema actualizado con éxito');
-      setUpdateSuccess(true); 
+      setUpdateSuccess(true);
     } catch (error) {
       console.error('Error al actualizar el tema:', error);
-      setUpdateSuccess(false); 
+      setUpdateSuccess(false);
     }
   };
 
   const handleSingleCheckboxChange = (themeId: string, checked: boolean, themeName: string, isFree: boolean) => {
     if (checked) {
-      setSelectedTheme(themeName); 
+      setSelectedTheme(themeName);
       if (isFree) {
         updateTheme(themeName);
       }
@@ -80,7 +81,7 @@ export const useThemes = () => {
     loading,
     selectedTheme,
     handleSingleCheckboxChange,
-    updateSuccess, 
-    setUpdateSuccess, 
+    updateSuccess,
+    setUpdateSuccess,
   };
 };

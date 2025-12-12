@@ -10,7 +10,7 @@ const PageOrders: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight mb-1">Pedidos Recientes</h1>
+          <h1 className="text-2xl font-bold tracking-tight mb-1">Pedidos</h1>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
             Monitorea las ventas en tiempo real.
           </p>
@@ -21,7 +21,7 @@ const PageOrders: React.FC = () => {
       </div>
 
       {/* Orders Table */}
-      <div className="rounded-xl border overflow-hidden bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+      <div className="rounded-xl overflow-hidden bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
         <Ordenes />
       </div>
     </div>

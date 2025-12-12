@@ -6,10 +6,13 @@ import { NotificationModal } from '@/src/presentation/components/client/utils/No
 
 const UpdateMetadata: React.FC = () => {
   const { config } = useConfig();
-  const [metaDescription, setMetaDescription] = useState(config?.meta_description || '');
-  const [metaKeyword, setMetaKeyword] = useState(config?.meta_keyword || '');
-  const [title, setTitle] = useState(config?.title || '');
-  const [slogan, setSlogan] = useState(config?.slogan || '');
+  const [formData, setFormData] = useState<SeoMetadata>({
+    title: '',
+    slogan: '',
+    meta_keyword: '',
+    meta_description: '',
+  });
+
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -21,103 +24,95 @@ const UpdateMetadata: React.FC = () => {
 
   useEffect(() => {
     if (config) {
-      setMetaDescription(config.meta_description || '');
-      setMetaKeyword(config.meta_keyword || '');
-      setTitle(config.title || '');
-      setSlogan(config.slogan || '');
+      setFormData({
+        title: config.title || '',
+        slogan: config.slogan || '',
+        meta_keyword: config.meta_keyword || '',
+        meta_description: config.meta_description || '',
+      });
     }
   }, [config]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof SeoMetadata) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: e.target.value
+    }));
+  };
 
   const handleUpdateMetadata = async () => {
     setLoading(true);
     setSuccessMessage('');
     setErrorMessage('');
 
-    const updatedData: SeoMetadata = {
-      meta_description: metaDescription,
-      meta_keyword: metaKeyword,
-      title: title,
-      slogan: slogan,
-    };
-
     try {
       setIsModalLoading(true); // Comienza la carga
       setIsModalOpen(true); // Abre el modal
-      await updateSeoMetadata(updatedData);
+      await updateSeoMetadata(formData);
       setModalMessage('SEO actualizado correctamente!'); // Actualiza el mensaje con el resultado
       setIsModalLoading(false); // Finaliza la carga
     } catch (error) {
       setErrorMessage('Error al actualizar.');
+      setModalMessage('Error al actualizar SEO.');
+      setIsModalLoading(false);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className='flex gap-3 flex-wrap w-full'>
+    <div className='flex flex-col gap-4'>
+
       <Input
-        label="Title"
-        placeholder="Enter title"
-        value={title}
+        label="Título"
+        variant="bordered"
+        placeholder="Ej: Mi Tienda Online"
+        labelPlacement="outside"
+        value={formData.title}
+        onChange={(e) => handleChange(e, 'title')}
         classNames={{
-          inputWrapper: [
-            'border-1 border-[#0ea5e9]/40 bg-sky-900'
-          ]
+          inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+          input: "text-zinc-900 dark:text-zinc-100",
         }}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <Input
-        label="Slogan"
-        placeholder="Enter slogan"
-        value={slogan}
-        classNames={{
-          inputWrapper: [
-            'border-1 border-[#0ea5e9]/40 bg-sky-900'
-          ]
-        }}
-        onChange={(e) => setSlogan(e.target.value)}
       />
 
       <Input
-        label="Meta Keyword"
-        placeholder="Enter meta keyword"
-        value={metaKeyword}
+        label="Slogan"
+        variant="bordered"
+        placeholder="Ej: Calidad al mejor precio"
+        labelPlacement="outside"
+        value={formData.slogan}
+        onChange={(e) => handleChange(e, 'slogan')}
         classNames={{
-          inputWrapper: [
-            'border-1 border-[#0ea5e9]/40 bg-sky-900'
-          ]
+          inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+          input: "text-zinc-900 dark:text-zinc-100",
         }}
-        onChange={(e) => setMetaKeyword(e.target.value)}
       />
 
       <Textarea
-        label="Meta Description"
-        placeholder="Enter meta description"
-        value={metaDescription}
+        label="Descripción SEO"
+        variant="bordered"
+        placeholder="Descripción larga para buscadores..."
+        labelPlacement="outside"
+        value={formData.meta_description}
+        onChange={(e) => handleChange(e, 'meta_description')}
         classNames={{
-          inputWrapper: [
-            'border-1 border-[#0ea5e9]/40 bg-sky-900'
-          ]
+          inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+          input: "text-zinc-900 dark:text-zinc-100",
         }}
-        onChange={(e) => setMetaDescription(e.target.value)}
       />
 
-      {errorMessage && <Chip color="warning" variant='flat' className='w-[100%]'>{errorMessage}</Chip>}
-      {successMessage && <Chip color="success" variant='flat' className='w-[100%]'>{successMessage}</Chip>}
-
-      <Button
-        color="success"
-        className='mb-4 w-full'
-        onClick={handleUpdateMetadata}
-        isLoading={loading}
-      >
-        Actualizar
-      </Button>
-      <NotificationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        isLoading={isModalLoading}
-        message={modalMessage}
+      <Textarea
+        label="Palabras Clave (Meta Keywords)"
+        variant="bordered"
+        placeholder="tienda, ropa, mujer, moda..."
+        labelPlacement="outside"
+        value={formData.meta_keyword}
+        onChange={(e) => handleChange(e, 'meta_keyword')}
+        classNames={{
+          inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+          input: "text-zinc-900 dark:text-zinc-100",
+        }}
       />
     </div>
   );

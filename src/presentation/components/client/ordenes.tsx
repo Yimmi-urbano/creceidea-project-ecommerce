@@ -55,7 +55,7 @@ const Ordenes: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00A09D]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -106,7 +106,7 @@ const Ordenes: React.FC = () => {
       {/* Search Bar */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1 relative group">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-[#00A09D] transition-colors" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors" />
           <input
             type="text"
             value={searchTerm}
@@ -116,7 +116,7 @@ const Ordenes: React.FC = () => {
             }}
             placeholder="Buscar por N° orden, cliente, total..."
             className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none
-              border-zinc-200 dark:border-zinc-800 focus:border-[#00A09D] bg-white dark:bg-[#13161c]
+              border-zinc-200 dark:border-zinc-800 focus:border-primary bg-white dark:bg-dark-card
             "
           />
         </div>
@@ -124,24 +124,24 @@ const Ordenes: React.FC = () => {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+        <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Total de Pedidos</p>
           <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{totalOrders}</p>
         </div>
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+        <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Visibles</p>
-          <p className="text-2xl font-bold text-[#00A09D]">{visibleOrders}</p>
+          <p className="text-2xl font-bold text-primary">{visibleOrders}</p>
         </div>
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+        <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Completados</p>
           <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{completedOrders}</p>
         </div>
       </div>
 
       {/* Orders Table */}
-      <div className="overflow-x-auto rounded-xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+      <div className="overflow-x-auto rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
         <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-[#0f1115] text-zinc-500 dark:text-zinc-400">
+          <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-dark-bg text-zinc-500 dark:text-zinc-400">
             <tr>
               <th className="px-6 py-4">Pedido ID</th>
               <th className="px-6 py-4">Cliente</th>
@@ -163,7 +163,7 @@ const Ordenes: React.FC = () => {
                   key={order._id}
                   className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
                 >
-                  <td className="px-6 py-4 font-medium text-[#00A09D]">
+                  <td className="px-6 py-4 font-medium text-primary">
                     #{order.orderNumber.substring(0, 13)}
                   </td>
                   <td className="px-6 py-4">
@@ -247,8 +247,8 @@ const Ordenes: React.FC = () => {
                   onClick={() => setCurrentPage(page)}
                   className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors
                     ${page === currentPage
-                      ? 'bg-[#00A09D] text-white'
-                      : 'bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
+                      ? 'bg-primary text-white'
+                      : 'bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
                     }`}
                 >
                   {page}
@@ -259,7 +259,7 @@ const Ordenes: React.FC = () => {
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
               className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors disabled:opacity-50 disabled:cursor-not-allowed
-                bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 
+                bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 
                 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
             >
               Siguiente

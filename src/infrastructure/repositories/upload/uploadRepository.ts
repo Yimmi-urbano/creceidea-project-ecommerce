@@ -1,4 +1,4 @@
-import axios from "axios";
+import { API_ENDPOINTS } from "@/src/infrastructure/http/apiConfig";
 import imageCompression from 'browser-image-compression';
 
 export const uploadImage = async (file: File): Promise<any> => {
@@ -26,7 +26,7 @@ export const uploadImage = async (file: File): Promise<any> => {
     const formData = new FormData();
     formData.append('image', renamedFile);
 
-    const response = await fetch('https://api-upload.creceidea.pe/image/product', {
+    const response = await fetch(API_ENDPOINTS.UPLOAD_PRODUCT_IMAGE, {
       method: 'POST',
       headers: {
         domain: domainPrimary,

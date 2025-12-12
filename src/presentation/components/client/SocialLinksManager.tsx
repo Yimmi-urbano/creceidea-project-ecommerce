@@ -6,7 +6,7 @@ import {
     updateSocialLink,
     deleteSocialLink,
     fetchAvailableIcons
-} from '@/hooks/socialsLinksService';
+} from '@/src/presentation/hooks/socialsLinksService';
 import { EyeFilledIcon, EyeSlashFilledIcon, EditProductIcon, MiniTrashIcon } from "@/src/presentation/components/shared/icons";
 import { socialLinksReducer, initialState } from '@/src/presentation/reducers/socialLinksReducer';
 import { SocialLink, IconOption } from '@/src/domain';
@@ -14,7 +14,7 @@ import { SocialLink, IconOption } from '@/src/domain';
 const SocialLinksManager = () => {
     const [state, dispatch] = useReducer(socialLinksReducer, initialState);
     const [availableIcons, setAvailableIcons] = useState<IconOption[]>([]);
-    
+
     // Refresh links and fetch icons
     const refreshLinks = useCallback(async () => {
         try {
@@ -39,8 +39,8 @@ const SocialLinksManager = () => {
     }, [refreshLinks]);
 
     // Handle icon change
-    const handleIconChange = (selectedKeys: Set<string>) => {
-        const selectedIconKey = Array.from(selectedKeys)[0];
+    const handleIconChange = (selectedKeys: Set<string> | any) => {
+        const selectedIconKey = selectedKeys instanceof Set ? Array.from(selectedKeys)[0] : selectedKeys;
         const selectedIcon = availableIcons.find(icon => icon.key === selectedIconKey);
         if (selectedIcon) {
             dispatch({ type: 'SET_NEW_LINK_ICON', payload: selectedIcon });
@@ -106,48 +106,94 @@ const SocialLinksManager = () => {
     };
 
     return (
-        <div>
-            <Button color='warning' onClick={() => dispatch({ type: 'OPEN_ADD_MODAL' })} style={{ marginTop: '1rem' }}>
-                Agregar Enlace
-            </Button>
+        <div className="w-full">
+            <div className="flex justify-between items-center mb-6">
+                <div>
+                    <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Redes Sociales</h2>
+                    <p className="text-sm text-zinc-500">Conecta tus perfiles para que tus clientes te encuentren.</p>
+                </div>
+                <Button
+                    color='primary'
+                    startContent={<span className="text-lg">+</span>}
+                    onClick={() => dispatch({ type: 'OPEN_ADD_MODAL' })}
+                >
+                    Agregar red social
+                </Button>
+            </div>
 
-            {/* Links List */}
-            {state.links.map((link) => (
-                <Card key={link._id} style={{ marginTop: '1rem' }} isBlurred className="p-0 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40">
-                    <CardBody>
-                        <div className='flex gap-5 justify-between items-center'>
-                          
-                            <div>{link.title}</div>
-                            
-                            <div className='flex gap-5 items-center'>
-                                <Button isIconOnly variant="flat" color='success' onClick={() => handleEditLink(link)}>
-                                    <EditProductIcon size={16} />
-                                </Button>
-                                <Button color="danger" variant="flat" isIconOnly onClick={() => openDeleteModal(link._id)}>
-                                    <MiniTrashIcon size={18} />
-                                </Button>
-                                <Button color="default" variant="flat" isIconOnly onClick={() => handleToggleActive(link)}>
-                                    {link.is_active ? (
-                                        <EyeFilledIcon className="text-2xl text-[#ffffff]" />
-                                    ) : (
-                                        <EyeSlashFilledIcon className="text-2xl text-[#cccccc]" />
-                                    )}
-                                </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {state.links.map((link) => (
+                    <Card key={link._id} shadow="none" className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <CardBody className="p-4">
+                            <div className='flex justify-between items-center'>
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                                        {/* Here ideally we render the Icon component dynamically if available, or just the title */}
+                                        <span className="font-bold text-sm">{link.icon.substring(0, 2).toUpperCase()}</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="font-semibold text-zinc-900 dark:text-zinc-100">{link.title}</span>
+                                        <span className="text-xs text-zinc-500 truncate max-w-[150px]">{link.url}</span>
+                                    </div>
+                                </div>
+
+                                <div className='flex gap-1 items-center'>
+                                    <Button isIconOnly variant="light" color='primary' size="sm" onClick={() => handleEditLink(link)}>
+                                        <EditProductIcon size={18} />
+                                    </Button>
+                                    <Button
+                                        isIconOnly
+                                        variant="light"
+                                        color={link.is_active ? "success" : "default"}
+                                        size="sm"
+                                        onClick={() => handleToggleActive(link)}
+                                    >
+                                        {link.is_active ? (
+                                            <EyeFilledIcon className="text-xl" />
+                                        ) : (
+                                            <EyeSlashFilledIcon className="text-xl text-zinc-400" />
+                                        )}
+                                    </Button>
+                                    <Button color="danger" variant="light" isIconOnly size="sm" onClick={() => openDeleteModal(link._id)}>
+                                        <MiniTrashIcon size={18} />
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
-                    </CardBody>
-                </Card>
-            ))}
+                        </CardBody>
+                    </Card>
+                ))}
+
+                {state.links.length === 0 && (
+                    <div className="col-span-full py-12 flex flex-col items-center justify-center text-zinc-400 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl">
+                        <p>Aún no has conectado ninguna red social.</p>
+                        <Button
+                            variant="light"
+                            color="primary"
+                            className="mt-2"
+                            onClick={() => dispatch({ type: 'OPEN_ADD_MODAL' })}
+                        >
+                            Agregar la primera
+                        </Button>
+                    </div>
+                )}
+            </div>
 
             {/* Add/Edit Modal */}
-            <Modal isOpen={state.showModal} onClose={() => dispatch({ type: 'CLOSE_MODAL' })} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/90'>
+            <Modal
+                isOpen={state.showModal}
+                onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
+                backdrop="blur"
+            >
                 <ModalContent>
-                    <ModalHeader>{state.editingLink ? 'Editar Enlace Social' : 'Agregar Enlace Social'}</ModalHeader>
+                    <ModalHeader className="flex flex-col gap-1">
+                        {state.editingLink ? 'Editar red social' : 'Agregar red social'}
+                    </ModalHeader>
                     <ModalBody>
                         <Select
-                            label="Icono"
+                            label="Plataforma"
+                            placeholder="Selecciona una plataforma"
                             variant="bordered"
-                            selectedKeys={new Set([state.newLink.icon])}
+                            selectedKeys={state.newLink.icon ? new Set([state.newLink.icon]) : new Set()}
                             onSelectionChange={handleIconChange}
                             disabledKeys={getDisabledKeys()}
                         >
@@ -158,88 +204,49 @@ const SocialLinksManager = () => {
                             ))}
                         </Select>
                         <Input
-                            label="Título"
+                            label="Nombre Visible"
+                            variant="bordered"
                             value={state.newLink.title}
                             onChange={(e) => dispatch({ type: 'SET_NEW_LINK_TITLE', payload: e.target.value })}
-                            placeholder="Ingrese el título"
-                            classNames={
-                                {
-                                    label: "text-black/50 dark:text-white/90",
-                                    innerWrapper: "bg-transparent",
-                                    input: [
-                                        "bg-transparent",
-                                        "text-black/90 dark:text-white/90",
-                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                    ],
-                                    inputWrapper: [
-                                        "shadow-xl",
-                                        "bg-cyan-500/50",
-                                        "dark:bg-cyan-600/10",
-                                        "backdrop-blur-xl",
-                                        "backdrop-saturate-200",
-                                        "hover:bg-default-200/70",
-                                        "dark:hover:bg-default/70",
-                                        "group-data-[focus=true]:bg-default-200/50",
-                                        "dark:group-data-[focus=true]:bg-default/60",
-                                        "!cursor-text",
-                                    ],
-                                }
-                            }
+                            placeholder="Ej: Síguenos en Facebook"
+                            description="Este es el texto que verán tus clientes."
                         />
                         <Input
-                            label="URL"
+                            label="Enlace del perfil"
+                            variant="bordered"
                             value={state.newLink.url}
                             onChange={(e) => dispatch({ type: 'SET_NEW_LINK_URL', payload: e.target.value })}
-                            placeholder="Ingrese la URL"
-                            classNames={
-                                {
-                                    label: "text-black/50 dark:text-white/90",
-                                    innerWrapper: "bg-transparent",
-                                    input: [
-                                        "bg-transparent",
-                                        "text-black/90 dark:text-white/90",
-                                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                    ],
-                                    inputWrapper: [
-                                        "shadow-xl",
-                                        "bg-cyan-500/50",
-                                        "dark:bg-cyan-600/10",
-                                        "backdrop-blur-xl",
-                                        "backdrop-saturate-200",
-                                        "hover:bg-default-200/70",
-                                        "dark:hover:bg-default/70",
-                                        "group-data-[focus=true]:bg-default-200/50",
-                                        "dark:group-data-[focus=true]:bg-default/60",
-                                        "!cursor-text",
-                                    ],
-                                }
-                            }
+                            placeholder="https://facebook.com/tu-empresa"
                         />
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={handleAddOrEditLink} color='warning'>
-                            {state.editingLink ? 'Actualizar' : 'Guardar'}
-                        </Button>
                         <Button onClick={() => dispatch({ type: 'CLOSE_MODAL' })} variant="flat" color="danger">
                             Cancelar
+                        </Button>
+                        <Button onClick={handleAddOrEditLink} color='primary'>
+                            {state.editingLink ? 'Guardar Cambios' : 'Agregar Red Social'}
                         </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
 
             {/* Delete Confirmation Modal */}
-            <Modal isOpen={state.showDeleteModal} onClose={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/90'>
+            <Modal
+                isOpen={state.showDeleteModal}
+                onClose={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })}
+                backdrop="blur"
+            >
                 <ModalContent>
-                    <ModalHeader>Confirmar Eliminación</ModalHeader>
+                    <ModalHeader>¿Eliminar esta red social?</ModalHeader>
                     <ModalBody>
-                        ¿Estás seguro que deseas eliminar este enlace?
+                        <p className="text-zinc-600 dark:text-zinc-400">Esta acción eliminará el enlace permanentemente de tu tienda. ¿Estás seguro de continuar?</p>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="danger" variant='flat' onClick={handleDeleteLink}>
-                            Si, eliminar
+                        <Button onClick={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })} variant="flat">
+                            Cancelar
                         </Button>
-                        <Button onClick={() => dispatch({ type: 'CLOSE_DELETE_MODAL' })}  color="warning">
-                            No, cancelar
+                        <Button color="danger" onClick={handleDeleteLink}>
+                            Eliminar
                         </Button>
                     </ModalFooter>
                 </ModalContent>

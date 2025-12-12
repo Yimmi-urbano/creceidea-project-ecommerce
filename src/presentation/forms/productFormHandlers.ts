@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+import { toast } from 'sonner';
 import { uploadProductImage } from '@/src/infrastructure/repositories/uploadRepository';
 import { createProduct, updateProduct } from '@/src/application/products/productServices';
 import { ProductFormData } from '@/src/domain/products/Product';
@@ -40,6 +41,7 @@ export const handleFileChange = async (
             }));
         } catch (error) {
             console.error('Error al subir la imagen:', error);
+            toast.error('Error al subir la imagen');
         } finally {
             setLoading(false);
             setSelectedFile(null);
@@ -133,10 +135,10 @@ export const handleSubmit = async (
 
     try {
         await createProduct(data as any);
-        alert('Producto enviado correctamente');
+        toast.success('Producto enviado correctamente');
         setSuccessCreate(true)
     } catch (error) {
-        alert('Error al enviar el producto');
+        toast.error('Error al enviar el producto');
 
     } finally {
         setSubmitting(false);
@@ -204,11 +206,16 @@ export const handleSubmitUpdate = async (
     };
 
     try {
-        await updateProduct('CASACA00032BC00000', data as any);
-        alert('Producto enviado correctamente');
-        setSuccessCreate(true)
+        const success = await updateProduct('CASACA00032BC00000', data as any);
+        if (success) {
+            toast.success('Producto enviado correctamente');
+            // Assuming router is available in the scope or passed as an argument
+            // router.push("/dashboard/products");
+        } else {
+            toast.error('Error al enviar el producto');
+        }
     } catch (error) {
-        alert('Error al enviar el producto');
+        toast.error('Error al enviar el producto');
     } finally {
         setSubmittingEdit(false);
     }

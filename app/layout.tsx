@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
+import { Toaster } from "sonner";
 
 
 export const metadata: Metadata = {
@@ -47,6 +48,7 @@ export default function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="h-full lg:h-[99vh]">
             {children}
+            <Toaster richColors position="bottom-right" />
           </div>
         </Providers>
       </body>

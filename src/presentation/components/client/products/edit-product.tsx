@@ -1,83 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Button, Tabs, Tab, Spinner, SelectItem, Select, Textarea, Card, CardHeader, CardBody, Image, CardFooter, Chip, ScrollShadow } from '@nextui-org/react';
-import { fetchCategories, getProductById } from '@/src/application/products/productServices';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+    Input,
+    Button,
+    Textarea,
+    Card,
+    CardBody,
+    CardHeader,
+    Breadcrumbs,
+    BreadcrumbItem,
+    Switch,
+    cn
+} from '@nextui-org/react';
+import { fetchCategories, getProductById, updateProduct } from '@/src/application/products/productServices';
 import dynamic from 'next/dynamic';
-import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData, handleSubmitUpdate } from '@/src/presentation/forms/productFormHandlers';
-import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from "@/src/presentation/components/shared/icons";
+import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, FormData } from '@/src/presentation/forms/productFormHandlers';
+import { CameraIcon, ChevronLeft, Save, Eye, Info } from "lucide-react";
 import CategorySelector from "@/src/presentation/components/client/CategorySelect";
+import LivePreview from "./LivePreview";
 import { useRouter } from 'next/navigation';
 import SortableImageList from './SortableImageList';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import { toast } from 'sonner';
 import 'react-quill/dist/quill.snow.css';
-import DOMPurify from 'dompurify';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
 interface Category {
     _id: string;
     title: string;
     icon_url: string;
     slug: string;
     __v: number;
+    children?: Category[];
 }
 
 function ProductForm() {
-    const [activeTab, setActiveTab] = useState('0');
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmittingEdit] = useState(false);
     const [detailproduct, setGetProductById] = useState<any>(null);
-    const [successcreate, setSuccessCreate] = useState(false);
-    const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+    const [productId, setProductId] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
     const router = useRouter();
 
-    const [formData, setFormData] = useState<FormData>({
+    // Extended Form Data including new fields
+    const [formData, setFormData] = useState<FormData & {
+        visible: boolean;
+        sku?: string;
+        weight?: string;
+        seoTitle?: string;
+        seoDescription?: string;
+    }>({
         name: '',
         description_corta: '',
-        description_long:'',
+        description_long: '',
         price: '',
         sale: '',
         category: [],
         stock: '',
         imageUrls: [],
-        integrations: []
+        integrations: [],
+        visible: true,
+        sku: '',
+        weight: '',
+        seoTitle: '',
+        seoDescription: ''
     });
 
-   const [isFormValid, setIsFormValid] = useState(false);
+    const [isFormValid, setIsFormValid] = useState(false);
 
+    // Initial Data Fetching
     useEffect(() => {
-        const validateForm = () => {
-            switch (activeTab) {
-                case "0": // Información Básica
-                    setIsFormValid(
-                        formData.name.trim() !== "" &&
-                        formData.category.length > 0
-                    );
-                    break;
-                case "1": // Detalles del Producto
-                    setIsFormValid(
-                        String(formData.price).trim() !== "" &&
-                        formData.description_corta.trim() !== "" 
-                    );
-                    break;
-                case "2": // Imágenes
-                    setIsFormValid(formData.imageUrls.length > 0);
-                    break;
-                case "3": // Finalizar
-                    setIsFormValid(
-                        formData.name.trim() !== "" &&
-                        formData.category.length > 0 &&
-                        String(formData.price).trim() !== "" &&
-                        formData.description_corta.trim() !== "" &&
-                        formData.imageUrls.length > 0
-                    );
-                    break;
-                default:
-                    setIsFormValid(false);
+        if (typeof window !== 'undefined') {
+            const id = localStorage.getItem('selectedCardId');
+            if (id) {
+                setProductId(id);
+            } else {
+                toast.error("No se encontró el ID del producto");
+                router.push('/dashboard/products');
             }
-        };
-
-        validateForm();
-    }, [formData, activeTab]);
-
+        }
+    }, [router]);
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -86,6 +89,7 @@ function ProductForm() {
                 setCategories(data);
             } catch (error) {
                 console.error('Error al cargar categorías:', error);
+                toast.error("Error al cargar categorías");
             }
         };
         loadCategories();
@@ -93,392 +97,501 @@ function ProductForm() {
 
     useEffect(() => {
         const loadProductById = async () => {
+            if (!productId) return;
             try {
-                const data = await getProductById();
+                // @ts-ignore - The service expects a string
+                const data = await getProductById(productId);
                 setGetProductById(data);
             } catch (error) {
                 console.error('Error al cargar producto por ID:', error);
+                toast.error("Error al cargar el producto");
             }
         };
 
-
-
         loadProductById();
-
-
-    }, []);
+    }, [productId]);
 
     useEffect(() => {
         if (detailproduct) {
+            // Map categories: Ensure we match incoming product categories (which might have idcat or _id) to the full Category objects
+            const matchedCategories = detailproduct.category?.map((prodCat: any) => {
+                const catId = prodCat.idcat || prodCat._id;
+                return categories.find(c => c._id === catId);
+            }).filter(Boolean) || [];
+
             setFormData({
                 name: detailproduct.title || '',
                 description_corta: detailproduct.description_short || '',
                 description_long: detailproduct.description_long || '',
-                price: detailproduct.price['regular'] || '',
-                sale: detailproduct.price['sale'] || '',
-                category: detailproduct.category || '',
+                price: detailproduct.price?.regular || '',
+                sale: detailproduct.price?.sale || '',
+                category: matchedCategories.length > 0 ? matchedCategories : [],
                 stock: detailproduct.stock || '',
-                imageUrls: detailproduct.image_default || '',
-                integrations: []
+                imageUrls: detailproduct.image_default || [],
+                integrations: [],
+                visible: detailproduct.is_available ?? true,
+                sku: detailproduct.sku || '', // Assuming backend has SKU or we simulate
+                weight: detailproduct.weight || '',
+                seoTitle: detailproduct.seoTitle || '',
+                seoDescription: detailproduct.seoDescription || ''
             });
         }
-    }, [detailproduct]);
+    }, [detailproduct, categories]);
 
+    // Validation
     useEffect(() => {
-        if (successcreate) {
+        setIsFormValid(
+            formData.name.trim() !== "" &&
+            formData.category.length > 0 &&
+            String(formData.price).trim() !== ""
+        );
+    }, [formData]);
+
+    const handleUpdateProduct = async () => {
+        if (!productId) return;
+        setSubmittingEdit(true);
+        try {
+            await updateProduct(productId, formData as any);
+            toast.success("Producto actualizado correctamente");
             router.push('/dashboard/products');
+        } catch (error) {
+            console.error(error);
+            toast.error("Error al actualizar el producto");
+        } finally {
+            setSubmittingEdit(false);
         }
-    }, [successcreate, router]);
-    const handleTabChange = (key: any) => setActiveTab(key);
+    };
+
+    // Quill Toolbar
     const modules = {
         toolbar: [
-            [{ color: [] }],
-            ['bold', 'italic', 'underline'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-        ]
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['link', 'clean']
+        ],
     };
+
     return (
+        <div className="w-full max-w-7xl mx-auto p-4 md:p-6 pb-20">
+            {/* Custom Styles for Quill Toolbar to match Primary Color */}
+            <style jsx global>{`
+                .ql-toolbar.ql-snow {
+                    background-color: #ffffff; /* White */
+                    border-color: #e4e4e7 !important; /* Zinc-200 */
+                    border-top-left-radius: 0.75rem;
+                    border-top-right-radius: 0.75rem;
+                }
+                .dark .ql-toolbar.ql-snow {
+                    background-color: #27272a; /* Zinc-800 */
+                    border-color: #3f3f46 !important; /* Zinc-700 */
+                }
+                .ql-container.ql-snow {
+                    border-color: #e4e4e7 !important;
+                    border-bottom-left-radius: 0.75rem;
+                    border-bottom-right-radius: 0.75rem;
+                    background-color: #ffffff;
+                }
+                .dark .ql-container.ql-snow {
+                    border-color: #3f3f46 !important;
+                    background-color: #18181b; /* Zinc-900 */
+                }
+                /* Toolbar Icons Colors */
+                .ql-snow .ql-stroke {
+                    stroke: #52525b !important; /* Zinc-600 */
+                }
+                .dark .ql-snow .ql-stroke {
+                    stroke: #a1a1aa !important; /* Zinc-400 */
+                }
+                .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
+                    fill: #52525b !important; /* Zinc-600 */
+                }
+                .dark .ql-snow .ql-fill, .dark .ql-snow .ql-stroke.ql-fill {
+                    fill: #a1a1aa !important; /* Zinc-400 */
+                }
+                .ql-snow .ql-picker {
+                    color: #52525b !important; /* Zinc-600 */
+                }
+                .dark .ql-snow .ql-picker {
+                    color: #a1a1aa !important; /* Zinc-400 */
+                }
+                
+                /* Active/Hover states using Primary Teal */
+                .ql-snow .ql-active .ql-stroke, 
+                .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke,
+                .ql-snow .ql-picker-item:hover .ql-stroke {
+                    stroke: #00A09D !important;
+                }
+                .ql-snow .ql-active .ql-fill,
+                .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill,
+                .ql-snow .ql-picker-item:hover .ql-fill {
+                    fill: #00A09D !important;
+                }
+                .ql-snow .ql-active,
+                .ql-snow .ql-picker.ql-expanded .ql-picker-label,
+                .ql-snow .ql-picker-item:hover {
+                    color: #00A09D !important;
+                }
+            `}</style>
 
-        <Card  key={1}  isBlurred className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
-            <CardBody className='p-0'>
-                <Tabs
-                    selectedKey={activeTab}
-                    fullWidth
-                    defaultSelectedKey="0"
-                    onSelectionChange={handleTabChange}
-                    aria-label="Formulario de Producto"
-                    className='w-full p-3 '
-                    color='warning'
-                    variant="light"
-                    disabledKeys={isFormValid ? [] : ["3"]}
-                >
-                    <Tab key="0"
+            {/* Header Actions */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                <div className="flex flex-col gap-1">
+                    <Breadcrumbs size="sm" className="mb-1">
+                        <BreadcrumbItem href="/dashboard">Dashboard</BreadcrumbItem>
+                        <BreadcrumbItem href="/dashboard/products">Productos</BreadcrumbItem>
+                        <BreadcrumbItem>Editar</BreadcrumbItem>
+                    </Breadcrumbs>
+                    <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                        <Button
+                            isIconOnly
+                            variant="light"
+                            size="sm"
+                            onClick={() => router.back()}
+                            className="-ml-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+                        >
+                            <ChevronLeft size={24} />
+                        </Button>
+                        Editar Producto
+                    </h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-sm ml-10">
+                        Gestiona los detalles, precios y visibilidad de tu producto.
+                    </p>
+                </div>
 
-                        title={
-                            <div className="flex items-center space-x-2">
-                                <ProductIconSvg />
-                                <span className='hidden md:block'>Información Básica</span>
+                <div className="flex items-center gap-3 w-full md:w-auto">
+                    <Button
+                        variant="flat"
+                        color="default"
+                        onClick={() => router.back()}
+                        className="flex-1 md:flex-none font-medium"
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        color="primary"
+                        startContent={!submitting && <Save size={18} />}
+                        isLoading={submitting}
+                        onClick={handleUpdateProduct}
+                        isDisabled={!isFormValid}
+                        className="flex-1 md:flex-none font-bold shadow-lg shadow-primary/20"
+                    >
+                        Guardar Cambios
+                    </Button>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative items-start">
+                {/* LEFT COLUMN - Main Inputs (8 cols) */}
+                <div className="lg:col-span-8 space-y-8">
+
+                    {/* SECTION 1: ESSENTIAL INFO */}
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                        <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Información Esencial</h2>
+                        </CardHeader>
+                        <CardBody className="p-8 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                        Nombre del Producto <span className="text-danger">*</span>
+                                    </label>
+                                    <Input
+                                        variant="bordered"
+                                        placeholder="Ej: Camiseta de Algodón Premium"
+                                        value={formData.name}
+                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                        name="name"
+                                        size="lg"
+                                        classNames={{
+                                            inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                        SKU (Referencia)
+                                    </label>
+                                    <Input
+                                        variant="bordered"
+                                        placeholder="Ej: CMP-001"
+                                        value={formData.sku}
+                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                        name="sku"
+                                        size="lg"
+                                        classNames={{
+                                            inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                        }}
+                                    />
+                                </div>
                             </div>
-                        } >
 
-
-                        <div key="0" style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
-
-                            <Input
-                                label="Nombre del Producto (*)"
-                                name="name"
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                value={formData.name}
-                                onChange={(e) => handleChange(e, setFormData, formData)}
-
-                            />
-                            <Card className='w-full bg-[#0c4a6e]/40'>
-                                <CardHeader className="flex gap-3">Selecciona categorias (*)</CardHeader>
-
-                                <CardBody>
-                                    <ScrollShadow className="w-full h-[170px]">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
+                                        Categorías <span className="text-danger">*</span>
+                                    </label>
+                                    <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 max-h-[220px] overflow-y-auto">
                                         <CategorySelector
                                             selectedCategories={formData.category}
                                             onChange={(selectedCategories) => setFormData({ ...formData, category: selectedCategories })}
+                                            categories={categories}
                                         />
-                                    </ScrollShadow>
-                                </CardBody>
-                            </Card>
-                           
-                        </div>
-                    </Tab>
-                    <Tab key="1"
+                                    </div>
+                                    <p className="text-xs text-zinc-500 mt-2 ml-1">Selecciona una o más categorías para tu producto.</p>
+                                </div>
 
-                        title={
-                            <div className="flex items-center space-x-2">
-                                <ProductInfoIconSvg />
-                                <span className='hidden md:block'>Detalles del Producto</span>
+                                <div className="flex flex-col justify-start pt-6">
+                                    <div className="flex items-center justify-between p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/30">
+                                        <div className="flex flex-col gap-1">
+                                            <span className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                                                <Eye size={18} className="text-zinc-500" /> Visibilidad
+                                            </span>
+                                            <span className="text-xs text-zinc-500">¿Producto visible en tienda?</span>
+                                        </div>
+                                        <Switch
+                                            isSelected={formData.visible}
+                                            onValueChange={(isSelected) => setFormData({ ...formData, visible: isSelected })}
+                                            color="primary"
+                                            size="lg"
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                        } >
+                        </CardBody>
+                    </Card>
 
+                    {/* SECTION 2: MEDIA & DESCRIPTION */}
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                        <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Medios y Descripción</h2>
+                        </CardHeader>
+                        <CardBody className="p-8 gap-8">
+                            {/* Media Gallery */}
+                            <div>
+                                <div className="flex justify-between items-center mb-4">
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                                        Imágenes del Producto
+                                    </label>
+                                    <Button
+                                        size="sm"
+                                        color="primary"
+                                        variant="light"
+                                        startContent={<CameraIcon size={16} />}
+                                        onClick={() => handleAddImageClick(fileInputRef)}
+                                        isDisabled={loading}
+                                        className="font-medium"
+                                    >
+                                        Agregar Imagen
+                                    </Button>
+                                </div>
 
-
-                        <div key="0" style={{ padding: '10px' }} className='grid grid-cols-3 gap-4'>
-
-                            <Input
-                                label="Precio Normal (*)"
-                                name="price"
-                                className=''
-                                value={formData.price}
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                placeholder="0.00"
-                                onChange={(e) => handleChange(e, setFormData, formData)}
-                                startContent={
-                                    <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">S/</span>
-                                    </div>
-                                }
-                                type="number"
-                            />
-
-                            <Input
-                                label="Precio Oferta"
-                                name="sale"
-                                value={formData.sale}
-                                 className=''
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                placeholder="0.00"
-                                onChange={(e) => handleChange(e, setFormData, formData)}
-                                startContent={
-                                    <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">S/</span>
-                                    </div>
-                                }
-                                type="number"
-                            />
-                            <Input
-                                label="Stock"
-                                name="stock"
-                                
-                                classNames={
-                                    {
-                                        label: "text-black/50 dark:text-white/90",
-                                        innerWrapper: "bg-transparent",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black/90 dark:text-white/90",
-                                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                        ],
-                                        inputWrapper: [
-                                            "shadow-xl",
-                                            "bg-cyan-500/50",
-                                            "dark:bg-cyan-600/10",
-                                            "backdrop-blur-xl",
-                                            "backdrop-saturate-200",
-                                            "hover:bg-default-200/70",
-                                            "dark:hover:bg-default/70",
-                                            "group-data-[focus=true]:bg-default-200/50",
-                                            "dark:group-data-[focus=true]:bg-default/60",
-                                            "!cursor-text",
-                                        ],
-                                    }
-                                }
-                                value={formData.stock}
-                                onChange={(e) => handleChange(e, setFormData, formData)}
-                                type="number"
-                            />
-                               <Textarea
-                                                        label="Descripción corta (*)"
-                                                        name="description_corta"
-                                                        classNames={
-                                                            {
-                                                                label: "text-black/50 dark:text-white/90",
-                                                                innerWrapper: "bg-transparent",
-                                                                input: [
-                                                                    "bg-transparent",
-                                                                    "text-black/90 dark:text-white/90",
-                                                                    "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                                                ],
-                                                                inputWrapper: [
-                                                                    "shadow-xl",
-                                                                    "bg-cyan-500/50",
-                                                                    "dark:bg-cyan-600/10",
-                                                                    "backdrop-blur-xl",
-                                                                    "backdrop-saturate-200",
-                                                                    "hover:bg-default-200/70",
-                                                                    "dark:hover:bg-default/70",
-                                                                    "group-data-[focus=true]:bg-default-200/50",
-                                                                    "dark:group-data-[focus=true]:bg-default/60",
-                                                                    "!cursor-text",
-                                                                ],
-                                                            }
-                                                        }
-                                                        value={formData.description_corta}
-                                                        onChange={(e) => handleChange(e, setFormData, formData)}
-                                                        className='col-span-3'
-                        
-                                                    />
-                        
-                                                   <div className='col-span-3 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 overflow-hidden rounded-xl'>
-                                                        <ReactQuill
-                                                            value={formData.description_long}
-                                                            modules={modules}
-                                                            className="text-black h-60"
-                                                            onChange={(value) => setFormData({ ...formData, description_long: value })}
-                                                            placeholder="Describe tu producto..."
-                                                        />
-                                                    </div>
-
-                        </div>
-                    </Tab>
-                    <Tab key="2" title={
-                        <div className="flex items-center space-x-2">
-                            <GalleryIcon />
-                            <span className='hidden md:block'>Imágenes</span>
-
-                        </div>
-                    } >
-                        <div key="0" style={{ padding: '16px' }} className='flex flex-wrap gap-3'>
-
-                            <input
-                                type="file"
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                ref={fileInputRef}
-                                onChange={(e) => handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)}
-                            />
-
-                            <div className='w-full'>
-                                {formData.imageUrls.length > 0 ? (
-                                    <SortableImageList
-                                        images={formData.imageUrls}
-                                        onRemove={(index) => handleRemoveImage(index, setFormData, formData)}
-                                        onReorder={(newOrder) => setFormData({ ...formData, imageUrls: newOrder })}
+                                <div className="p-4 bg-zinc-50 dark:bg-zinc-900/30 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 min-h-[120px] flex flex-col justify-center">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: 'none' }}
+                                        ref={fileInputRef}
+                                        onChange={(e) => handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)}
                                     />
-                                ) : null}
-                                
-                                <Button
-                                    isIconOnly
-                                    color='success'
-                                    variant='flat'
-                                    className='h-[80px] w-full min-w-20 md:h-[200px] md:w-[200px] mt-4'
-                                    onClick={() => handleAddImageClick(fileInputRef)}
-                                >
-                                    {!loading && <CameraIcon />}
-                                    {loading && (
-                                        <Spinner size="lg" color="success" />
+
+                                    {formData.imageUrls.length > 0 ? (
+                                        <SortableImageList
+                                            images={formData.imageUrls}
+                                            onRemove={(index) => handleRemoveImage(index, setFormData, formData)}
+                                            onReorder={(newOrder) => setFormData({ ...formData, imageUrls: newOrder })}
+                                        />
+                                    ) : (
+                                        <div
+                                            className="flex flex-col items-center justify-center py-6 text-zinc-400 cursor-pointer hover:text-primary transition-colors"
+                                            onClick={() => handleAddImageClick(fileInputRef)}
+                                        >
+                                            <CameraIcon size={40} strokeWidth={1} className="mb-2" />
+                                            <span className="text-sm font-medium">Click para subir imágenes</span>
+                                        </div>
                                     )}
-                                </Button>
+                                </div>
                             </div>
-                        </div>
-                    </Tab>
-                    <Tab key="3"
-                        title={
-                            <div className="flex items-center space-x-2">
-                                <ProductCheckIconSvg />
-                                <span className='hidden md:block'>Finalizar</span>
+
+                            {/* Descriptions */}
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                    Descripción Detallada <span className="text-danger">*</span>
+                                </label>
+                                <div className="rounded-xl overflow-hidden">
+                                    <ReactQuill
+                                        theme="snow"
+                                        value={formData.description_long}
+                                        modules={modules}
+                                        onChange={(value) => setFormData({ ...formData, description_long: value })}
+                                        className="min-h-[300px] bg-white dark:bg-[#13161c] text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
+                                    />
+                                </div>
                             </div>
-                        } >
 
-                        <Card className="bg-gray-50 w-[240px] m-auto md:w-[300px]">
-
-                            <CardBody className="">
-                                <Image
-                                    alt="Card background"
-                                    className="object-cover md:h-[250px] md:w-[300px] h-[150px] border-1 rounded-xl w-[240px] m-auto "
-                                    src={formData.imageUrls[0]}
-
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                    Descripción Corta (Resumen)
+                                </label>
+                                <Textarea
+                                    name="description_corta"
+                                    variant="bordered"
+                                    value={formData.description_corta}
+                                    onChange={(e) => handleChange(e, setFormData, formData)}
+                                    placeholder="Resumen breve para listados..."
+                                    minRows={2}
+                                    classNames={{
+                                        inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                    }}
                                 />
-                                <h4 className="font-bold text-large text-slate-800">{formData.name}</h4>
-                                <p className=" text-rose-700 uppercase font-bold text-slate-800">S/ {formData.price}</p>
-                                <small className="text-default-500 hidden text-sky-700">
-                                    {formData.category.map(cat => (
-                                        <div key={cat.idcat}>{cat.slug}</div>
-                                    ))}
-                                </small>
+                            </div>
+                        </CardBody>
+                    </Card>
 
+                    {/* SECTION 3: PRICING & INVENTORY */}
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                        <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Precios e Inventario</h2>
+                        </CardHeader>
+                        <CardBody className="p-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div>
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                        Precio Normal <span className="text-danger">*</span>
+                                    </label>
+                                    <Input
+                                        type="number"
+                                        name="price"
+                                        variant="bordered"
+                                        placeholder="0.00"
+                                        value={formData.price}
+                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                        startContent={<span className="text-zinc-500 font-medium">S/</span>}
+                                        classNames={{
+                                            inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                        Precio Oferta
+                                    </label>
+                                    <Input
+                                        type="number"
+                                        name="sale"
+                                        variant="bordered"
+                                        placeholder="0.00"
+                                        value={formData.sale}
+                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                        startContent={<span className="text-zinc-500 font-medium">S/</span>}
+                                        classNames={{
+                                            inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                        Stock <span className="text-danger">*</span>
+                                    </label>
+                                    <Input
+                                        type="number"
+                                        name="stock"
+                                        variant="bordered"
+                                        placeholder="0"
+                                        value={formData.stock}
+                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                        classNames={{
+                                            inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                        Peso (kg)
+                                    </label>
+                                    <Input
+                                        type="number"
+                                        name="weight"
+                                        variant="bordered"
+                                        placeholder="0.5"
+                                        value={formData.weight}
+                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                        classNames={{
+                                            inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </CardBody>
+                    </Card>
 
-                               <p className="text-tiny text-slate-800">
-                                                               {formData.description_corta ? <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formData.description_corta) }} /> : "Sin descripción"}
-                                                           </p>
-                            </CardBody>
+                    {/* SECTION 4: SEO */}
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                        <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Optimización SEO</h2>
+                        </CardHeader>
+                        <CardBody className="p-8 gap-6">
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                    Título SEO (Meta Title)
+                                </label>
+                                <Input
+                                    variant="bordered"
+                                    placeholder="Título optimizado para buscadores"
+                                    value={formData.seoTitle}
+                                    onChange={(e) => handleChange(e, setFormData, formData)}
+                                    name="seoTitle"
+                                    classNames={{
+                                        inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                    }}
+                                />
+                                <p className="text-xs text-zinc-500 mt-1">Máximo 60 caracteres recomendado.</p>
+                            </div>
 
-                        </Card>
+                            <div>
+                                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+                                    Meta Descripción
+                                </label>
+                                <Textarea
+                                    name="seoDescription"
+                                    variant="bordered"
+                                    value={formData.seoDescription}
+                                    onChange={(e) => handleChange(e, setFormData, formData)}
+                                    placeholder="Descripción breve para resultados de búsqueda..."
+                                    minRows={2}
+                                    classNames={{
+                                        inputWrapper: "shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-data-[focus=true]:border-primary"
+                                    }}
+                                />
+                                <p className="text-xs text-zinc-500 mt-1">Máximo 160 caracteres recomendado.</p>
+                            </div>
+                        </CardBody>
+                    </Card>
 
-                    </Tab>
-                </Tabs>
-            </CardBody>
+                </div>
 
+                {/* RIGHT COLUMN - Sticky Sidebar (4 cols) */}
+                <div className="lg:col-span-4 space-y-6 sticky top-6">
+                    <LivePreview
+                        name={formData.name}
+                        description={formData.description_corta}
+                        price={formData.price}
+                        salePrice={formData.sale}
+                        imageUrl={formData.imageUrls[0]}
+                    />
 
-            <CardFooter className='justify-between'>
-                <Button variant='flat' color='danger' onClick={() => handleBack(activeTab, setActiveTab)} disabled={parseInt(activeTab) === 0}>
-                    Atrás
-                </Button>
-                {parseInt(activeTab) !== 3 && (
-                    <Button
-                        color="warning"
-
-                        onClick={() => handleNext(activeTab, setActiveTab)}
-                        isDisabled={!isFormValid}
-                    >
-                        {parseInt(activeTab) === 3 ? 'Finalizar' : 'Siguiente'}
-                    </Button>
-                )}
-
-                {parseInt(activeTab) === 3 && (
-                    <Button
-
-                        color='success'
-                        onClick={() => handleSubmitUpdate(setSubmittingEdit, formData, setSuccessCreate)}
-                        isDisabled={!isFormValid || submitting}
-                    >
-                        {submitting ? 'Actualizando...' : 'Actualizar Producto'}
-                    </Button>
-
-                )}
-            </CardFooter>
-        </Card>
+                    <Card className="bg-primary/5 border border-primary/20 shadow-none">
+                        <CardBody className="p-4 flex flex-row items-start gap-3">
+                            <Info className="text-primary shrink-0 mt-0.5" size={20} />
+                            <div className="text-sm text-zinc-600 dark:text-zinc-300">
+                                <span className="font-bold text-zinc-900 dark:text-zinc-100 block mb-1">Tip de venta</span>
+                                Asegúrate de incluir buenas imágenes y una descripción detallada para aumentar la conversión.
+                            </div>
+                        </CardBody>
+                    </Card>
+                </div>
+            </div>
+        </div>
     );
 }
 

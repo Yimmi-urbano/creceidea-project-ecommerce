@@ -68,8 +68,9 @@ const UpdateCatalogForm: React.FC = () => {
     setIsModalLoading(false); // Finaliza la carga
   };
 
-  const handleSelectionChange = (keys: Set<string>) => {
-    const selectedKey = Array.from(keys)[0];
+  const handleSelectionChange = (keys: Set<string> | any) => {
+    // NextUI Select returns a Set or string depending on selection mode, handling keys safely
+    const selectedKey = keys instanceof Set ? Array.from(keys)[0] : keys;
     const currency = currencies.find((curr) => curr.code === selectedKey);
     if (currency) {
       setSelectedCurrency(currency);
@@ -77,142 +78,128 @@ const UpdateCatalogForm: React.FC = () => {
   };
 
   if (loading) {
-    return <span>Cargando configuración...</span>;
+    return <div className="p-4">Cargando configuración...</div>;
   }
 
   return (
     <>
-      <Card key={1} isBlurred style={{ padding: '10px' }} className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
-        <CardHeader className='w-full flex justify-between'>
-          <span className="text-xl font-semibold text-gray-600 dark:text-white">Configura tu catálogo</span>
-          <div className="flex items-center justify-end mt-4 mb-4 gap-3">
-              <span>Activar WhatsApp</span>
-              <Switch
-                color="success"
-                isSelected={whatsappIsActive ? true : false}
-                onChange={(e) => setWhatsappIsActive(e.target.checked)}
+      <Card shadow="none" className="h-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 w-full">
+        <CardHeader className="flex flex-col items-start gap-2 px-6 pt-6 pb-0">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Configura tu catálogo</h2>
+          <p className="text-sm text-zinc-500">Personaliza la experiencia de tus clientes.</p>
+        </CardHeader>
+        <CardBody className="gap-6 p-6">
+
+          {/* Sección Botón */}
+          <div className="space-y-4">
+            <h3 className="text-md font-semibold text-zinc-900 dark:text-zinc-200">Botón de Acción</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="Texto del botón"
+                placeholder="Ej: Pedir por WhatsApp"
+                variant="bordered"
+                labelPlacement="outside"
+                value={buttonText}
+                onChange={(e) => setButtonText(e.target.value)}
+                classNames={{
+                  inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+                  input: "text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400",
+                  label: "text-zinc-600 dark:text-zinc-400 font-medium"
+                }}
               />
             </div>
-        </CardHeader>
-        <CardBody>
-          <div key="0" className="grid lg:grid-cols-2 gap-5">
-            <Input
-              label="Texto del botón"
-              placeholder="Introduce el texto del botón"
-              fullWidth
-              className='lg:col-span-1 col-span-2'
-              value={buttonText}
-              onChange={(e) => setButtonText(e.target.value)}
-              classNames={{
-                label: "text-black/50 dark:text-white/90",
-                innerWrapper: "bg-transparent",
-                input: [
-                  "bg-transparent",
-                  "text-black/90 dark:text-white/90",
-                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                ],
-                inputWrapper: [
-                  "shadow-xl",
-                  "bg-cyan-500/50",
-                  "dark:bg-cyan-600/10",
-                  "backdrop-blur-xl",
-                  "backdrop-saturate-200",
-                  "hover:bg-default-200/70",
-                  "dark:hover:bg-default/70",
-                  "group-data-[focus=true]:bg-default-200/50",
-                  "dark:group-data-[focus=true]:bg-default/60",
-                  "!cursor-text",
-                ],
-              }}
-            />
-            <Input
-              label="Número de WhatsApp"
-              placeholder="Introduce el número de WhatsApp"
-              fullWidth
-              className='lg:col-span-1 col-span-2'
-              value={whatsappNumber}
-              onChange={(e) => setWhatsappNumber(e.target.value)}
-              classNames={{
-                label: "text-black/50 dark:text-white/90",
-                innerWrapper: "bg-transparent",
-                input: [
-                  "bg-transparent",
-                  "text-black/90 dark:text-white/90",
-                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                ],
-                inputWrapper: [
-                  "shadow-xl",
-                  "bg-cyan-500/50",
-                  "dark:bg-cyan-600/10",
-                  "backdrop-blur-xl",
-                  "backdrop-saturate-200",
-                  "hover:bg-default-200/70",
-                  "dark:hover:bg-default/70",
-                  "group-data-[focus=true]:bg-default-200/50",
-                  "dark:group-data-[focus=true]:bg-default/60",
-                  "!cursor-text",
-                ],
-              }}
-            />
-            <Input
-              type="text"
-              label="Mensaje Predeterminado"
-              placeholder="Hola, ¿en qué puedo ayudarte?"
-              value={whatsappMessage}
-              className='w-full col-span-2'
-              onChange={(e) => setWhatsappMessage(e.target.value)}
-              classNames={{
-                label: "text-black/50 dark:text-white/90",
-                innerWrapper: "bg-transparent",
-                input: [
-                  "bg-transparent",
-                  "text-black/90 dark:text-white/90",
-                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                ],
-                inputWrapper: [
-                  "shadow-xl",
-                  "bg-cyan-500/50",
-                  "dark:bg-cyan-600/10",
-                  "backdrop-blur-xl",
-                  "backdrop-saturate-200",
-                  "hover:bg-default-200/70",
-                  "dark:hover:bg-default/70",
-                  "group-data-[focus=true]:bg-default-200/50",
-                  "dark:group-data-[focus=true]:bg-default/60",
-                  "!cursor-text",
-                ],
-              }}
-            />
-
-          
-            <hr className='lg:col-span-2 col-span-2'></hr>
-            <span className="text-md font-semibold text-gray-600 dark:text-white col-span-2">Configura tu moneda</span>
-            <Select
-              label="Seleccione una moneda"
-              placeholder="Seleccione una moneda"
-              selectedKeys={new Set([selectedCurrency.code])}
-              className='lg:col-span-1 col-span-2'
-              onSelectionChange={handleSelectionChange}
-              classNames={{
-                trigger: ["bg-[#082f49]/90"],
-                popoverContent: ["backdrop-blur-md bg-[#082f49]/80"]
-              }}
-            >
-              {currencies.map((currency) => (
-                <SelectItem key={currency.code} value={currency.code} >
-                  {`${currency.symbol} ${currency.code}`}
-                </SelectItem>
-              ))}
-            </Select>
           </div>
-          <Button
-            className="mt-5"
-            disabled={updating}
-            onPress={handleUpdate}
-            color="success"
-          >
-            {updating ? 'Actualizando...' : 'Actualizar Catálogo'}
-          </Button>
+
+          <div className="w-full h-px bg-zinc-100 dark:bg-zinc-800" />
+
+          {/* Sección WhatsApp */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-md font-semibold text-zinc-900 dark:text-zinc-200">WhatsApp Flotante</h3>
+              <div className="flex items-center gap-3 bg-zinc-50 dark:bg-zinc-800/50 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">Activar</span>
+                <Switch
+                  color="success"
+                  size="sm"
+                  isSelected={whatsappIsActive}
+                  onChange={(e) => setWhatsappIsActive(e.target.checked)}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="Número de WhatsApp"
+                placeholder="Ej: +51 999 999 999"
+                variant="bordered"
+                labelPlacement="outside"
+                value={whatsappNumber}
+                onChange={(e) => setWhatsappNumber(e.target.value)}
+                classNames={{
+                  inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+                  input: "text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400",
+                  label: "text-zinc-600 dark:text-zinc-400 font-medium"
+                }}
+              />
+
+              <Input
+                label="Mensaje Predeterminado"
+                placeholder="Ej: Hola, quiero más info..."
+                variant="bordered"
+                labelPlacement="outside"
+                value={whatsappMessage}
+                onChange={(e) => setWhatsappMessage(e.target.value)}
+                classNames={{
+                  inputWrapper: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+                  input: "text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400",
+                  label: "text-zinc-600 dark:text-zinc-400 font-medium"
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="w-full h-px bg-zinc-100 dark:bg-zinc-800" />
+
+          {/* Sección Moneda */}
+          <div className="space-y-4">
+            <h3 className="text-md font-semibold text-zinc-900 dark:text-zinc-200">Configura tu moneda</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Select
+                label="Moneda"
+                placeholder="Seleccione..."
+                disabledKeys={['']}
+                variant="bordered"
+                labelPlacement="outside"
+                selectedKeys={selectedCurrency.code ? new Set([selectedCurrency.code]) : new Set([])}
+                onSelectionChange={handleSelectionChange}
+                classNames={{
+                  trigger: "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700",
+                  label: "text-zinc-600 dark:text-zinc-400 font-medium",
+                  value: "text-zinc-900 dark:text-zinc-100"
+                }}
+              >
+                {currencies.map((currency) => (
+                  <SelectItem key={currency.code} value={currency.code} textValue={`${currency.symbol} ${currency.code}`}>
+                    <div className="flex gap-2 items-center">
+                      <span className="font-bold text-[#00A09D]">{currency.symbol}</span>
+                      <span>{currency.code}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex justify-end mt-4">
+            <Button
+              className="w-full md:w-auto font-medium"
+              isLoading={updating}
+              onPress={handleUpdate}
+              color="primary"
+            >
+              {updating ? 'Actualizando...' : 'Actualizar Catálogo'}
+            </Button>
+          </div>
         </CardBody>
       </Card>
 

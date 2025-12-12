@@ -117,3 +117,12 @@ export const getProductsByCategory = async (
 ): Promise<Product[]> => {
     return productRepo.fetchProducts({ page, category });
 };
+
+/**
+ * Fetch all categories
+ * 
+ * @returns Promise with categories array
+ */
+export const fetchCategories = async (): Promise<any[]> => {
+    return productRepo.fetchCategories();
+};

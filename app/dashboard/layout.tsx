@@ -4,17 +4,9 @@ import OptionsToolbar from "@/src/presentation/components/shared/toolbar";
 import Sidebar from "@/src/presentation/components/shared/sidebar";
 import { HeadToolbar } from "@/src/presentation/components/shared/headToolbar";
 import { ThemeProvider } from "@/src/presentation/contexts";
+import { ConfigProvider } from "@/src/presentation/contexts/ConfigContext";
 
-// Create context for sidebar state
-const SidebarContext = createContext<{
-  isCollapsed: boolean;
-  setIsCollapsed: (value: boolean) => void;
-}>({
-  isCollapsed: false,
-  setIsCollapsed: () => { },
-});
-
-export const useSidebar = () => useContext(SidebarContext);
+import { SidebarContext } from "@/src/presentation/contexts/SidebarContext";
 
 export default function DashboardLayout({
   children,
@@ -25,27 +17,29 @@ export default function DashboardLayout({
 
   return (
     <ThemeProvider>
-      <SidebarContext.Provider value={{ isCollapsed, setIsCollapsed }}>
-        <div className="min-h-screen font-sans transition-colors duration-300 bg-zinc-50 dark:bg-[#0f1115] text-zinc-900 dark:text-zinc-100">
-          {/* Desktop Sidebar */}
-          <div className="md:flex hidden">
-            <Sidebar />
-          </div>
-
-          {/* Mobile Toolbar */}
-          <div className="md:hidden visible">
-            <OptionsToolbar />
-          </div>
-
-          {/* Main Content - adapts to sidebar state */}
-          <main className={`transition-all duration-300 min-h-screen flex flex-col ${isCollapsed ? 'ml-20' : 'ml-64'}`}>
-            <HeadToolbar />
-            <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
-              {children}
+      <ConfigProvider>
+        <SidebarContext.Provider value={{ isCollapsed, setIsCollapsed }}>
+          <div className="min-h-screen font-sans transition-colors duration-300 bg-zinc-50 dark:bg-[#0f1115] text-zinc-900 dark:text-zinc-100">
+            {/* Desktop Sidebar */}
+            <div className="md:flex hidden">
+              <Sidebar />
             </div>
-          </main>
-        </div>
-      </SidebarContext.Provider>
+
+            {/* Mobile Toolbar */}
+            <div className="md:hidden visible">
+              <OptionsToolbar />
+            </div>
+
+            {/* Main Content - adapts to sidebar state */}
+            <main className={`transition-all duration-300 min-h-screen flex flex-col ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
+              <HeadToolbar />
+              <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full pb-24 md:pb-8">
+                {children}
+              </div>
+            </main>
+          </div>
+        </SidebarContext.Provider>
+      </ConfigProvider>
     </ThemeProvider>
   );
 }

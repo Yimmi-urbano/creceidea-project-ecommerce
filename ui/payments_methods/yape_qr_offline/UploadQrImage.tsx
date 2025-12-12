@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button, Card, CardBody, Spinner, Image } from "@nextui-org/react";
-import { Camera, Trash2 } from "lucide-react";
+import { Button, Spinner } from "@nextui-org/react";
+import { toast } from "sonner";
+import { Camera, Trash2, UploadCloud, Image as ImageIcon } from "lucide-react";
 import { postUploadImage } from "@/src/application/upload/uploadServices";
 
 interface UploadQrImageProps {
@@ -36,7 +37,10 @@ const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialIma
       }
     } catch (error) {
       console.error("Error al subir la imagen:", error);
-      alert("Hubo un problema al subir la imagen.");
+      // ... imports ...
+
+      // ... inside component ...
+      toast.error("Hubo un problema al subir la imagen.");
     }
 
     setLoading(false);
@@ -53,31 +57,49 @@ const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialIma
   };
 
   return (
-    <Card className="bg-transparent mx-auto h-full" shadow="none">
-      <CardBody>
-        {!imageUrl ? (
-          <>
-            <input ref={fileInputRef} type="file" style={{ display: "none" }} onChange={handleFileChange} />
-            <Button
-              isIconOnly
-              color="success"
-              variant="flat"
-              className="h-full w-full min-w-[200px]"
-              onClick={handleAddImageClick}
-            >
-              {!loading ? <Camera /> : <Spinner size="lg" color="success" />}
-            </Button>
-          </>
-        ) : (
-          <div className="w-full block">
-            <Image isBlurred src={imageUrl} alt="Código QR" className='object-contain border-1 border-[#0ea5e9]/30 h-[80px] min-w-20 md:h-[200px] md:w-[200px] w-full' />
-            <Button color="warning" variant="flat" onClick={handleDeleteImage} className="mt-3 w-full">
-              Reemplazar QR <Trash2 size={18} />
-            </Button>
+    <div className="w-full h-full min-h-[250px] flex flex-col">
+      <input ref={fileInputRef} type="file" style={{ display: "none" }} onChange={handleFileChange} accept="image/*" />
+
+      {!imageUrl ? (
+        <div
+          onClick={handleAddImageClick}
+          className="flex-1 border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer flex flex-col items-center justify-center gap-4 p-6 group"
+        >
+          <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 group-hover:bg-[#00A09D]/10 transition-colors">
+            {loading ? (
+              <Spinner size="lg" color="success" />
+            ) : (
+              <UploadCloud className="w-8 h-8 text-zinc-400 group-hover:text-[#00A09D] transition-colors" />
+            )}
           </div>
-        )}
-      </CardBody>
-    </Card>
+          <div className="text-center space-y-1">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              {loading ? "Subiendo imagen..." : "Sube tu código QR"}
+            </h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Haz clic para seleccionar una imagen
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex-1 flex flex-col items-center justify-center p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-800/20 relative group overflow-hidden">
+          <img
+            src={imageUrl}
+            alt="Código QR"
+            className="w-full h-full object-contain max-h-[200px] mb-4 rounded-lg"
+          />
+          <div className="w-full mt-auto pt-4 border-t border-zinc-200 dark:border-zinc-800">
+            <button
+              onClick={handleDeleteImage}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 hover:bg-rose-200 dark:hover:bg-rose-900/50 transition-colors text-sm font-medium"
+            >
+              <Trash2 size={16} />
+              Eliminar QR
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

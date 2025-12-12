@@ -72,6 +72,34 @@ function CategoriesContent() {
         )}
       </div>
 
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+            Total de Categorías
+          </p>
+          <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            {allCategories?.length || 0}
+          </p>
+        </div>
+        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+            Visibles
+          </p>
+          <p className="text-2xl font-bold text-[#00A09D]">
+            {filteredCategories?.length || 0}
+          </p>
+        </div>
+        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+            Seleccionadas
+          </p>
+          <p className="text-2xl font-bold text-amber-500">
+            {selectedCategories?.length || 0}
+          </p>
+        </div>
+      </div>
+
       {/* Categories List */}
       <div className="space-y-2">
         {/* Header Checkbox */}
@@ -124,34 +152,6 @@ function CategoriesContent() {
             </p>
           </div>
         )}
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-            Total de Categorías
-          </p>
-          <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-            {allCategories?.length || 0}
-          </p>
-        </div>
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-            Visibles
-          </p>
-          <p className="text-2xl font-bold text-[#00A09D]">
-            {filteredCategories?.length || 0}
-          </p>
-        </div>
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-            Seleccionadas
-          </p>
-          <p className="text-2xl font-bold text-amber-500">
-            {selectedCategories?.length || 0}
-          </p>
-        </div>
       </div>
     </div>
   );

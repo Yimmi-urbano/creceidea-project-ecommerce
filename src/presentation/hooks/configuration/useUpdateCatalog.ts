@@ -1,5 +1,6 @@
 import { useState } from 'react';
-const API_URL_CONFIGURATION = process.env.NEXT_PUBLIC_CONFIGURATION;
+import { API_ENDPOINTS } from '@/src/infrastructure/http/apiConfig';
+
 const useUpdateCatalog = () => {
   const [updating, setUpdating] = useState(false);
   const [currencies, setCurrencies] = useState<{ code: string; symbol: string }[]>([]);
@@ -8,7 +9,7 @@ const useUpdateCatalog = () => {
     setUpdating(true);
     try {
       const domain = localStorage.getItem('domainSelect');
-      const response = await fetch(`${API_URL_CONFIGURATION}/config/catalogo`, {
+      const response = await fetch(`${API_ENDPOINTS.CONFIGURATION}/config/catalogo`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

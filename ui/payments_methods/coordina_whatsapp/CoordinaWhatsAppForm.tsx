@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { Input, Button, Card, CardBody, Textarea, Switch } from "@nextui-org/react";
 import { getPayment, addPayment, editPayment } from "@/src/application/payments_methods/paymentsServices";
@@ -66,12 +67,12 @@ function usePaymentForm(nameId: string) {
   };
 
   const createPayment = async () => {
-    if (!form.nameId) return alert("Completa los campos obligatorios");
+    if (!form.nameId) return toast.error("Completa los campos obligatorios");
     setLoading(true);
 
     const result = await addPayment(form);
     if (result) {
-      alert("Método de pago creado correctamente");
+      toast.success("Método de pago creado correctamente");
       setIsUpdate(true);
       fetchPayment();
     }
@@ -82,7 +83,7 @@ function usePaymentForm(nameId: string) {
   const updatePayment = async () => {
 
     if (!nameId) {
-      alert("Error: No hay un método de pago válido para actualizar");
+      toast.error("Error: No hay un método de pago válido para actualizar");
       return;
     }
 
@@ -91,7 +92,7 @@ function usePaymentForm(nameId: string) {
 
     const result = await editPayment(nameId, form);
     if (result) {
-      alert("Método de pago actualizado correctamente");
+      toast.success("Método de pago actualizado correctamente");
     }
 
     setLoading(false);
@@ -190,7 +191,7 @@ export default function CoordinaWhatsApp({ nameId }: { nameId: string }) {
                 const updatedForm = { ...form, isActive: val };
                 setForm(updatedForm);
                 await editPayment(nameId, updatedForm);
-                alert('Se actualizó correctamente.')
+                toast.success('Se actualizó correctamente.')
               }}
               color="success"
             >

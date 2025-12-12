@@ -1,7 +1,8 @@
 import { getDomainFromLocalStorage } from "@/src/infrastructure/storage/localStorage";
 import { Payment } from "@/src/domain/payments_methods/Payment";
+import { API_ENDPOINTS } from "@/src/infrastructure/http/apiConfig";
 
-const API_URL = "https://api-payment-method.creceidea.pe/api/payments";
+const API_URL = API_ENDPOINTS.PAYMENT_METHODS;
 
 const getHeaders = () => {
 

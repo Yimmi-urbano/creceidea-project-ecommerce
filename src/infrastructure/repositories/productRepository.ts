@@ -12,6 +12,16 @@ import { API_ENDPOINTS } from '@/src/infrastructure/http/apiConfig';
 import { Product, ProductFilters } from '@/src/domain/products/Product';
 
 /**
+ * Fetch all categories
+ * 
+ * @returns Promise with categories array
+ */
+export const fetchCategories = async (): Promise<any[]> => {
+    const response = await apiClient.get(API_ENDPOINTS.CATEGORIES);
+    return response.data;
+};
+
+/**
  * Fetch products with filters
  * 
  * @param filters - Product filters (page, title, category)

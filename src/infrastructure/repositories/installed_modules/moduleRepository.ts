@@ -1,12 +1,13 @@
 import { getDomainFromLocalStorage } from "@/src/infrastructure/storage/localStorage";
 import { Module } from "@/src/domain/installed_modules/Module";
+import { API_ENDPOINTS } from "@/src/infrastructure/http/apiConfig";
 
 export const fetchModules = async (domain: string): Promise<Module[]> => {
   try {
     const myHeaders = new Headers();
     myHeaders.append("domain", domain);
 
-    const response = await fetch("https://api-installed-modules.creceidea.pe/modules", {
+    const response = await fetch(API_ENDPOINTS.INSTALLED_MODULES, {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",

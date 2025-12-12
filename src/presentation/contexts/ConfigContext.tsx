@@ -12,6 +12,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { getDomainFromLocalStorage } from '@/src/infrastructure/storage/localStorage';
 import { SiteConfiguration } from '@/src/domain/configuration/SiteConfig';
+import { API_ENDPOINTS } from '@/src/infrastructure/http/apiConfig';
 
 interface ConfigContextType {
     config: SiteConfiguration | null;
@@ -53,7 +54,7 @@ export const ConfigProvider = ({ children }: { children: ReactNode }) => {
 
             try {
                 const response = await fetch(
-                    `https://api-configuration.creceidea.pe/api/configurations`,
+                    API_ENDPOINTS.CONFIGURATIONS,
                     {
                         method: 'GET',
                         headers: {

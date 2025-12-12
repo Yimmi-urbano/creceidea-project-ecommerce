@@ -8,27 +8,25 @@ const ThemesList: React.FC = () => {
     const { themes, loading, handleSingleCheckboxChange, updateSuccess, setUpdateSuccess } = useThemes();
     const { config, loading: configLoading } = useConfig();
     const [selected, setSelected] = useState<string>('');
-    const [pendingSelection, setPendingSelection] = useState<string | null>(null); // Tema pendiente de confirmación
+    const [pendingSelection, setPendingSelection] = useState<string | null>(null);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
     const [payThemeName, setPayThemeName] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
     const [notificationMessage, setNotificationMessage] = useState('');
 
-    // Sincronizar el tema con la configuración actual al cargar
     useEffect(() => {
         if (config?.theme) {
             setSelected(config.theme.toString());
         }
     }, [config?.theme]);
 
-    // Manejar la respuesta de la API (confirmar si la selección fue exitosa)
     useEffect(() => {
         if (updateSuccess !== null) {
             setIsLoading(false);
             if (updateSuccess) {
                 setNotificationMessage('El tema ha sido seleccionado correctamente');
-                setSelected(pendingSelection!); // Solo actualizar cuando la API confirma éxito
+                setSelected(pendingSelection!);
             } else {
                 setNotificationMessage('Error al seleccionar el tema');
             }
@@ -58,12 +56,14 @@ const ThemesList: React.FC = () => {
     };
 
     const handleThemeSelection = async (themeName: string, themeType: string, themeTitle: string) => {
+        if (selected === themeName) return; // Ya esta seleccionado
+
         setIsLoading(true);
-        setUpdateSuccess(null); // Reiniciar el estado de éxito/fallo
-        setPendingSelection(themeName); // Guardar el tema seleccionado como pendiente
+        setUpdateSuccess(null);
+        setPendingSelection(themeName);
 
         if (themeType === 'pay') {
-            openPaymentModal(themeTitle); // Abrir modal de pago si el tema es de pago
+            openPaymentModal(themeTitle);
         } else {
             const selectedTheme = themes.find((theme) => theme.name === themeName);
             if (selectedTheme) {
@@ -73,81 +73,16 @@ const ThemesList: React.FC = () => {
         }
     };
 
-    const renderThemes = () => {
-        return themes.map((theme) => {
-            const { _id, images, title, type_theme, sale_price, price, name, url_demo } = theme;
-
-            const isSelected = selected === name;
-            const cardClassName = isSelected
-                ? 'border-2 border-[#0ea5e9]/70 cursor-pointer h-full  bg-[#0c4a6e]/40 w-[100%]'
-                : 'cursor-pointer h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]'; // Aplicar borde si está seleccionado
-
-            return (
-                <Card
-                    key={_id}
-                    shadow="sm"
-                    isPressable
-
-                    onClick={() => handleThemeSelection(name, type_theme, title)}
-                    className={cardClassName}
-
-                    isBlurred
-
-                >
-                    <CardBody>
-                        <Image
-                            src={images[0]}
-                            width="100%"
-                            height={140}
-                            alt={title}
-                            className='object-cover'
-                        />
-                        <Spacer y={1} />
-                        <div>
-                            <strong>{title}</strong>
-                        </div>
-                        <div>Tipo: {type_theme === 'free' ? 'Gratis' : 'De pago'}</div>
-                        {type_theme !== 'free' && (
-                            <div>Precio: {price > 0 ? `$${sale_price} (Descuento)` : 'Gratis'}</div>
-                        )}
-                        <Spacer y={0.5} />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <a
-                                className='button'
-                                color="warning"
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Evitar que el botón interfiera con la selección
-                                    window.open(url_demo, '_blank');
-                                }}
-                            >
-                                Ver Demo
-                            </a>
-
-                            <a
-                                className='button'
-                                color="danger"
-                                onClick={() => openPaymentModal(title)}
-                            >
-                                Quitar Anuncio
-                            </a>
-                        </div>
-                    </CardBody>
-                </Card>
-            );
-        });
-    };
-
     if (loading || configLoading) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Spinner size="lg" />
+            <div className="flex justify-center items-center h-[50vh]">
+                <Spinner size="lg" color="primary" />
             </div>
         );
     }
 
     return (
         <>
-            {/* Modal de notificación */}
             <NotificationModal
                 isOpen={isNotificationOpen}
                 onClose={closeNotificationModal}
@@ -155,15 +90,113 @@ const ThemesList: React.FC = () => {
                 message={notificationMessage}
             />
 
-            {/* Modal de pago */}
             <PaymentModal
                 isOpen={isPaymentOpen}
                 onClose={closePaymentModal}
                 payThemeName={payThemeName}
             />
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {renderThemes()}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-1">
+                {themes.map((theme) => {
+                    const { _id, images, title, type_theme, sale_price, price, name, url_demo } = theme;
+                    const isSelected = selected === name;
+
+                    return (
+                        <Card
+                            key={_id}
+                            shadow="none"
+                            className={`
+                                relative border group transition-all duration-300
+                                ${isSelected
+                                    ? 'border-[#00A09D] ring-1 ring-[#00A09D] bg-white dark:bg-zinc-900'
+                                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-[#00A09D]/50'
+                                }
+                            `}
+                        >
+                            {/* Imagen Header */}
+                            <div className="relative aspect-video w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                                <Image
+                                    src={images[0]}
+                                    alt={title}
+                                    classNames={{
+                                        wrapper: "w-full h-full",
+                                        img: "w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    }}
+                                    radius="none"
+                                />
+                                {isSelected && (
+                                    <div className="absolute top-2 right-2 bg-[#00A09D] text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">
+                                        Activo
+                                    </div>
+                                )}
+                                <div className="absolute top-2 left-2 flex gap-1">
+                                    {type_theme === 'free' ? (
+                                        <div className="bg-zinc-900/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded border border-white/10">
+                                            GRATIS
+                                        </div>
+                                    ) : (
+                                        <div className="bg-amber-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded border border-white/10">
+                                            PREMIUM
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <CardBody className="p-4">
+                                <div className="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-lg line-clamp-1">{title}</h3>
+                                        {type_theme !== 'free' && (
+                                            <p className="text-sm text-zinc-500">
+                                                {price > 0 ? (
+                                                    <span className="flex items-center gap-2">
+                                                        <span className="font-bold text-[#00A09D]">${sale_price}</span>
+                                                        <span className="line-through text-xs">${price}</span>
+                                                    </span>
+                                                ) : 'Gratis'}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-2 mt-2">
+                                    {!isSelected && (
+                                        <Button
+                                            className="w-full font-medium"
+                                            color="primary"
+                                            size="sm"
+                                            onClick={() => handleThemeSelection(name, type_theme, title)}
+                                        >
+                                            Seleccionar Diseño
+                                        </Button>
+                                    )}
+
+                                    <div className="flex gap-2">
+                                        <Button
+                                            className="flex-1 border-zinc-200 dark:border-zinc-700 font-medium"
+                                            variant="bordered"
+                                            size="sm"
+                                            onClick={() => window.open(url_demo, '_blank')}
+                                        >
+                                            Ver Demo
+                                        </Button>
+                                        {type_theme !== 'free' && (
+                                            <Button
+                                                className="flex-1 font-medium"
+                                                color="danger"
+                                                variant="flat"
+                                                size="sm"
+                                                onClick={() => openPaymentModal(title)}
+                                            >
+                                                Quitar Anuncio
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    );
+                })}
             </div>
         </>
     );

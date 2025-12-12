@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_ENDPOINTS } from "@/src/infrastructure/http/apiConfig";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL_AUTH;
-const API_URL_DOMAINS_ASSIGNED = process.env.NEXT_PUBLIC_DOMAINS_ASSIGNED;
+const API_URL = API_ENDPOINTS.AUTH;
+const API_URL_DOMAINS_ASSIGNED = API_ENDPOINTS.DOMAINS;
 const api = axios.create({
   baseURL: API_URL,
   headers: {
