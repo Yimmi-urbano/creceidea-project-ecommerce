@@ -1,7 +1,7 @@
 "use client"
-import OptionsToolbar from "@/src/presentation/components/shared/toolbar";
-import Sidebar from "@/src/presentation/components/shared/sidebar";
-import { HeadToolbar } from "@/src/presentation/components/shared/headToolbar";
+import OptionsToolbar from "@/src/presentation/components/shared/Toolbar";
+import Sidebar from "@/src/presentation/components/shared/Sidebar";
+import { HeadToolbar } from "@/src/presentation/components/shared/HeadToolbar";
 
 export default function DashboardLayout({
   children,

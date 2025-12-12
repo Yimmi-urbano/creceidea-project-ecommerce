@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Spinner, Checkbox } from '@nextui-org/react';
-import { CameraIcon, MiniTrashIcon } from "@/src/presentation/components/shared/icons";
+import { CameraIcon, MiniTrashIcon } from "@/src/presentation/components/shared/Icons";
 import { submitBanner, updateBanner, Banner } from '@/src/presentation/hooks';
 import { uploadImage } from '@/src/application/products/productServices';
 

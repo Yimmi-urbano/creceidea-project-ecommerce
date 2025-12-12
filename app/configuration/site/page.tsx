@@ -3,9 +3,9 @@
 import React from 'react';
 import { Card, CardHeader, CardBody } from '@nextui-org/react';
 import { Palette, Image as ImageIcon, Search, MessageCircle } from 'lucide-react';
-import UploadLogo from '@/src/presentation/components/client/uploadLogo';
-import UpdateMetadata from '@/src/presentation/components/client/updateMetaSeo';
-import WhatsappSettings from '@/src/presentation/components/client/whatsappHome';
+import UploadLogo from '@/src/presentation/components/client/UploadLogo';
+import UpdateMetadata from '@/src/presentation/components/client/UpdateMetaSeo';
+import WhatsappSettings from '@/src/presentation/components/client/WhatsAppHome';
 import ColorPicker from '@/src/presentation/components/client/ColorPicker';
 import { ConfigProvider } from '@/src/presentation/contexts';
 

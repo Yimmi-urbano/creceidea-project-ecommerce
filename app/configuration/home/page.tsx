@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import BannerList from '@/src/presentation/components/client/home/card-banners';
+import BannerList from '@/src/presentation/components/client/home/CardBanners';
 import BannerModal from '@/src/presentation/components/client/home/BannerModal';
 import { Banner } from '@/src/presentation/hooks';
 

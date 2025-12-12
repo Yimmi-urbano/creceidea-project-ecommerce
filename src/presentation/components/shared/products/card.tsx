@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, Button } from "@nextui-org/react";
-import { MiniEyeIcon, MiniTrashIcon } from "@/src/presentation/components/shared/icons";
+import { MiniEyeIcon, MiniTrashIcon } from "@/src/presentation/components/shared/Icons";
 import { useProductContext } from '@/src/presentation/contexts';
-import withPermission from "@/src/presentation/components/client/withPermission";
+import withPermission from "@/src/presentation/components/client/WithPermission";
 import { useRouter } from "next/router";
 
 const CardProducts: React.FC = () => {

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { CategoryProvider, useCategoryContext } from '@/src/presentation/components/client/category/CategoryContext';
 import { Edit2, Trash2, Search } from 'lucide-react';
-import AddCategory from '@/src/presentation/components/client/category/addCategory';
+import AddCategory from '@/src/presentation/components/client/category/AddCategory';
 
 function CategoriesContent() {
   const { allCategories, handleDeleteCategory } = useCategoryContext();

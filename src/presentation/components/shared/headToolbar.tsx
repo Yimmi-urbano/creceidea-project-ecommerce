@@ -10,7 +10,7 @@ export const HeadToolbar = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-30 h-16 px-6 flex items-center justify-between border-b backdrop-blur-xl bg-opacity-80 bg-white/80 dark:bg-dark-bg/80 border-zinc-200 dark:border-zinc-800">
+      <div className="sticky top-0 z-30 h-16 px-6 flex items-center justify-between border-b backdrop-blur-xl bg-opacity-80 bg-white/80 dark:bg-dark-bg border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-4 flex-1">
           {/* Global Search */}
           <div className="relative w-full max-w-md hidden md:block group">

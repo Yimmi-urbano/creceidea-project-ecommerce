@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Image, CardBody, CardHeader } from '@nextui-org/react';
 import { fetchBanners, deleteBanner, Banner } from '@/src/presentation/hooks';
-import { MiniTrashIcon, EditProductIcon } from "@/src/presentation/components/shared/icons";
+import { MiniTrashIcon, EditProductIcon } from "@/src/presentation/components/shared/Icons";
 import { NotificationModal, ConfirmDeleteModal } from '@/src/presentation/components/client/utils/NotificationModal'; // Importar el nuevo modal de confirmación
 
 interface BannerListProps {

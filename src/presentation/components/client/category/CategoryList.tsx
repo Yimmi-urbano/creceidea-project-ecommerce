@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, CardFooter, CardBody, Modal, Input, Spacer, ModalHeader, ModalBody, ModalContent, ModalFooter, Select, SelectItem } from '@nextui-org/react';
-import { MiniTrashIcon, EditProductIcon } from "@/src/presentation/components/shared/icons";
+import { MiniTrashIcon, EditProductIcon } from "@/src/presentation/components/shared/Icons";
 import { useCategoryContext } from './CategoryContext';
 
 interface Category {

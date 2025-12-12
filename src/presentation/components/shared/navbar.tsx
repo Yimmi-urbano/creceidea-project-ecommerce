@@ -6,7 +6,7 @@ import {
   NavbarBrand,
   NavbarItem,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
+} from "@nextui-org/Navbar";
 import { Button } from "@nextui-org/button";
 import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
@@ -16,7 +16,7 @@ import NextLink from "next/link";
 import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/src/presentation/components/client/theme-switch";
+import { ThemeSwitch } from "@/src/presentation/components/client/ThemeSwitch";
 import {
   TwitterIcon,
   GithubIcon,
@@ -24,7 +24,7 @@ import {
   HeartFilledIcon,
   SearchIcon,
   Logo,
-} from "@/src/presentation/components/icons";
+} from "@/src/presentation/components/Icons";
 
 export const Navbar = () => {
   const searchInput = (

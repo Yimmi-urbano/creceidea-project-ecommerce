@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, Download, Edit3, CreditCard, Truck, Search } from 'lucide-react';
-import withPermission from "@/src/presentation/components/client/withPermission";
+import withPermission from "@/src/presentation/components/client/WithPermission";
 import useIsOrders from '@/src/presentation/hooks/orders/useIsOrders';
 import { updateOrderStatus, updatePaymentStatus } from '@/src/application/orders/orderServices';
 
@@ -46,7 +46,7 @@ const getStatusDot = (status: string) => {
   }
 };
 
-const Ordenes: React.FC = () => {
+const Orders: React.FC = () => {
   const { orders, loading, error, refreshOrders } = useIsOrders();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -125,15 +125,15 @@ const Ordenes: React.FC = () => {
       {/* Summary Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Total de Pedidos</p>
-          <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{totalOrders}</p>
+          <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Total de Pedidos</p>
+          <p className="text-2xl font-bold text-zinc-900 dark:text-white">{totalOrders}</p>
         </div>
         <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Visibles</p>
+          <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Visibles</p>
           <p className="text-2xl font-bold text-primary">{visibleOrders}</p>
         </div>
         <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Completados</p>
+          <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Completados</p>
           <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{completedOrders}</p>
         </div>
       </div>
@@ -141,7 +141,7 @@ const Ordenes: React.FC = () => {
       {/* Orders Table */}
       <div className="overflow-x-auto rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
         <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-dark-bg text-zinc-500 dark:text-zinc-400">
+          <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-dark-bg text-zinc-700 dark:text-zinc-200">
             <tr>
               <th className="px-6 py-4">Pedido ID</th>
               <th className="px-6 py-4">Cliente</th>
@@ -170,17 +170,17 @@ const Ordenes: React.FC = () => {
                     <div className="font-medium text-zinc-900 dark:text-zinc-200">
                       {clientName} {clientLastName}
                     </div>
-                    <div className="text-xs text-zinc-500">
+                    <div className="text-xs text-zinc-600 dark:text-zinc-400">
                       {productCount} producto{productCount !== 1 ? 's' : ''}
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-zinc-500">
+                  <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
                     {order.createdAt}
                   </td>
-                  <td className="px-6 py-4 text-zinc-500">
+                  <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
                     {order.paymentStatus?.date || '-'}
                   </td>
-                  <td className="px-6 py-4 font-bold text-zinc-900 dark:text-zinc-100">
+                  <td className="px-6 py-4 font-bold text-zinc-900 dark:text-white">
                     {order.currency === "PEN" ? "S/" : "$"} {order.total.toFixed(2)}
                   </td>
                   <td className="px-6 py-4">
@@ -227,7 +227,7 @@ const Ordenes: React.FC = () => {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             Mostrando {startIndex + 1} a {Math.min(endIndex, filteredOrders.length)} de {filteredOrders.length} pedidos
           </p>
           <div className="flex gap-2">
@@ -271,4 +271,4 @@ const Ordenes: React.FC = () => {
   );
 };
 
-export default withPermission(Ordenes, 'ordenes');
+export default withPermission(Orders, 'ordenes');

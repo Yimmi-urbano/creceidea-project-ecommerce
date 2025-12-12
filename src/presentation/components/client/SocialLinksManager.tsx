@@ -7,7 +7,7 @@ import {
     deleteSocialLink,
     fetchAvailableIcons
 } from '@/src/presentation/hooks/socialsLinksService';
-import { EyeFilledIcon, EyeSlashFilledIcon, EditProductIcon, MiniTrashIcon } from "@/src/presentation/components/shared/icons";
+import { EyeFilledIcon, EyeSlashFilledIcon, EditProductIcon, MiniTrashIcon } from "@/src/presentation/components/shared/Icons";
 import { socialLinksReducer, initialState } from '@/src/presentation/reducers/socialLinksReducer';
 import { SocialLink, IconOption } from '@/src/domain';
 

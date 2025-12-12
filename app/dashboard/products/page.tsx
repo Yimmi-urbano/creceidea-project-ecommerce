@@ -4,8 +4,8 @@ import { ProductProvider, useProductContext } from '@/src/presentation/contexts'
 import { Search, Filter, Plus, LayoutGrid, List, ArrowUpDown } from 'lucide-react';
 import { ProductGridView } from '@/src/presentation/components/client/products/ProductGridView';
 import { ProductTableView } from '@/src/presentation/components/client/products/ProductTableView';
-import CardProductEdit from '@/src/presentation/components/client/products/cardProductEdit';
-import Paginator from '@/src/presentation/components/client/products/paginator';
+import CardProductEdit from '@/src/presentation/components/client/products/CardProductEdit';
+import Paginator from '@/src/presentation/components/client/products/Paginator';
 import { updateOrderList } from '@/src/application/products/productServices';
 
 function ProductsContent() {

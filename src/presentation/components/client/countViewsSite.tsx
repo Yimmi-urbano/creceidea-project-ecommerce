@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgress, Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
-import { WorldIcon } from "@/src/presentation/components/shared/icons";
+import { WorldIcon } from "@/src/presentation/components/shared/Icons";
 
 interface ApiResponse {
   views: number;

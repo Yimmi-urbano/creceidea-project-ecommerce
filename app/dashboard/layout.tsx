@@ -1,8 +1,8 @@
 "use client"
 import { useState, createContext, useContext } from "react";
-import OptionsToolbar from "@/src/presentation/components/shared/toolbar";
-import Sidebar from "@/src/presentation/components/shared/sidebar";
-import { HeadToolbar } from "@/src/presentation/components/shared/headToolbar";
+import OptionsToolbar from "@/src/presentation/components/shared/Toolbar";
+import Sidebar from "@/src/presentation/components/shared/Sidebar";
+import { HeadToolbar } from "@/src/presentation/components/shared/HeadToolbar";
 import { ThemeProvider } from "@/src/presentation/contexts";
 import { ConfigProvider } from "@/src/presentation/contexts/ConfigContext";
 
@@ -19,7 +19,7 @@ export default function DashboardLayout({
     <ThemeProvider>
       <ConfigProvider>
         <SidebarContext.Provider value={{ isCollapsed, setIsCollapsed }}>
-          <div className="min-h-screen font-sans transition-colors duration-300 bg-zinc-50 dark:bg-[#0f1115] text-zinc-900 dark:text-zinc-100">
+          <div className="min-h-screen font-sans transition-colors duration-300 bg-zinc-50 dark:bg-[#0f1115] text-zinc-900 dark:text-white">
             {/* Desktop Sidebar */}
             <div className="md:flex hidden">
               <Sidebar />

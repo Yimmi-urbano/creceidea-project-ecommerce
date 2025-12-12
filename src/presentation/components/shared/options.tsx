@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@nextui-org/react";
 import { siteConfig } from "@/config/site";
-import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, PaymentIcon, OrderIcon } from "@/src/presentation/components/shared/icons";
+import { DashboardIcon, CategoriesIcon, PagesIcon, ProductIcon, PaymentIcon, OrderIcon } from "@/src/presentation/components/shared/Icons";
 
 type IconKey = "DashboardIcon" | "CategoriesIcon" | "PagesIcon" | "ProductIcon" | "PaymentIcon" | "OrderIcon";
 

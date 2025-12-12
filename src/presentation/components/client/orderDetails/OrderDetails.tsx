@@ -98,10 +98,10 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                         <ArrowLeft size={20} className="text-zinc-600 dark:text-zinc-400" />
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                        <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">
                             Pedido #{orderData.orderNumber.substring(0, 13)}
                         </h1>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                        <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-1">
                             Creado el {orderData.createdAt}
                         </p>
                     </div>
@@ -125,7 +125,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                         <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/20">
                             <CreditCard className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                         </div>
-                        <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Estado de Pago</h3>
+                        <h3 className="font-semibold text-zinc-900 dark:text-white">Estado de Pago</h3>
                     </div>
                     <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border ${getStatusClass(orderData.paymentStatus?.typeStatus || 'pending')}`}>
                         {getStatusIcon(orderData.paymentStatus?.typeStatus || 'pending')}
@@ -146,7 +146,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                         <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/20">
                             <Truck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                         </div>
-                        <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Estado de Envío</h3>
+                        <h3 className="font-semibold text-zinc-900 dark:text-white">Estado de Envío</h3>
                     </div>
                     <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border ${getStatusClass(orderData.orderStatus?.typeStatus || 'pending')}`}>
                         {getStatusIcon(orderData.orderStatus?.typeStatus || 'pending')}
@@ -168,7 +168,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                                 <div className="p-2 rounded-lg bg-primary/10">
                                     <Package className="w-5 h-5 text-primary" />
                                 </div>
-                                <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                                <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
                                     Productos ({orderData.products.length})
                                 </h2>
                             </div>
@@ -185,7 +185,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                                             />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                                            <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
                                                 {product.title}
                                             </h3>
                                             <div className="flex flex-wrap gap-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -194,7 +194,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <p className="font-bold text-zinc-900 dark:text-zinc-100">
+                                            <p className="font-bold text-zinc-900 dark:text-white">
                                                 {orderData.currency === "PEN" ? "S/" : "$"} {(product.valid_price * product.qty).toFixed(2)}
                                             </p>
                                         </div>
@@ -208,17 +208,17 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-zinc-600 dark:text-zinc-400">Subtotal</span>
-                                    <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                                    <span className="font-medium text-zinc-900 dark:text-white">
                                         {orderData.currency === "PEN" ? "S/" : "$"} {subtotal.toFixed(2)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-zinc-600 dark:text-zinc-400">Envío</span>
-                                    <span className="font-medium text-zinc-900 dark:text-zinc-100">Gratis</span>
+                                    <span className="font-medium text-zinc-900 dark:text-white">Gratis</span>
                                 </div>
                                 <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800">
                                     <div className="flex justify-between">
-                                        <span className="text-base font-semibold text-zinc-900 dark:text-zinc-100">Total</span>
+                                        <span className="text-base font-semibold text-zinc-900 dark:text-white">Total</span>
                                         <span className="text-xl font-bold text-primary">
                                             {orderData.currency === "PEN" ? "S/" : "$"} {orderData.total.toFixed(2)}
                                         </span>
@@ -237,12 +237,12 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                             <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/20">
                                 <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                             </div>
-                            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Cliente</h2>
+                            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Cliente</h2>
                         </div>
                         <div className="space-y-3">
                             <div>
                                 <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-1">Nombre</p>
-                                <p className="font-medium text-zinc-900 dark:text-zinc-100">{fullName}</p>
+                                <p className="font-medium text-zinc-900 dark:text-white">{fullName}</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Mail className="w-4 h-4 text-zinc-400" />
@@ -267,7 +267,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                             <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/20">
                                 <CreditCard className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                             </div>
-                            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Método de Pago</h2>
+                            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Método de Pago</h2>
                         </div>
                         <p className="text-sm text-zinc-600 dark:text-zinc-400 capitalize">
                             {orderData.paymentStatus?.methodPayment?.replace(/_/g, ' ') || 'No especificado'}
@@ -281,7 +281,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                                 <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/20">
                                     <MapPin className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                                 </div>
-                                <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Dirección de Envío</h2>
+                                <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Dirección de Envío</h2>
                             </div>
                             <p className="text-sm text-zinc-600 dark:text-zinc-400">
                                 {orderData.shippingInfo.street_address}

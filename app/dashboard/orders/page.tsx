@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Download } from 'lucide-react';
-import Ordenes from '@/src/presentation/components/client/ordenes';
+import Orders from '@/src/presentation/components/client/Orders';
 
 const PageOrders: React.FC = () => {
   return (
@@ -10,8 +10,8 @@ const PageOrders: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight mb-1">Pedidos</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <h1 className="text-2xl font-bold tracking-tight mb-1 text-zinc-900 dark:text-white">Pedidos</h1>
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             Monitorea las ventas en tiempo real.
           </p>
         </div>
@@ -22,7 +22,7 @@ const PageOrders: React.FC = () => {
 
       {/* Orders Table */}
       <div className="rounded-xl overflow-hidden bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
-        <Ordenes />
+        <Orders />
       </div>
     </div>
   );

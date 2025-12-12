@@ -3,7 +3,7 @@ import { Input, Button, Tabs, Tab, Spinner, SelectItem, Select, Textarea, Card, 
 import { fetchCategories } from '@/src/application/products/productServices';
 import dynamic from 'next/dynamic';
 import { handleChange, handleAddImageClick, handleFileChange, handleRemoveImage, handleNext, handleBack, handleSubmit, FormData } from '@/src/presentation/forms/productFormHandlers';
-import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from "@/src/presentation/components/shared/icons";
+import { CameraIcon, MiniTrashIcon, GalleryIcon, ProductIconSvg, ProductInfoIconSvg, ProductCheckIconSvg } from "@/src/presentation/components/shared/Icons";
 import { useConfig } from '@/src/presentation/contexts';
 import CategorySelector from "@/src/presentation/components/client/CategorySelect";
 import { useRouter } from "next/navigation";

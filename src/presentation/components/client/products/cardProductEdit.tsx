@@ -26,9 +26,9 @@ import {
   Input,
   Tooltip,
 } from "@nextui-org/react";
-import { MiniEyeIcon, MiniTrashIcon } from "@/src/presentation/components/shared/icons";
+import { MiniEyeIcon, MiniTrashIcon } from "@/src/presentation/components/shared/Icons";
 import { useProductContext } from "@/src/presentation/contexts";
-import withPermission from "@/src/presentation/components/client/withPermission";
+import withPermission from "@/src/presentation/components/client/WithPermission";
 import { deleteProduct } from "@/src/application/products/productServices";
 import { useRouter } from "next/navigation";
 import { API_ENDPOINTS, buildUrl } from "@/src/infrastructure/http/apiConfig";

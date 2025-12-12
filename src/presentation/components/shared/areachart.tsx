@@ -8,7 +8,7 @@ import {
 } from 'recharts';
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { Card, CardBody } from "@nextui-org/react";
-import withPermission from "@/src/presentation/components/client/withPermission"; 
+import withPermission from "@/src/presentation/components/client/WithPermission"; 
 
 const data = [
   { name: 'Enero', uv: 500 },

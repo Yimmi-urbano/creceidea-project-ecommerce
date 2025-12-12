@@ -7,7 +7,7 @@ import { getDomain, login } from "./api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
-import { Logo } from "@/src/presentation/components/shared/icons";
+import { Logo } from "@/src/presentation/components/shared/Icons";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

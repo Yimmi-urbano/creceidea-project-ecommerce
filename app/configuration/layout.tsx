@@ -1,10 +1,10 @@
 "use client";
 
 import React, { createContext, useContext, useState } from 'react';
-import Sidebar from '@/src/presentation/components/shared/sidebar';
-import { HeadToolbar } from '@/src/presentation/components/shared/headToolbar';
+import Sidebar from '@/src/presentation/components/shared/Sidebar';
+import { HeadToolbar } from '@/src/presentation/components/shared/HeadToolbar';
 import { ThemeProvider } from '@/src/presentation/contexts/ThemeContext';
-import OptionsToolbar from '@/src/presentation/components/shared/toolbar';
+import OptionsToolbar from '@/src/presentation/components/shared/Toolbar';
 import { ConfigProvider } from '@/src/presentation/contexts/ConfigContext';
 
 import { SidebarContext } from "@/src/presentation/contexts/SidebarContext";
