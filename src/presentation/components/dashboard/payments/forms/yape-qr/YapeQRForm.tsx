@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Switch } from "@nextui-org/react";
 import { getPayment, addPayment, editPayment } from "@/src/application/payments_methods/paymentsServices";
 import { Payment } from "@/src/domain/payments_methods/Payment";
-import UploadQrImage from "@/ui/payments_methods/yape_qr_offline/UploadQrImage";
+import UploadQrImage from "@/src/presentation/components/dashboard/payments/forms/yape-qr/UploadQrImage";
 import { Save, RefreshCw } from "lucide-react";
 
 function usePaymentForm(nameId: string) {

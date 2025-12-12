@@ -58,7 +58,7 @@ const Sidebar = () => {
     { id: 'products', label: 'Catálogo', icon: ShoppingBag, href: '/dashboard/products' },
     { id: 'orders', label: 'Pedidos', icon: ShoppingCart, href: '/dashboard/orders' },
     { id: 'categories', label: 'Categorías', icon: Layers, href: '/dashboard/categories' },
-    { id: 'payments', label: 'Métodos de Pago', icon: CreditCard, href: '/configuration/module/payments_method' },
+    { id: 'payments', label: 'Métodos de Pago', icon: CreditCard, href: '/configuration/payment-methods' },
   ];
 
   const accountNavItems = [
@@ -69,7 +69,7 @@ const Sidebar = () => {
   const menuItems = [
     //{ label: 'Empresa', href: '/dashboard/company' },
     //{ label: 'Perfil', href: '/dashboard/profile' },
-    { label: 'Catálogo', href: '/configuration/catalogo' },
+    { label: 'Catálogo', href: '/configuration/catalog' },
     { label: 'Ver Sitio', href: `https://${domain}`, external: true },
     { label: 'Redes Sociales', href: '/configuration/social' },
     { label: 'Banner', href: '/configuration/home' },

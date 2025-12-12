@@ -9,13 +9,13 @@ import { CardBody } from "@nextui-org/react";
 const loadPaymentForm = (nameId: string) => {
   switch (nameId) {
     case "yape_qr":
-      return lazy(() => import("@/ui/payments_methods/yape_qr_offline/YapeQRForm"));
+      return lazy(() => import("@/src/presentation/components/dashboard/payments/forms/yape-qr/YapeQRForm"));
     case "izipay_ya":
-      return lazy(() => import("@/ui/payments_methods/izipay_ya/IziPayForm"));
+      return lazy(() => import("@/src/presentation/components/dashboard/payments/forms/izipay-ya/IziPayForm"));
     case "coordina_whatsapp":
-      return lazy(() => import("@/ui/payments_methods/coordina_whatsapp/CoordinaWhatsAppForm"));
+      return lazy(() => import("@/src/presentation/components/dashboard/payments/forms/whatsapp/CoordinaWhatsAppForm"));
     default:
-      return lazy(() => import("@/ui/payments_methods/default"));
+      return lazy(() => import("@/src/presentation/components/dashboard/payments/forms/DefaultPaymentForm"));
   }
 };
 
@@ -45,7 +45,7 @@ const ConfigPaymentMethod: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link
-            href="/configuration/module/payments_method"
+            href="/configuration/payment-methods"
             className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
           >
             <ArrowLeft size={20} className="text-zinc-600 dark:text-zinc-400" />

@@ -8,7 +8,7 @@ import { Spinner } from "@nextui-org/react"; // Assuming we still use NextUI for
 import { getDomainFromLocalStorage } from "@/config/utils";
 import { CreditCard, Settings, ChevronRight, AlertCircle } from "lucide-react";
 
-export default function ModuleList() {
+export default function PaymentMethodsList() {
     const [modules, setModules] = useState<Module[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -97,7 +97,7 @@ export default function ModuleList() {
 
                     <div className="p-6 pt-0 mt-auto">
                         <button
-                            onClick={() => router.push(`/configuration/module/payments_method/${module.nameId}`)}
+                            onClick={() => router.push(`/configuration/payment-methods/${module.nameId}`)}
                             className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#00A09D]/10 hover:bg-[#00A09D]/20 text-[#00A09D] font-medium transition-colors group-hover:bg-[#00A09D] group-hover:text-white"
                         >
                             <Settings size={18} />

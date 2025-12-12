@@ -1,6 +1,6 @@
 "use client";
 
-import ModuleList from "@/ui/installed_modules/ModuleList";
+import PaymentMethodsList from "@/src/presentation/components/dashboard/payments/PaymentMethodsList";
 
 export default function PaymentMethodsPage() {
     return (
@@ -16,7 +16,7 @@ export default function PaymentMethodsPage() {
             </div>
 
             {/* Module List */}
-            <ModuleList />
+            <PaymentMethodsList />
         </div>
     );
 }
