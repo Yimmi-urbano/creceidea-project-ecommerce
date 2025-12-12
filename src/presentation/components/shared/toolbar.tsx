@@ -50,7 +50,7 @@ export default function OptionsToolbar() {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-2 pointer-events-none">
-            <div className="bg-white/90 dark:bg-[#13161c]/90 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl pointer-events-auto mx-auto max-w-lg">
+            <div className="bg-white/90 dark:bg-dark-card/90 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl pointer-events-auto mx-auto max-w-lg">
                 <div className="flex justify-between items-center px-2 py-2">
                     {menuItems.map((item) => {
                         const Icon = item.icon;
@@ -61,18 +61,18 @@ export default function OptionsToolbar() {
                                 key={item.href}
                                 href={item.href}
                                 className={`flex-1 flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 group ${active
-                                        ? 'text-[#00A09D]'
-                                        : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'
+                                    ? 'text-primary'
+                                    : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'
                                     }`}
                             >
-                                <div className={`relative p-1.5 rounded-lg transition-all duration-300 ${active ? 'bg-[#00A09D]/10 -translate-y-1' : 'group-hover:bg-zinc-100 dark:group-hover:bg-zinc-800'
+                                <div className={`relative p-1.5 rounded-lg transition-all duration-300 ${active ? 'bg-primary/10 -translate-y-1' : 'group-hover:bg-zinc-100 dark:group-hover:bg-zinc-800'
                                     }`}>
                                     <Icon size={20} className={active ? "stroke-[2.5px]" : "stroke-2"} />
                                     {active && (
-                                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#00A09D] rounded-full" />
+                                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
                                     )}
                                 </div>
-                                <span className={`text-[10px] font-medium mt-1 transition-colors ${active ? 'text-[#00A09D]' : 'text-zinc-500'
+                                <span className={`text-[10px] font-medium mt-1 transition-colors ${active ? 'text-primary' : 'text-zinc-500'
                                     }`}>
                                     {item.label}
                                 </span>

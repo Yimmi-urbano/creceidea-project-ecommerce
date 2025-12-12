@@ -17,22 +17,22 @@ export const KPICard: React.FC<KPICardProps> = ({
     change,
     changeLabel = 'vs mes anterior',
     icon: Icon,
-    iconColor = 'bg-[#00A09D]',
+    iconColor = 'bg-primary',
     trend
 }) => {
     const isPositive = trend === 'up' || (change && change > 0);
     const isNegative = trend === 'down' || (change && change < 0);
 
     return (
-        <div className="p-6 rounded-2xl border transition-all hover:shadow-lg bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+        <div className="p-6 rounded-2xl border transition-all hover:shadow-lg bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
             <div className="flex items-start justify-between mb-4">
                 <div className={`p-3 rounded-xl ${iconColor} bg-opacity-10`}>
                     <Icon size={24} className={iconColor.replace('bg-', 'text-')} />
                 </div>
                 {change !== undefined && (
                     <div className={`flex items-center gap-1 text-sm font-medium ${isPositive ? 'text-green-600 dark:text-green-400' :
-                            isNegative ? 'text-rose-600 dark:text-rose-400' :
-                                'text-zinc-500'
+                        isNegative ? 'text-rose-600 dark:text-rose-400' :
+                            'text-zinc-500'
                         }`}>
                         {isPositive && <TrendingUp size={16} />}
                         {isNegative && <TrendingDown size={16} />}

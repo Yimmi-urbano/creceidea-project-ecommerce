@@ -69,7 +69,7 @@ const SortableItem = ({
   return (
     <div ref={setNodeRef} style={style} {...(isOrdering ? { ...attributes, ...listeners } : {})}>
       <div
-        className={`w-full rounded-xl flex flex-row border transition-all ${isOrdering ? "cursor-grab hover:border-[#00A09D]" : ""} bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 hover:shadow-md`}
+        className={`w-full rounded-xl flex flex-row border transition-all ${isOrdering ? "cursor-grab hover:border-primary" : ""} bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 hover:shadow-md`}
       >
         <div
           className="flex items-center gap-4 p-2 flex-grow"
@@ -81,7 +81,7 @@ const SortableItem = ({
               <svg
                 {...listeners}
                 {...attributes}
-                className="drag-handle cursor-grab touch-none text-zinc-400 hover:text-[#00A09D] transition-colors"
+                className="drag-handle cursor-grab touch-none text-zinc-400 hover:text-primary transition-colors"
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="20"
@@ -109,7 +109,7 @@ const SortableItem = ({
                       bumpOrder(item._id, -1, { pageStart, pageEnd }, 'prev');
                     }}
                     disabled={disableUp}
-                    className="w-6 h-5 rounded flex items-center justify-center text-xs transition-all bg-transparent hover:bg-[#00A09D]/10 text-zinc-600 dark:text-zinc-400 hover:text-[#00A09D] disabled:opacity-20 disabled:cursor-not-allowed"
+                    className="w-6 h-5 rounded flex items-center justify-center text-xs transition-all bg-transparent hover:bg-primary/10 text-zinc-600 dark:text-zinc-400 hover:text-primary disabled:opacity-20 disabled:cursor-not-allowed"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="18 15 12 9 6 15"></polyline>
@@ -124,7 +124,7 @@ const SortableItem = ({
                       bumpOrder(item._id, +1, { pageStart, pageEnd }, 'next');
                     }}
                     disabled={disableDown}
-                    className="w-6 h-5 rounded flex items-center justify-center text-xs transition-all bg-transparent hover:bg-[#00A09D]/10 text-zinc-600 dark:text-zinc-400 hover:text-[#00A09D] disabled:opacity-20 disabled:cursor-not-allowed"
+                    className="w-6 h-5 rounded flex items-center justify-center text-xs transition-all bg-transparent hover:bg-primary/10 text-zinc-600 dark:text-zinc-400 hover:text-primary disabled:opacity-20 disabled:cursor-not-allowed"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="6 9 12 15 18 9"></polyline>
@@ -148,7 +148,7 @@ const SortableItem = ({
                     <p className="text-xs line-through text-zinc-400 dark:text-zinc-500">
                       S/ {item.price.regular.toFixed(2)}
                     </p>
-                    <p className="text-sm font-bold text-[#00A09D]">
+                    <p className="text-sm font-bold text-primary">
                       S/ {item.price.sale.toFixed(2)}
                     </p>
                   </>
@@ -167,7 +167,7 @@ const SortableItem = ({
           <div className="flex flex-col md:flex-row justify-center items-center gap-2 pr-4">
             <button
               onClick={() => handlePress(item._id)}
-              className="p-2 rounded-lg text-zinc-400 hover:text-[#00A09D] hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="p-2 rounded-lg text-zinc-400 hover:text-primary hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               aria-label="Ver Detalles"
             >
               <MiniEyeIcon size={18} />
@@ -204,7 +204,7 @@ const CardProducts: React.FC = () => {
 
   useEffect(() => {
     if (products && products.length > 0) {
-      const sorted = [...products].sort((a, b) => a.order - b.order);
+      const sorted = [...products].sort((a: any, b: any) => a.order - b.order);
       setOrderedProducts(sorted);
     }
   }, [products, page]);
@@ -213,7 +213,7 @@ const CardProducts: React.FC = () => {
   const pageEnd = pageStart + orderedProducts.length - 1;
 
   const normalizeOrder = (items: any[]) =>
-    items.map((p, i) => ({ ...p, order: pageStart + i }));
+    items.map((p, i) => ({ ...p, order: pageStart + i })) as any[];
 
   const handlePress = (id: string) => {
     if (typeof window !== "undefined") {

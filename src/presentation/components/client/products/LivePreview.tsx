@@ -29,7 +29,7 @@ const LivePreview: React.FC<LivePreviewProps> = ({
     const hasDiscount = salePriceNum > 0 && salePriceNum < regularPriceNum;
 
     return (
-        <Card className="w-full bg-white dark:bg-[#13161c] shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+        <Card className="w-full bg-white dark:bg-dark-card shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
             <div className="bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 p-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider text-center">
                 Vista Previa en Tienda
             </div>

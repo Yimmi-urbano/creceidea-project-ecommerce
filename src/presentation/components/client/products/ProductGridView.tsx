@@ -52,7 +52,7 @@ export const ProductGridView: React.FC<ProductGridViewProps> = ({ searchTerm = '
             {filteredProducts.map((product: any) => (
                 <div
                     key={product._id}
-                    className="group relative rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-white dark:bg-[#13161c] border-zinc-200/60 dark:border-zinc-800/50 hover:border-[#00A09D]/30 hover:shadow-zinc-200/50 dark:hover:shadow-[#00A09D]/10"
+                    className="group relative rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-white dark:bg-dark-card border-zinc-200/60 dark:border-zinc-800/50 hover:border-primary/30 hover:shadow-zinc-200/50 dark:hover:shadow-primary/10"
                 >
                     {/* Image Container */}
                     <div className="aspect-[4/3] w-full relative overflow-hidden bg-zinc-100 dark:bg-zinc-900">
@@ -66,7 +66,7 @@ export const ProductGridView: React.FC<ProductGridViewProps> = ({ searchTerm = '
                         <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
                             <button
                                 onClick={() => handleEdit(product._id)}
-                                className="p-2 bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-[#00A09D] shadow-sm transition-colors"
+                                className="p-2 bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-primary shadow-sm transition-colors"
                             >
                                 <Edit3 size={16} />
                             </button>
@@ -106,7 +106,7 @@ export const ProductGridView: React.FC<ProductGridViewProps> = ({ searchTerm = '
                                         <span className="text-xs text-zinc-400 line-through">
                                             S/ {product.price.regular.toFixed(2)}
                                         </span>
-                                        <span className="text-lg font-bold text-[#00A09D]">
+                                        <span className="text-lg font-bold text-primary">
                                             S/ {product.price.sale.toFixed(2)}
                                         </span>
                                     </>

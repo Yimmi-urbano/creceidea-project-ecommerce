@@ -17,7 +17,7 @@ interface RecentOrdersTableProps {
 
 export const RecentOrdersTable: React.FC<RecentOrdersTableProps> = ({ orders }) => {
     return (
-        <div className="p-6 rounded-2xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+        <div className="p-6 rounded-2xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-1">
@@ -27,7 +27,7 @@ export const RecentOrdersTable: React.FC<RecentOrdersTableProps> = ({ orders }) 
                         Actividad reciente de tu tienda
                     </p>
                 </div>
-                <button className="text-sm font-medium text-[#00A09D] hover:text-[#008f8c] flex items-center gap-1 transition-colors">
+                <button className="text-sm font-medium text-primary hover:text-primary-hover flex items-center gap-1 transition-colors">
                     Ver todos
                     <ExternalLink size={14} />
                 </button>
@@ -67,7 +67,7 @@ export const RecentOrdersTable: React.FC<RecentOrdersTableProps> = ({ orders }) 
                                     }`}
                             >
                                 <td className="py-4 pr-4">
-                                    <span className="font-mono text-xs font-medium text-[#00A09D]">
+                                    <span className="font-mono text-xs font-medium text-primary">
                                         #{order.id}
                                     </span>
                                 </td>
@@ -95,7 +95,7 @@ export const RecentOrdersTable: React.FC<RecentOrdersTableProps> = ({ orders }) 
                                     </span>
                                 </td>
                                 <td className="py-4 pl-4 text-right">
-                                    <button className="p-2 rounded-lg text-zinc-400 hover:text-[#00A09D] hover:bg-[#00A09D]/10 transition-all opacity-0 group-hover:opacity-100">
+                                    <button className="p-2 rounded-lg text-zinc-400 hover:text-primary hover:bg-primary/10 transition-all opacity-0 group-hover:opacity-100">
                                         <Eye size={16} />
                                     </button>
                                 </td>

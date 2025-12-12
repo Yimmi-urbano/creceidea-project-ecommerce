@@ -9,7 +9,7 @@ interface CategorySalesChartProps {
 
 export const CategorySalesChart: React.FC<CategorySalesChartProps> = ({ data }) => {
     return (
-        <div className="p-6 rounded-2xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+        <div className="p-6 rounded-2xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
             <div className="mb-6">
                 <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-1">
                     Ventas por Categoría

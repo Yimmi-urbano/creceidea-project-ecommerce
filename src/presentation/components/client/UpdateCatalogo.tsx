@@ -181,7 +181,7 @@ const UpdateCatalogForm: React.FC = () => {
                 {currencies.map((currency) => (
                   <SelectItem key={currency.code} value={currency.code} textValue={`${currency.symbol} ${currency.code}`}>
                     <div className="flex gap-2 items-center">
-                      <span className="font-bold text-[#00A09D]">{currency.symbol}</span>
+                      <span className="font-bold text-primary">{currency.symbol}</span>
                       <span>{currency.code}</span>
                     </div>
                   </SelectItem>

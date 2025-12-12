@@ -12,7 +12,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
     if (loading) {
         return (
             <div className="flex justify-center items-center h-96">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00A09D]"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
             </div>
         );
     }
@@ -111,7 +111,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                         <Download size={16} />
                         Descargar PDF
                     </button>
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#00A09D] hover:bg-[#008f8c] text-white transition-colors text-sm font-medium">
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary-hover text-white transition-colors text-sm font-medium">
                         <Edit3 size={16} />
                         Editar
                     </button>
@@ -120,7 +120,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 
             {/* Status Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-6 rounded-xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+                <div className="p-6 rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/20">
                             <CreditCard className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -141,7 +141,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                     )}
                 </div>
 
-                <div className="p-6 rounded-xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+                <div className="p-6 rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/20">
                             <Truck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -162,11 +162,11 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                 {/* Main Content */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* Products */}
-                    <div className="rounded-xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 overflow-hidden">
+                    <div className="rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 overflow-hidden">
                         <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-lg bg-[#00A09D]/10">
-                                    <Package className="w-5 h-5 text-[#00A09D]" />
+                                <div className="p-2 rounded-lg bg-primary/10">
+                                    <Package className="w-5 h-5 text-primary" />
                                 </div>
                                 <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                                     Productos ({orderData.products.length})
@@ -204,7 +204,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                         </div>
 
                         {/* Order Summary */}
-                        <div className="p-6 bg-zinc-50 dark:bg-[#0f1115] border-t border-zinc-200 dark:border-zinc-800">
+                        <div className="p-6 bg-zinc-50 dark:bg-dark-bg border-t border-zinc-200 dark:border-zinc-800">
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-zinc-600 dark:text-zinc-400">Subtotal</span>
@@ -219,7 +219,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                                 <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800">
                                     <div className="flex justify-between">
                                         <span className="text-base font-semibold text-zinc-900 dark:text-zinc-100">Total</span>
-                                        <span className="text-xl font-bold text-[#00A09D]">
+                                        <span className="text-xl font-bold text-primary">
                                             {orderData.currency === "PEN" ? "S/" : "$"} {orderData.total.toFixed(2)}
                                         </span>
                                     </div>
@@ -232,7 +232,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                 {/* Sidebar */}
                 <div className="space-y-6">
                     {/* Customer Info */}
-                    <div className="rounded-xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 p-6">
+                    <div className="rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/20">
                                 <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -262,7 +262,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                     </div>
 
                     {/* Payment Method */}
-                    <div className="rounded-xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 p-6">
+                    <div className="rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/20">
                                 <CreditCard className="w-5 h-5 text-amber-600 dark:text-amber-400" />
@@ -276,7 +276,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 
                     {/* Shipping Address */}
                     {orderData.shippingInfo?.street_address && (
-                        <div className="rounded-xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 p-6">
+                        <div className="rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 p-6">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/20">
                                     <MapPin className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />

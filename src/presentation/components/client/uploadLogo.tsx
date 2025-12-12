@@ -38,7 +38,7 @@ const UploadLogo: React.FC = () => {
               className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
               onClick={handleAddImageClick}
             >
-              <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[#00A09D]">
+              <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-primary">
                 {!loading ? <Camera size={24} /> : <Spinner size="sm" color="current" />}
               </div>
               <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Subir Logo</span>

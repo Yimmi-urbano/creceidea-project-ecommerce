@@ -10,18 +10,18 @@ export const HeadToolbar = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-30 h-16 px-6 flex items-center justify-between border-b backdrop-blur-xl bg-opacity-80 bg-white/80 dark:bg-[#0f1115]/80 border-zinc-200 dark:border-zinc-800">
+      <div className="sticky top-0 z-30 h-16 px-6 flex items-center justify-between border-b backdrop-blur-xl bg-opacity-80 bg-white/80 dark:bg-dark-bg/80 border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-4 flex-1">
           {/* Global Search */}
           <div className="relative w-full max-w-md hidden md:block group">
             <Search
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-[#00A09D] transition-colors"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors"
             />
             <input
               type="text"
               placeholder="Búsqueda global..."
-              className="w-full pl-10 pr-4 py-2 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-[#00A09D] focus:bg-white dark:focus:bg-[#13161c] text-zinc-700 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-600"
+              className="w-full pl-10 pr-4 py-2 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary focus:bg-white dark:focus:bg-dark-card text-zinc-700 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-600"
             />
           </div>
         </div>

@@ -235,7 +235,7 @@ const Ordenes: React.FC = () => {
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
               className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors disabled:opacity-50 disabled:cursor-not-allowed
-                bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 
+                bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 
                 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
             >
               Anterior

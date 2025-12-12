@@ -34,7 +34,7 @@ const AddCategory: React.FC = () => {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className='bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800'
+        className='bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800'
         classNames={{
           backdrop: "bg-black/60 backdrop-blur-sm",
           base: "rounded-2xl shadow-2xl",
@@ -67,11 +67,11 @@ const AddCategory: React.FC = () => {
                         "placeholder:text-zinc-400 dark:placeholder:text-zinc-500",
                       ],
                       inputWrapper: [
-                        "bg-white dark:bg-[#13161c]",
+                        "bg-white dark:bg-dark-card",
                         "border",
                         "border-zinc-200 dark:border-zinc-800",
                         "hover:border-zinc-300 dark:hover:border-zinc-700",
-                        "group-data-[focus=true]:border-[#00A09D]",
+                        "group-data-[focus=true]:border-primary",
                         "!cursor-text",
                         "rounded-lg",
                       ],
@@ -87,14 +87,14 @@ const AddCategory: React.FC = () => {
                   description="Deje en blanco si es una categoría PRINCIPAL."
                   classNames={{
                     trigger: [
-                      "bg-white dark:bg-[#13161c]",
+                      "bg-white dark:bg-dark-card",
                       "border border-zinc-200 dark:border-zinc-800",
                       "hover:border-zinc-300 dark:hover:border-zinc-700",
-                      "data-[focus=true]:border-[#00A09D]",
+                      "data-[focus=true]:border-primary",
                       "rounded-lg"
                     ],
                     popoverContent: [
-                      "bg-white dark:bg-[#13161c]",
+                      "bg-white dark:bg-dark-card",
                       "border border-zinc-200 dark:border-zinc-800",
                       "rounded-lg"
                     ],
@@ -132,7 +132,7 @@ const AddCategory: React.FC = () => {
                 </Button>
                 <Button
                   onPress={handleAddNewCategory}
-                  className="bg-[#00A09D] hover:bg-[#008f8c] text-white font-medium"
+                  className="bg-primary hover:bg-primary-hover text-white font-medium"
                 >
                   Agregar
                 </Button>

@@ -220,17 +220,17 @@ function ProductForm() {
                 .ql-snow .ql-active .ql-stroke, 
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke,
                 .ql-snow .ql-picker-item:hover .ql-stroke {
-                    stroke: #00A09D !important;
+                    stroke: hsl(var(--primary)) !important;
                 }
                 .ql-snow .ql-active .ql-fill,
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill,
                 .ql-snow .ql-picker-item:hover .ql-fill {
-                    fill: #00A09D !important;
+                    fill: hsl(var(--primary)) !important;
                 }
                 .ql-snow .ql-active,
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label,
                 .ql-snow .ql-picker-item:hover {
-                    color: #00A09D !important;
+                    color: hsl(var(--primary)) !important;
                 }
             `}</style>
 
@@ -286,7 +286,7 @@ function ProductForm() {
                 <div className="lg:col-span-8 space-y-8">
 
                     {/* SECTION 1: ESSENTIAL INFO */}
-                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
                         <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
                             <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Información Esencial</h2>
                         </CardHeader>
@@ -362,7 +362,7 @@ function ProductForm() {
                     </Card>
 
                     {/* SECTION 2: MEDIA & DESCRIPTION */}
-                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
                         <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
                             <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Medios y Descripción</h2>
                         </CardHeader>
@@ -424,7 +424,7 @@ function ProductForm() {
                                         value={formData.description_long}
                                         modules={modules}
                                         onChange={(value) => setFormData({ ...formData, description_long: value })}
-                                        className="min-h-[300px] bg-white dark:bg-[#13161c] text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
+                                        className="min-h-[300px] bg-white dark:bg-dark-card text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
                                     />
                                 </div>
                             </div>
@@ -449,7 +449,7 @@ function ProductForm() {
                     </Card>
 
                     {/* SECTION 3: PRICING & INVENTORY */}
-                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
                         <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
                             <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Precios e Inventario</h2>
                         </CardHeader>
@@ -526,7 +526,7 @@ function ProductForm() {
                     </Card>
 
                     {/* SECTION 4: SEO */}
-                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#13161c] rounded-2xl">
+                    <Card className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
                         <CardHeader className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
                             <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Optimización SEO</h2>
                         </CardHeader>

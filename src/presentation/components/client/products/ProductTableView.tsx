@@ -50,7 +50,7 @@ export const ProductTableView: React.FC<ProductTableViewProps> = ({ searchTerm =
 
     return (
         <table className="w-full text-left text-sm">
-            <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-[#0f1115] text-zinc-500 dark:text-zinc-400">
+            <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-dark-bg text-zinc-500 dark:text-zinc-400">
                 <tr>
                     <th className="px-6 py-4">Producto</th>
                     <th className="px-6 py-4">Estado</th>
@@ -80,7 +80,7 @@ export const ProductTableView: React.FC<ProductTableViewProps> = ({ searchTerm =
                                     <span className="text-xs line-through text-zinc-400 dark:text-zinc-500">
                                         S/ {product.price.regular.toFixed(2)}
                                     </span>
-                                    <span className="text-sm font-bold text-[#00A09D]">
+                                    <span className="text-sm font-bold text-primary">
                                         S/ {product.price.sale.toFixed(2)}
                                     </span>
                                 </div>

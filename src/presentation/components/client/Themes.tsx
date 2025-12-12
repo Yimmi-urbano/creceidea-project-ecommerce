@@ -108,8 +108,8 @@ const ThemesList: React.FC = () => {
                             className={`
                                 relative border group transition-all duration-300
                                 ${isSelected
-                                    ? 'border-[#00A09D] ring-1 ring-[#00A09D] bg-white dark:bg-zinc-900'
-                                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-[#00A09D]/50'
+                                    ? 'border-primary ring-1 ring-primary bg-white dark:bg-zinc-900'
+                                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-primary/50'
                                 }
                             `}
                         >
@@ -125,7 +125,7 @@ const ThemesList: React.FC = () => {
                                     radius="none"
                                 />
                                 {isSelected && (
-                                    <div className="absolute top-2 right-2 bg-[#00A09D] text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">
+                                    <div className="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">
                                         Activo
                                     </div>
                                 )}
@@ -150,7 +150,7 @@ const ThemesList: React.FC = () => {
                                             <p className="text-sm text-zinc-500">
                                                 {price > 0 ? (
                                                     <span className="flex items-center gap-2">
-                                                        <span className="font-bold text-[#00A09D]">${sale_price}</span>
+                                                        <span className="font-bold text-primary">${sale_price}</span>
                                                         <span className="line-through text-xs">${price}</span>
                                                     </span>
                                                 ) : 'Gratis'}
