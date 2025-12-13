@@ -3,6 +3,7 @@ import { Eye, Download, Edit3, CreditCard, Truck, Search } from 'lucide-react';
 import withPermission from "@/src/presentation/components/client/WithPermission";
 import useIsOrders from '@/src/presentation/hooks/orders/useIsOrders';
 import { updateOrderStatus, updatePaymentStatus } from '@/src/application/orders/orderServices';
+import { StatCardSkeleton, SkeletonList } from '@/src/presentation/components/shared/SkeletonLoaders';
 
 const getStatusClass = (status: string) => {
   switch (status) {
@@ -54,8 +55,15 @@ const Orders: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="space-y-6">
+        {/* Stats Skeleton */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <StatCardSkeleton key={i} />
+          ))}
+        </div>
+        {/* Table Skeleton */}
+        <SkeletonList count={8} columns={7} />
       </div>
     );
   }

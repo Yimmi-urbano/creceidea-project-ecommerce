@@ -28,8 +28,29 @@ export const ProductGridView: React.FC<ProductGridViewProps> = ({ searchTerm = '
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <Spinner size="lg" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                    <div
+                        key={i}
+                        className="rounded-2xl overflow-hidden border bg-white dark:bg-dark-card border-zinc-200/60 dark:border-zinc-800/50"
+                    >
+                        {/* Image skeleton */}
+                        <div className="aspect-[4/3] w-full bg-zinc-100 dark:bg-zinc-900 animate-pulse" />
+
+                        {/* Product info skeleton */}
+                        <div className="p-5 space-y-4">
+                            <div className="space-y-2">
+                                <div className="h-3 w-20 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                <div className="h-5 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div className="h-6 w-24 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                <div className="h-5 w-16 rounded-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     }

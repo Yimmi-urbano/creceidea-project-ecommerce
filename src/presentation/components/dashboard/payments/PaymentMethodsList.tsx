@@ -32,8 +32,32 @@ export default function PaymentMethodsList() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center py-20">
-                <Spinner color="primary" size="lg" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-2">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div
+                        key={i}
+                        className="flex flex-col bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden"
+                    >
+                        <div className="p-6 flex-1 space-y-4">
+                            {/* Icon skeleton */}
+                            <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+
+                            {/* Title skeleton */}
+                            <div className="h-6 w-3/4 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+
+                            {/* Description skeleton */}
+                            <div className="space-y-2">
+                                <div className="h-4 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                <div className="h-4 w-5/6 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+                        </div>
+
+                        <div className="p-6 pt-0">
+                            {/* Button skeleton */}
+                            <div className="h-10 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     }

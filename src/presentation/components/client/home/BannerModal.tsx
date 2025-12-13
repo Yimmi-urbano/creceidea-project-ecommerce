@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Spinner, Checkbox } from '@nextui-org/react';
-import { CameraIcon, MiniTrashIcon } from "@/src/presentation/components/shared/Icons";
-import { submitBanner, updateBanner, Banner } from '@/src/presentation/hooks';
-import { uploadImage } from '@/src/application/products/productServices';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Spinner } from '@nextui-org/react';
+import { Upload, X, Image as ImageIcon, Type, Link as LinkIcon, MousePointer } from 'lucide-react';
+import { Banner } from '@/src/domain/banners/Banner';
+import { createBanner, updateBanner as updateBannerService } from '@/src/application/banners/bannerServices';
+import { uploadImage } from '@/src/infrastructure/repositories/uploadRepository';
 
 interface BannerModalProps {
     isOpen: boolean;
@@ -16,47 +17,28 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
     const [file, setFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [text, setText] = useState('');
-    const [action, setAction] = useState('href');
     const [destino, setDestino] = useState('');
     const [textButton, setTextButton] = useState('');
     const [loading, setLoading] = useState(false);
+    const [uploadingImage, setUploadingImage] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // Estados de activación de los checkboxes
-    const [isActiveTextBanner, setActiveTextBanner] = useState(false);
-    const [isActiveLinkBanner, setActiveLinkBanner] = useState(false);
-    const [isActiveButtonBanner, setActiveButtonBanner] = useState(false);
-
-    // Al abrir el modal, establecer los valores y activar los checkboxes si hay datos
+    // Load banner data when editing
     useEffect(() => {
         if (banner) {
             setImageUrl(banner.image);
             setText(banner.text || '');
             setDestino(banner.button?.[0]?.destino || '');
             setTextButton(banner.button?.[0]?.text_button || '');
-
-            // Activar checkboxes solo si los valores existen
-            setActiveTextBanner(!!banner.text);
-            setActiveLinkBanner(!!banner.button?.[0]?.destino);
-            setActiveButtonBanner(!!banner.button?.[0]?.text_button);
         } else {
-            // Restablecer valores si es un nuevo banner
+            // Reset for new banner
             setImageUrl(null);
+            setFile(null);
             setText('');
             setDestino('');
             setTextButton('');
-            setActiveTextBanner(false);
-            setActiveLinkBanner(false);
-            setActiveButtonBanner(false);
         }
-    }, [banner]);
-
-    // Limpiar los campos cuando se desactiva el checkbox
-    useEffect(() => {
-        if (!isActiveTextBanner) setText('');
-        if (!isActiveLinkBanner) setDestino('');
-        if (!isActiveButtonBanner) setTextButton('');
-    }, [isActiveTextBanner, isActiveLinkBanner, isActiveButtonBanner]);
+    }, [banner, isOpen]);
 
     const handleAddImageClick = () => {
         fileInputRef.current?.click();
@@ -64,16 +46,32 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setFile(e.target.files[0]);
-            setLoading(true);
+            const selectedFile = e.target.files[0];
+
+            // Validate file type
+            if (!selectedFile.type.startsWith('image/')) {
+                alert('Por favor selecciona un archivo de imagen válido');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (selectedFile.size > 5 * 1024 * 1024) {
+                alert('La imagen no debe superar los 5MB');
+                return;
+            }
+
+            setFile(selectedFile);
+            setUploadingImage(true);
 
             try {
-                const uploadedImageUrl = await uploadImage(e.target.files[0]);
+                const uploadedImageUrl = await uploadImage(selectedFile);
                 setImageUrl(uploadedImageUrl);
             } catch (error) {
                 console.error('Error al subir la imagen:', error);
+                alert('Error al subir la imagen. Por favor intenta de nuevo.');
+                setFile(null);
             } finally {
-                setLoading(false);
+                setUploadingImage(false);
             }
         }
     };
@@ -81,97 +79,252 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
     const handleRemoveImage = () => {
         setImageUrl(null);
         setFile(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     };
 
     const handleSubmit = async () => {
-       // if (!text || !action || !destino || !textButton) return;
+        if (!imageUrl) {
+            alert('Por favor sube una imagen para el banner');
+            return;
+        }
 
         setLoading(true);
 
         try {
             if (banner?._id) {
-                await updateBanner(banner._id, file, imageUrl || banner.image, text, action, destino, textButton);
+                await updateBannerService(
+                    banner._id,
+                    file,
+                    imageUrl,
+                    text,
+                    'href',
+                    destino,
+                    textButton
+                );
             } else {
-                await submitBanner(file as File, text, action, destino, textButton);
+                if (!file) {
+                    alert('Por favor sube una imagen');
+                    return;
+                }
+                await createBanner(file, text, 'href', destino, textButton);
             }
+
+            // Reset form
+            handleRemoveImage();
+            setText('');
+            setDestino('');
+            setTextButton('');
+
             onClose();
+            window.location.reload(); // Refresh to show updated banners
         } catch (error) {
-            console.error('Error al enviar el banner:', error);
+            console.error('Error al guardar el banner:', error);
+            alert('Error al guardar el banner. Por favor intenta de nuevo.');
         } finally {
             setLoading(false);
         }
     };
 
+    const handleClose = () => {
+        if (!loading) {
+            handleRemoveImage();
+            setText('');
+            setDestino('');
+            setTextButton('');
+            onClose();
+        }
+    };
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/90'>
+        <Modal
+            isOpen={isOpen}
+            onClose={handleClose}
+            size="2xl"
+            scrollBehavior="inside"
+            classNames={{
+                base: "bg-white dark:bg-zinc-900",
+                backdrop: "bg-zinc-900/50 backdrop-blur-sm",
+                closeButton: "hover:bg-zinc-100 dark:hover:bg-zinc-800 active:bg-zinc-200 dark:active:bg-zinc-700 transition-colors"
+            }}
+        >
             <ModalContent>
-                <ModalHeader>
-                    <h2>{banner ? 'Editar Banner' : 'Crear Banner'}</h2>
+                <ModalHeader className="flex flex-col gap-1 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                        {banner ? 'Editar Banner' : 'Crear Nuevo Banner'}
+                    </h2>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">
+                        {banner
+                            ? 'Actualiza la información de tu banner promocional'
+                            : 'Agrega un nuevo banner para destacar en tu página principal'
+                        }
+                    </p>
                 </ModalHeader>
-                <ModalBody>
-                    {!imageUrl && (
-                        <>
-                            <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleFileChange} />
-                            <Button isIconOnly color='warning' variant='flat' className='h-[80px] w-full min-w-20' onClick={handleAddImageClick}>
-                                {!loading ? <CameraIcon /> : <Spinner size="lg" color="warning" />}
-                            </Button>
-                        </>
-                    )}
 
+                <ModalBody className="py-6 space-y-6">
+                    {/* Image Upload Section */}
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                            <ImageIcon size={18} className="text-zinc-600 dark:text-zinc-400" />
+                            <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                                Imagen del Banner <span className="text-rose-500">*</span>
+                            </label>
+                        </div>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 -mt-1">
+                            Tamaño recomendado: 1920x600px. Máximo 5MB. Formatos: JPG, PNG, WebP
+                        </p>
+
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+
+                        {!imageUrl ? (
+                            <button
+                                onClick={handleAddImageClick}
+                                disabled={uploadingImage}
+                                className="w-full h-48 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/50 hover:border-primary hover:bg-primary/5 transition-all duration-200 flex flex-col items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {uploadingImage ? (
+                                    <>
+                                        <Spinner size="lg" color="primary" />
+                                        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                                            Subiendo imagen...
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 group-hover:bg-primary/10 transition-colors">
+                                            <Upload size={32} className="text-zinc-400 group-hover:text-primary transition-colors" />
+                                        </div>
+                                        <div className="text-center">
+                                            <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-1">
+                                                Click para subir imagen
+                                            </p>
+                                            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                                                o arrastra y suelta aquí
+                                            </p>
+                                        </div>
+                                    </>
+                                )}
+                            </button>
+                        ) : (
+                            <div className="relative group">
+                                <img
+                                    src={imageUrl}
+                                    alt="Banner Preview"
+                                    className="w-full h-48 rounded-xl object-cover border border-zinc-200 dark:border-zinc-800"
+                                />
+                                <button
+                                    onClick={handleRemoveImage}
+                                    className="absolute top-3 right-3 p-2 rounded-lg bg-rose-500 hover:bg-rose-600 text-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200"
+                                    title="Eliminar imagen"
+                                >
+                                    <X size={18} />
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Optional Fields - Only show when image is uploaded */}
                     {imageUrl && (
-                        <>
-                            <img src={imageUrl} alt="Banner Preview" className="w-full h-[200px] rounded-xl object-cover mb-4" />
-                            <Button color='danger' onClick={handleRemoveImage}>
-                                Eliminar Imagen <MiniTrashIcon />
-                            </Button>
+                        <div className="space-y-5 pt-2">
+                            <div className="h-px bg-zinc-200 dark:bg-zinc-800" />
 
-                            {/* Checkbox e Input para el texto del banner */}
-                            <label className='flex items-center gap-2'>
-                                <Checkbox isSelected={isActiveTextBanner} onChange={() => setActiveTextBanner(!isActiveTextBanner)} />
+                            {/* Banner Text */}
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-2">
+                                    <Type size={16} className="text-zinc-600 dark:text-zinc-400" />
+                                    <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                                        Texto del Banner
+                                    </label>
+                                    <span className="text-xs text-zinc-400">(Opcional)</span>
+                                </div>
                                 <Input
-                                    fullWidth
+                                    variant="bordered"
+                                    placeholder="Ej: ¡Ofertas de temporada hasta 50% OFF!"
                                     value={text}
                                     onChange={(e) => setText(e.target.value)}
-                                    placeholder="Texto del banner"
-                                    isDisabled={!isActiveTextBanner}
+                                    classNames={{
+                                        inputWrapper: "border-zinc-300 dark:border-zinc-700 group-data-[focus=true]:border-primary"
+                                    }}
                                 />
-                            </label>
+                                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    Texto que se mostrará sobre el banner
+                                </p>
+                            </div>
 
-                            {/* Checkbox e Input para el destino del botón */}
-                            <label className='flex items-center gap-2'>
-                                <Checkbox isSelected={isActiveLinkBanner} onChange={() => setActiveLinkBanner(!isActiveLinkBanner)} />
+                            {/* Button Text */}
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-2">
+                                    <MousePointer size={16} className="text-zinc-600 dark:text-zinc-400" />
+                                    <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                                        Texto del Botón
+                                    </label>
+                                    <span className="text-xs text-zinc-400">(Opcional)</span>
+                                </div>
                                 <Input
-                                    fullWidth
-                                    value={destino}
-                                    onChange={(e) => setDestino(e.target.value)}
-                                    placeholder="Destino del botón (e.g., /catalog)"
-                                    isDisabled={!isActiveLinkBanner}
-                                />
-                            </label>
-
-                            {/* Checkbox e Input para el texto del botón */}
-                            <label className='flex items-center gap-2'>
-                                <Checkbox isSelected={isActiveButtonBanner} onChange={() => setActiveButtonBanner(!isActiveButtonBanner)} />
-                                <Input
-                                    fullWidth
+                                    variant="bordered"
+                                    placeholder="Ej: Ver Ofertas, Comprar Ahora, Explorar"
                                     value={textButton}
                                     onChange={(e) => setTextButton(e.target.value)}
-                                    placeholder="Texto del botón (e.g., Ver Ofertas)"
-                                    isDisabled={!isActiveButtonBanner}
+                                    classNames={{
+                                        inputWrapper: "border-zinc-300 dark:border-zinc-700 group-data-[focus=true]:border-primary"
+                                    }}
                                 />
-                            </label>
-                        </>
+                                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    Texto que aparecerá en el botón de acción
+                                </p>
+                            </div>
+
+                            {/* Destination Link */}
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-2">
+                                    <LinkIcon size={16} className="text-zinc-600 dark:text-zinc-400" />
+                                    <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                                        Enlace de Destino
+                                    </label>
+                                    <span className="text-xs text-zinc-400">(Opcional)</span>
+                                </div>
+                                <Input
+                                    variant="bordered"
+                                    placeholder="Ej: /catalog, /products/ofertas, https://..."
+                                    value={destino}
+                                    onChange={(e) => setDestino(e.target.value)}
+                                    classNames={{
+                                        inputWrapper: "border-zinc-300 dark:border-zinc-700 group-data-[focus=true]:border-primary"
+                                    }}
+                                />
+                                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    Página a la que redirigirá el banner al hacer click
+                                </p>
+                            </div>
+                        </div>
                     )}
                 </ModalBody>
-                <ModalFooter>
-                    <Button color='danger' variant='flat' onClick={onClose} disabled={loading}>
+
+                <ModalFooter className="border-t border-zinc-200 dark:border-zinc-800 pt-4">
+                    <Button
+                        variant="flat"
+                        onPress={handleClose}
+                        disabled={loading}
+                        className="font-medium"
+                    >
                         Cancelar
                     </Button>
-                    {imageUrl && (
-                        <Button color='warning' onClick={handleSubmit} disabled={loading}>
-                            {loading ? 'Subiendo...' : (banner ? 'Actualizar Banner' : 'Crear Banner')}
-                        </Button>
-                    )}
+                    <Button
+                        color="primary"
+                        onPress={handleSubmit}
+                        isLoading={loading}
+                        isDisabled={!imageUrl || loading}
+                        className="font-medium shadow-lg shadow-primary/20"
+                    >
+                        {loading ? 'Guardando...' : (banner ? 'Actualizar Banner' : 'Crear Banner')}
+                    </Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

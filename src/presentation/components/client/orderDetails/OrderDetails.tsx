@@ -4,17 +4,14 @@ import React, { useState } from "react";
 import useOrderDetails from "@/src/presentation/hooks/orders/useOrderDetails";
 import { ArrowLeft, Package, CreditCard, Truck, User, Mail, Phone, MapPin, Calendar, Hash, DollarSign, Edit3, Download, CheckCircle, Clock, XCircle } from "lucide-react";
 import Link from "next/link";
+import { OrderDetailSkeleton } from "@/src/presentation/components/shared/SkeletonLoaders";
 
 const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
     const { orderData, loading, error } = useOrderDetails(orderId);
     const [activeTab, setActiveTab] = useState<'details' | 'timeline'>('details');
 
     if (loading) {
-        return (
-            <div className="flex justify-center items-center h-96">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-        );
+        return <OrderDetailSkeleton />;
     }
 
     if (error) {

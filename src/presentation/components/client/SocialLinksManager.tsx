@@ -9,11 +9,12 @@ import {
 } from '@/src/presentation/hooks/socialsLinksService';
 import { EyeFilledIcon, EyeSlashFilledIcon, EditProductIcon, MiniTrashIcon } from "@/src/presentation/components/shared/Icons";
 import { socialLinksReducer, initialState } from '@/src/presentation/reducers/socialLinksReducer';
-import { SocialLink, IconOption } from '@/src/domain';
+import { SocialLink, IconOption } from '@/src/domain/social/SocialLink';
 
 const SocialLinksManager = () => {
     const [state, dispatch] = useReducer(socialLinksReducer, initialState);
     const [availableIcons, setAvailableIcons] = useState<IconOption[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     // Refresh links and fetch icons
     const refreshLinks = useCallback(async () => {
@@ -22,6 +23,8 @@ const SocialLinksManager = () => {
             dispatch({ type: 'SET_LINKS', payload: fetchedLinks });
         } catch (error) {
             console.error('Error fetching links:', error);
+        } finally {
+            setIsLoading(false);
         }
     }, []);
 
@@ -104,6 +107,48 @@ const SocialLinksManager = () => {
     const openDeleteModal = (linkId: string) => {
         dispatch({ type: 'SET_SELECTED_LINK_ID', payload: linkId });
     };
+
+    // Show skeleton while loading
+    if (isLoading) {
+        return (
+            <div className="w-full">
+                <div className="flex justify-between items-center mb-6">
+                    <div className="space-y-2">
+                        <div className="h-7 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                        <div className="h-4 w-96 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                    </div>
+                    <div className="h-10 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                        <div
+                            key={i}
+                            className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-lg p-4"
+                        >
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-3">
+                                    {/* Icon skeleton */}
+                                    <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    {/* Text skeleton */}
+                                    <div className="space-y-2">
+                                        <div className="h-5 w-24 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                        <div className="h-3 w-32 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    </div>
+                                </div>
+                                {/* Action buttons skeleton */}
+                                <div className="flex gap-1">
+                                    <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full">

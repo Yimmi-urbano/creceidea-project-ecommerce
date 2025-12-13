@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { ProductProvider, useProductContext } from '@/src/presentation/contexts';
 import { Search, Filter, Plus, LayoutGrid, List, ArrowUpDown } from 'lucide-react';
 import { ProductGridView } from '@/src/presentation/components/client/products/ProductGridView';
@@ -91,10 +92,12 @@ function ProductsContent() {
 
           {/* Add Button - Hide when ordering */}
           {!isOrdering && (
-            <button className="flex items-center gap-2 bg-[#00A09D] hover:bg-[#008f8c] text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-[#00A09D]/25 transition-all">
-              <Plus size={18} />
-              <span>Agregar</span>
-            </button>
+            <Link href="/dashboard/products/create">
+              <button className="flex items-center gap-2 bg-[#00A09D] hover:bg-[#008f8c] text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-[#00A09D]/25 transition-all">
+                <Plus size={18} />
+                <span>Agregar</span>
+              </button>
+            </Link>
           )}
         </div>
       </div>

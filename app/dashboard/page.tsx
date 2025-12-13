@@ -38,7 +38,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-1 bg-gradient-to-r from-[#00A09D] to-[#008f8c] bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold tracking-tight mb-1">
             Dashboard Analytics
           </h1>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">

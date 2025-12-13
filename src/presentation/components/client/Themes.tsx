@@ -75,8 +75,34 @@ const ThemesList: React.FC = () => {
 
     if (loading || configLoading) {
         return (
-            <div className="flex justify-center items-center h-[50vh]">
-                <Spinner size="lg" color="primary" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-1">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                    <div
+                        key={i}
+                        className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-lg overflow-hidden"
+                    >
+                        {/* Image skeleton */}
+                        <div className="aspect-video w-full bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+
+                        {/* Card body skeleton */}
+                        <div className="p-4 space-y-4">
+                            {/* Title and price */}
+                            <div className="space-y-2">
+                                <div className="h-6 w-3/4 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                <div className="h-4 w-1/3 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+
+                            {/* Buttons skeleton */}
+                            <div className="space-y-2">
+                                <div className="h-9 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                <div className="flex gap-2">
+                                    <div className="h-9 flex-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    <div className="h-9 flex-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     }

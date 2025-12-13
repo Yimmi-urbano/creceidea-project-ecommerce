@@ -29,9 +29,38 @@ export const ProductTableView: React.FC<ProductTableViewProps> = ({ searchTerm =
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <Spinner size="lg" />
-            </div>
+            <table className="w-full text-left text-sm">
+                <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-dark-bg text-zinc-500 dark:text-zinc-400">
+                    <tr>
+                        <th className="px-6 py-4">Producto</th>
+                        <th className="px-6 py-4">Estado</th>
+                        <th className="px-6 py-4">Precio</th>
+                        <th className="px-6 py-4 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                        <tr key={i} className="animate-pulse">
+                            <td className="px-6 py-4 flex items-center gap-4">
+                                <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                                <div className="h-5 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="h-5 w-16 rounded-full bg-zinc-100 dark:bg-zinc-800" />
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="h-5 w-20 rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                                <div className="flex items-center justify-end gap-2">
+                                    <div className="h-8 w-8 rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                                    <div className="h-8 w-8 rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         );
     }
 
@@ -91,7 +120,7 @@ export const ProductTableView: React.FC<ProductTableViewProps> = ({ searchTerm =
                             )}
                         </td>
                         <td className="px-6 py-4 text-right">
-                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="flex items-center justify-end gap-2">
                                 <IconButton icon={Edit3} onClick={() => handleEdit(product._id)} />
                                 <IconButton icon={Trash2} variant="danger" />
                             </div>

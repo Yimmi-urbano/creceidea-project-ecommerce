@@ -172,65 +172,233 @@ function ProductForm() {
         ],
     };
 
+    // Show skeleton while loading product data
+    if (!detailproduct && productId) {
+        return (
+            <div className="w-full max-w-7xl mx-auto p-4 md:p-6 pb-20">
+                {/* Header Skeleton */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div className="flex flex-col gap-3 flex-1">
+                        <div className="h-4 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                        <div className="h-8 w-64 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                        <div className="h-4 w-96 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="h-10 w-24 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                        <div className="h-10 w-36 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* Left Column Skeleton */}
+                    <div className="lg:col-span-8 space-y-8">
+                        {/* Essential Info Card */}
+                        <div className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
+                            <div className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                                <div className="h-6 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+                            <div className="p-8 space-y-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-2">
+                                        <div className="h-4 w-32 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                        <div className="h-12 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="h-4 w-24 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                        <div className="h-12 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-2">
+                                        <div className="h-4 w-28 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                        <div className="h-48 w-full rounded-xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="h-4 w-24 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                        <div className="h-20 w-full rounded-xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Media Card */}
+                        <div className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
+                            <div className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                                <div className="h-6 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+                            <div className="p-8 space-y-6">
+                                <div className="h-32 w-full rounded-xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                <div className="h-64 w-full rounded-xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                <div className="space-y-2">
+                                    <div className="h-4 w-32 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    <div className="h-20 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Pricing Card */}
+                        <div className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
+                            <div className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                                <div className="h-6 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+                            <div className="p-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {[1, 2, 3, 4].map((i) => (
+                                        <div key={i} className="space-y-2">
+                                            <div className="h-4 w-24 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                            <div className="h-12 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* SEO Card */}
+                        <div className="shadow-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-dark-card rounded-2xl">
+                            <div className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800">
+                                <div className="h-6 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                            </div>
+                            <div className="p-8 space-y-6">
+                                <div className="space-y-2">
+                                    <div className="h-4 w-32 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    <div className="h-12 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="h-4 w-32 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                    <div className="h-20 w-full rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Column Skeleton */}
+                    <div className="lg:col-span-4 space-y-6">
+                        <div className="h-96 w-full rounded-2xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                        <div className="h-32 w-full rounded-2xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="w-full max-w-7xl mx-auto p-4 md:p-6 pb-20">
-            {/* Custom Styles for Quill Toolbar to match Primary Color */}
+            {/* Custom Styles for Quill Editor - Improved Readability */}
             <style jsx global>{`
+                /* Toolbar Styling */
                 .ql-toolbar.ql-snow {
-                    background-color: #ffffff; /* White */
+                    background-color: #f4f4f5 !important; /* Zinc-100 */
                     border-color: #e4e4e7 !important; /* Zinc-200 */
                     border-top-left-radius: 0.75rem;
                     border-top-right-radius: 0.75rem;
+                    padding: 12px !important;
                 }
                 .dark .ql-toolbar.ql-snow {
-                    background-color: #27272a; /* Zinc-800 */
+                    background-color: #27272a !important; /* Zinc-800 */
                     border-color: #3f3f46 !important; /* Zinc-700 */
                 }
+                
+                /* Editor Container */
                 .ql-container.ql-snow {
                     border-color: #e4e4e7 !important;
                     border-bottom-left-radius: 0.75rem;
                     border-bottom-right-radius: 0.75rem;
-                    background-color: #ffffff;
+                    background-color: #ffffff !important;
+                    font-size: 15px !important;
+                    border-width: 1px !important;
+                    border-style: solid !important;
                 }
                 .dark .ql-container.ql-snow {
                     border-color: #3f3f46 !important;
-                    background-color: #18181b; /* Zinc-900 */
-                }
-                /* Toolbar Icons Colors */
-                .ql-snow .ql-stroke {
-                    stroke: #52525b !important; /* Zinc-600 */
-                }
-                .dark .ql-snow .ql-stroke {
-                    stroke: #a1a1aa !important; /* Zinc-400 */
-                }
-                .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
-                    fill: #52525b !important; /* Zinc-600 */
-                }
-                .dark .ql-snow .ql-fill, .dark .ql-snow .ql-stroke.ql-fill {
-                    fill: #a1a1aa !important; /* Zinc-400 */
-                }
-                .ql-snow .ql-picker {
-                    color: #52525b !important; /* Zinc-600 */
-                }
-                .dark .ql-snow .ql-picker {
-                    color: #a1a1aa !important; /* Zinc-400 */
+                    background-color: #18181b !important; /* Zinc-900 */
                 }
                 
-                /* Active/Hover states using Primary Teal */
+                /* Editor Content Area */
+                .ql-editor {
+                    min-height: 300px;
+                    color: #18181b !important; /* Zinc-900 */
+                    padding: 16px !important;
+                }
+                .dark .ql-editor {
+                    color: #fafafa !important; /* Zinc-50 */
+                }
+                
+                /* Placeholder Text */
+                .ql-editor.ql-blank::before {
+                    color: #a1a1aa !important; /* Zinc-400 */
+                    font-style: normal;
+                }
+                .dark .ql-editor.ql-blank::before {
+                    color: #71717a !important; /* Zinc-500 */
+                }
+                
+                /* Toolbar Icons Colors */
+                .ql-snow .ql-stroke {
+                    stroke: #3f3f46 !important; /* Zinc-700 */
+                }
+                .dark .ql-snow .ql-stroke {
+                    stroke: #d4d4d8 !important; /* Zinc-300 */
+                }
+                .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
+                    fill: #3f3f46 !important; /* Zinc-700 */
+                }
+                .dark .ql-snow .ql-fill, .dark .ql-snow .ql-stroke.ql-fill {
+                    fill: #d4d4d8 !important; /* Zinc-300 */
+                }
+                
+                /* Picker (Dropdowns) */
+                .ql-snow .ql-picker {
+                    color: #3f3f46 !important; /* Zinc-700 */
+                }
+                .dark .ql-snow .ql-picker {
+                    color: #d4d4d8 !important; /* Zinc-300 */
+                }
+                .ql-snow .ql-picker-options {
+                    background-color: #ffffff !important;
+                    border-color: #e4e4e7 !important;
+                }
+                .dark .ql-snow .ql-picker-options {
+                    background-color: #27272a !important;
+                    border-color: #3f3f46 !important;
+                }
+                
+                /* Active/Hover states using Primary Color */
                 .ql-snow .ql-active .ql-stroke, 
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke,
-                .ql-snow .ql-picker-item:hover .ql-stroke {
-                    stroke: hsl(var(--primary)) !important;
+                .ql-snow .ql-picker-item:hover .ql-stroke,
+                .ql-toolbar button:hover .ql-stroke {
+                    stroke: #00A09D !important; /* Primary */
                 }
                 .ql-snow .ql-active .ql-fill,
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill,
-                .ql-snow .ql-picker-item:hover .ql-fill {
-                    fill: hsl(var(--primary)) !important;
+                .ql-snow .ql-picker-item:hover .ql-fill,
+                .ql-toolbar button:hover .ql-fill {
+                    fill: #00A09D !important; /* Primary */
                 }
                 .ql-snow .ql-active,
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label,
-                .ql-snow .ql-picker-item:hover {
-                    color: hsl(var(--primary)) !important;
+                .ql-snow .ql-picker-item:hover,
+                .ql-toolbar button:hover {
+                    color: #00A09D !important; /* Primary */
+                }
+                
+                /* Toolbar Button Hover Background */
+                .ql-toolbar button:hover,
+                .ql-toolbar button:focus,
+                .ql-toolbar button.ql-active {
+                    background-color: rgba(0, 160, 157, 0.1) !important;
+                    border-radius: 4px;
+                }
+                
+                /* Selected Text Formatting */
+                .ql-editor strong {
+                    font-weight: 700;
+                }
+                .ql-editor em {
+                    font-style: italic;
+                }
+                .ql-editor u {
+                    text-decoration: underline;
                 }
             `}</style>
 

@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import { CategoryProvider, useCategoryContext } from '@/src/presentation/components/client/category/CategoryContext';
 import { Edit2, Trash2, Search } from 'lucide-react';
 import AddCategory from '@/src/presentation/components/client/category/AddCategory';
+import { Skeleton } from '@nextui-org/react';
 
 function CategoriesContent() {
-  const { allCategories, handleDeleteCategory } = useCategoryContext();
+  const { allCategories, handleDeleteCategory, loading } = useCategoryContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -74,30 +75,44 @@ function CategoriesContent() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-            Total de Categorías
-          </p>
-          <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-            {allCategories?.length || 0}
-          </p>
-        </div>
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-            Visibles
-          </p>
-          <p className="text-2xl font-bold text-[#00A09D]">
-            {filteredCategories?.length || 0}
-          </p>
-        </div>
-        <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-            Seleccionadas
-          </p>
-          <p className="text-2xl font-bold text-amber-500">
-            {selectedCategories?.length || 0}
-          </p>
-        </div>
+        {loading ? (
+          // Skeleton for stats
+          <>
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+                <Skeleton className="h-3 w-24 rounded-lg mb-3 bg-zinc-200 dark:bg-zinc-800" />
+                <Skeleton className="h-8 w-12 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+                Total de Categorías
+              </p>
+              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                {allCategories?.length || 0}
+              </p>
+            </div>
+            <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+                Visibles
+              </p>
+              <p className="text-2xl font-bold text-[#00A09D]">
+                {filteredCategories?.length || 0}
+              </p>
+            </div>
+            <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+                Seleccionadas
+              </p>
+              <p className="text-2xl font-bold text-[#00A09D]">
+                {selectedCategories?.length || 0}
+              </p>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Categories List */}
@@ -109,13 +124,31 @@ function CategoriesContent() {
             checked={selectedCategories.length === filteredCategories.length && filteredCategories.length > 0}
             onChange={toggleAll}
             className="w-4 h-4 rounded accent-[#00A09D] cursor-pointer"
+            disabled={loading}
           />
           <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
             Nombre
           </span>
         </div>
 
-        {filteredCategories.length > 0 ? (
+        {loading ? (
+          // Skeleton for category items
+          <>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className="flex items-center gap-4 px-4 py-3.5 bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-lg"
+              >
+                <Skeleton className="w-4 h-4 rounded bg-zinc-200 dark:bg-zinc-800" />
+                <Skeleton className="flex-1 h-5 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+                <div className="flex items-center gap-1">
+                  <Skeleton className="w-8 h-8 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+                  <Skeleton className="w-8 h-8 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+                </div>
+              </div>
+            ))}
+          </>
+        ) : filteredCategories.length > 0 ? (
           filteredCategories.map((category: any) => (
             <div
               key={category.id}
