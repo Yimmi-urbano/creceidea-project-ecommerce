@@ -7,6 +7,7 @@ import { Banner } from '@/src/domain/banners/Banner';
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentBanner, setCurrentBanner] = useState<Banner | undefined>();
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const openModal = (banner?: Banner) => {
     setCurrentBanner(banner);
@@ -16,6 +17,8 @@ export default function Home() {
   const closeModal = () => {
     setIsModalOpen(false);
     setCurrentBanner(undefined);
+    // Trigger refresh by changing key
+    setRefreshKey(prev => prev + 1);
   };
 
   return (
@@ -31,7 +34,7 @@ export default function Home() {
       </div>
 
       {/* Banner List */}
-      <BannerList onEdit={openModal} onOpenModal={() => openModal()} />
+      <BannerList key={refreshKey} onEdit={openModal} onOpenModal={() => openModal()} />
 
       {/* Banner Modal */}
       <BannerModal

@@ -118,7 +118,7 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
             setTextButton('');
 
             onClose();
-            window.location.reload(); // Refresh to show updated banners
+            // Parent component should handle refresh
         } catch (error) {
             console.error('Error al guardar el banner:', error);
             alert('Error al guardar el banner. Por favor intenta de nuevo.');
