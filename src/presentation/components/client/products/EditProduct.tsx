@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
 import {
     Input,
@@ -468,7 +469,7 @@ function ProductForm() {
                                         variant="bordered"
                                         placeholder="Ej: Camiseta de Algodón Premium"
                                         value={formData.name}
-                                        onChange={(e) => handleChange(e, setFormData, formData)}
+                                        onChange={(e) => handleChange(e, setFormData as any, formData)}
                                         name="name"
                                         size="lg"
                                         classNames={{

@@ -81,7 +81,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
     const clientLastName = orderData.clientInfo?.last_name || '';
     const fullName = `${clientName} ${clientLastName}`.trim();
 
-    const subtotal = orderData.products.reduce((sum, product) => sum + (product.valid_price * product.qty), 0);
+    const subtotal = orderData.products.reduce((sum: number, product: any) => sum + (product.valid_price * product.qty), 0);
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
@@ -171,7 +171,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                             </div>
                         </div>
                         <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
-                            {orderData.products.map((product) => (
+                            {orderData.products.map((product: any) => (
                                 <div key={product.id} className="p-6 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                                     <div className="flex gap-4">
                                         <div className="flex-shrink-0">

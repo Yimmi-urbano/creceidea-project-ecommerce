@@ -247,11 +247,9 @@ const CardProducts: React.FC = () => {
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
-      setOrderedProducts((items: any) => {
-        const oldIndex = items.findIndex((i: any) => i._id === active.id);
-        const newIndex = items.findIndex((i: any) => i._id === over.id);
-        return normalizeOrder(arrayMove(items, oldIndex, newIndex));
-      });
+      const oldIndex = orderedProducts.findIndex((i: any) => i._id === active.id);
+      const newIndex = orderedProducts.findIndex((i: any) => i._id === over.id);
+      setOrderedProducts(normalizeOrder(arrayMove(orderedProducts, oldIndex, newIndex)));
     }
   };
 
@@ -264,7 +262,7 @@ const CardProducts: React.FC = () => {
 
     if (!Number.isFinite(newOrder) || newOrder < 1) return;
     const item = orderedProducts.find((i: any) => i._id === id);
-    if (!item || newOrder === item.order) return;
+    if (!item || newOrder === (item as any).order) return;
 
     if (newOrder < pageStart || newOrder > pageEnd) {
       try {
@@ -276,11 +274,9 @@ const CardProducts: React.FC = () => {
       return;
     }
 
-    setOrderedProducts((items: any) => {
-      const currentIndex = items.findIndex((i: any) => i._id === id);
-      const targetIndex = newOrder - pageStart;
-      return normalizeOrder(arrayMove(items, currentIndex, targetIndex));
-    });
+    const currentIndex = orderedProducts.findIndex((i: any) => i._id === id);
+    const targetIndex = newOrder - pageStart;
+    setOrderedProducts(normalizeOrder(arrayMove(orderedProducts, currentIndex, targetIndex)));
   };
 
   const bumpOrder = async (
@@ -291,7 +287,7 @@ const CardProducts: React.FC = () => {
   ) => {
     const item = orderedProducts.find((i: any) => i._id === id);
     if (!item) return;
-    const newOrder = item.order + delta;
+    const newOrder = (item as any).order + delta;
     if (newOrder < 1) return;
     if (newOrder < pageStart || newOrder > pageEnd) {
       try {
@@ -303,11 +299,9 @@ const CardProducts: React.FC = () => {
       return;
     }
 
-    setOrderedProducts((items: any) => {
-      const currentIndex = items.findIndex((i: any) => i._id === id);
-      const targetIndex = newOrder - pageStart;
-      return normalizeOrder(arrayMove(items, currentIndex, targetIndex));
-    });
+    const currentIndex = orderedProducts.findIndex((i: any) => i._id === id);
+    const targetIndex = newOrder - pageStart;
+    setOrderedProducts(normalizeOrder(arrayMove(orderedProducts, currentIndex, targetIndex)));
   };
 
   return (

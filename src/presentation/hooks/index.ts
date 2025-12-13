@@ -26,9 +26,9 @@ export { default as useOrderDetails } from './orders/useOrderDetails';
 export { useBanners, useBanner } from './banners/useBanners';
 
 // Configuration hooks
-export { default as useThemes } from './configuration/useThemes';
+export { useThemes } from './configuration/useThemes';
 export { default as useUpdateCatalog } from './configuration/useUpdateCatalog';
-export { default as useWhatsappHome } from './configuration/useWhatsappHome';
+export { updateWhatsappHome } from './configuration/useWhatsappHome';
 
 // UI hooks
 export { default as useResizableSidebar } from './ui/useResizableSidebar';

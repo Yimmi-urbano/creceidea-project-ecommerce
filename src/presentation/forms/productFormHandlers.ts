@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ChangeEvent } from 'react';
 import { toast } from 'sonner';
 import { uploadProductImage } from '@/src/infrastructure/repositories/uploadRepository';

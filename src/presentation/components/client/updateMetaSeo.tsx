@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Chip, Input, Textarea } from '@nextui-org/react';
 import { useConfig } from '@/src/presentation/contexts';
-import { updateSeoMetadata, SeoMetadata } from '@/src/application/configuration/configurationServices';
+import { updateSeoMetadata } from '@/src/application/configuration/configurationServices';
+import { SeoMetadata } from '@/src/domain/configuration/SeoMetadata';
 import { NotificationModal } from '@/src/presentation/components/client/utils/NotificationModal';
 
 const UpdateMetadata: React.FC = () => {

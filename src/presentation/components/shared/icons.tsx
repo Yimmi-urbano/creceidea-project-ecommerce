@@ -1,5 +1,10 @@
-import * as React from "react";
-import { IconSvgProps } from "@/src/domain";
+
+export interface IconSvgProps extends React.SVGProps<SVGSVGElement> {
+  size?: number;
+  width?: number;
+  height?: number;
+  fill?: string;
+}
 
 export const Logo: React.FC<IconSvgProps> = ({
   size = 36,

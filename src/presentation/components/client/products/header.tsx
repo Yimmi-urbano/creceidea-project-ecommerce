@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button, CardHeader, Link } from "@nextui-org/react";
 import { useProductContext } from '@/src/presentation/contexts';
-import { updateOrderList, } from "@/src/application/products/productServices";
+import { updateProductOrder, } from "@/src/application/products/productServices";
 import { SortIcon } from "@/src/presentation/components/shared/Icons";
 
 const HeaderProducts: React.FC = () => {
@@ -15,7 +15,7 @@ const HeaderProducts: React.FC = () => {
         }));
 
         try {
-            await updateOrderList(payload)
+            await updateProductOrder(payload)
         } finally {
             setIsOrdering(false)
             await fetchProducts();

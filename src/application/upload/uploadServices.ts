@@ -1,6 +1,5 @@
-import { uploadImage } from "@/src/infrastructure/repositories/upload/uploadRepository";
-import { Upload } from "@/src/domain/upload/Upload";
+import { uploadImage } from "@/src/infrastructure/repositories/uploadRepository";
 
-export const postUploadImage = async (file: File): Promise<Upload | null> => {
+export const postUploadImage = async (file: File): Promise<string> => {
   return await uploadImage(file);
 };

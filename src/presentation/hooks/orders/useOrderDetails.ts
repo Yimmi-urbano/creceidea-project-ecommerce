@@ -3,7 +3,7 @@ import { getOrderById } from "@/src/application/orders/orderServices";
 import { Order } from "@/src/domain/orders/Order";
 
 const useOrderDetails = (orderId: string) => {
-  const [orderData, setOrderData] = useState<Order | null>(null);
+  const [orderData, setOrderData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { Input, Button } from '@nextui-org/react';
 import { ChromePicker } from 'react-color';
 import { useConfig } from '@/src/presentation/contexts';
-import { updateColors } from '@/src/application/configuration/configurationServices';
+import { updateThemeColors } from '@/src/application/configuration/configurationServices';
 import { NotificationModal } from '@/src/presentation/components/client/utils/NotificationModal';
 
 interface Color {
@@ -78,7 +78,7 @@ const ColorPicker: React.FC = () => {
       setIsModalLoading(true); // Comienza la carga
       setIsModalOpen(true); // Abre el modal
 
-      await updateColors(colorHexes);
+      await updateThemeColors(colorHexes);
       setModalMessage('Colores actualizados correctamente!'); // Actualiza el mensaje con el resultado
       setIsModalLoading(false); // Finaliza la carga
     } catch (error) {

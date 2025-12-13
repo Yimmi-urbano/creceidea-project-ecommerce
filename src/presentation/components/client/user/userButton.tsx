@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link, User, DropdownSection, Image } from "@nextui-org/react";
 import { useConfig, ConfigProvider } from '@/src/presentation/contexts';
-import { MenuMobile } from "@/src/presentation/components/Icons";
+import { MenuMobile } from "@/src/presentation/components/shared/Icons";
 
 export default function UserButtonEvent() {
 

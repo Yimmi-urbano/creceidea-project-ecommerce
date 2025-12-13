@@ -7,7 +7,7 @@ import { ProductGridView } from '@/src/presentation/components/client/products/P
 import { ProductTableView } from '@/src/presentation/components/client/products/ProductTableView';
 import CardProductEdit from '@/src/presentation/components/client/products/CardProductEdit';
 import Paginator from '@/src/presentation/components/client/products/Paginator';
-import { updateOrderList } from '@/src/application/products/productServices';
+import { updateProductOrder } from '@/src/application/products/productServices';
 
 function ProductsContent() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
@@ -21,7 +21,7 @@ function ProductsContent() {
     }));
 
     try {
-      await updateOrderList(payload);
+      await updateProductOrder(payload);
     } finally {
       setIsOrdering(false);
       await fetchProducts();
