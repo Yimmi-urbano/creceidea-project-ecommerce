@@ -19,6 +19,7 @@ import {
 import { useSidebar } from '@/src/presentation/contexts/SidebarContext';
 import { useConfig } from '@/src/presentation/contexts/ConfigContext';
 import { Skeleton } from "@nextui-org/react";
+import { Logo } from './Icons';
 
 const Sidebar = () => {
   const { isCollapsed, setIsCollapsed } = useSidebar();
@@ -85,14 +86,15 @@ const Sidebar = () => {
         {/* Logo */}
         <div className="h-16 flex items-center px-6 border-b border-transparent shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">
-              C
-            </div>
+
             {!isCollapsed && (
-              <span className="font-bold text-xl tracking-tight">
-                crece<span className="text-primary">idea</span>
-              </span>
-            )}
+              <Logo width={120} height={50} />
+            )
+              ||
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">
+                C
+              </div>
+            }
           </div>
         </div>
 

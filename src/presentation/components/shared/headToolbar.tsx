@@ -1,17 +1,25 @@
 'use client';
 
 import React from 'react';
-import { usePathname } from 'next/navigation';
+import { useSidebar } from '@/src/presentation/contexts/SidebarContext';
 import { useTheme } from '@/src/presentation/contexts';
 import { Search, Bell, Sun, Moon } from 'lucide-react';
+import { Logo } from './Icons';
 
 export const HeadToolbar = () => {
+  const { isCollapsed, setIsCollapsed } = useSidebar();
   const { theme, toggleTheme } = useTheme();
 
   return (
     <>
+
+
       <div className="sticky top-0 z-30 h-16 px-6 flex items-center justify-between border-b backdrop-blur-xl bg-opacity-80 bg-white/80 dark:bg-dark-bg border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-4 flex-1">
+
+          <div className='md:hidden'>
+            <Logo width={120} height={50} />
+          </div>
           {/* Global Search */}
           <div className="relative w-full max-w-md hidden md:block group">
             <Search
