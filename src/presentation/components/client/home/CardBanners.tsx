@@ -62,22 +62,22 @@ const BannerList: React.FC<BannerListProps> = ({ onEdit, onOpenModal }) => {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="group relative rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 transition-all"
+              className="group relative rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 md:p-4 transition-all"
             >
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4 flex-1">
-                  {/* Image skeleton */}
-                  <div className="w-48 h-20 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
-                  {/* Text skeleton */}
-                  <div className="space-y-2 flex-1">
-                    <div className="h-4 w-32 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
-                    <div className="h-3 w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
-                  </div>
+              <div className="flex items-center gap-2 md:gap-4">
+                {/* Order badge skeleton */}
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                {/* Image skeleton */}
+                <div className="w-16 h-16 md:w-48 md:h-20 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                {/* Text skeleton */}
+                <div className="space-y-2 flex-1 min-w-0">
+                  <div className="h-4 w-20 md:w-32 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                  <div className="h-3 w-32 md:w-48 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
                 </div>
                 {/* Action buttons skeleton */}
-                <div className="flex gap-2">
-                  <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
-                  <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                <div className="flex gap-1 md:gap-2">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
                 </div>
               </div>
             </div>
@@ -122,53 +122,50 @@ const BannerList: React.FC<BannerListProps> = ({ onEdit, onOpenModal }) => {
             {banners.map((banner, index) => (
               <div
                 key={banner._id}
-                className="group relative rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 transition-all duration-300 hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700"
+                className="group relative rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 md:p-4 transition-all duration-300 hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700"
               >
-                <div className="flex items-center justify-between gap-4">
-                  {/* Banner Preview */}
-                  <div className="flex items-center gap-4 flex-1 min-w-0">
-                    {/* Order Badge */}
-                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                      <span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
-                        {index + 1}
-                      </span>
-                    </div>
+                <div className="flex items-center gap-2 md:gap-4">
+                  {/* Order Badge */}
+                  <div className="flex-shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                    <span className="text-xs md:text-sm font-bold text-zinc-600 dark:text-zinc-400">
+                      {index + 1}
+                    </span>
+                  </div>
 
-                    {/* Banner Image */}
-                    <div className="relative flex-shrink-0 w-48 h-20 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
-                      <img
-                        src={banner.image}
-                        alt={`Banner ${index + 1} `}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
+                  {/* Banner Image */}
+                  <div className="relative flex-shrink-0 w-16 h-16 md:w-48 md:h-20 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+                    <img
+                      src={banner.image}
+                      alt={`Banner ${index + 1} `}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
 
-                    {/* Banner Info */}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
-                        Banner {index + 1}
-                      </p>
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
-                        {banner.text || 'Sin texto configurado'}
-                      </p>
-                    </div>
+                  {/* Banner Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-0.5 md:mb-1 truncate">
+                      Banner {index + 1}
+                    </p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                      {banner.text || 'Sin texto configurado'}
+                    </p>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-2 flex-shrink-0">
+                  <div className="flex gap-1 md:gap-2 flex-shrink-0">
                     <button
                       onClick={() => onEdit(banner)}
-                      className="p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-primary transition-colors"
+                      className="p-1.5 md:p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-primary transition-colors"
                       title="Editar banner"
                     >
-                      <Edit3 size={18} />
+                      <Edit3 size={16} className="md:w-[18px] md:h-[18px]" />
                     </button>
                     <button
                       onClick={() => confirmDelete(banner)}
-                      className="p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
+                      className="p-1.5 md:p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
                       title="Eliminar banner"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={16} className="md:w-[18px] md:h-[18px]" />
                     </button>
                   </div>
                 </div>

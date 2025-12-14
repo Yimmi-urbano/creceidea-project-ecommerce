@@ -1,13 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useSidebar } from '@/src/presentation/contexts/SidebarContext';
 import { useTheme } from '@/src/presentation/contexts';
-import { Search, Bell, Sun, Moon } from 'lucide-react';
+import { Bell, Sun, Moon } from 'lucide-react';
 import { Logo } from './Icons';
+import { GlobalSearch } from './GlobalSearch';
 
 export const HeadToolbar = () => {
-  const { isCollapsed, setIsCollapsed } = useSidebar();
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -20,18 +19,9 @@ export const HeadToolbar = () => {
           <div className='md:hidden'>
             <Logo width={120} height={50} />
           </div>
+
           {/* Global Search */}
-          <div className="relative w-full max-w-md hidden md:block group">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors"
-            />
-            <input
-              type="text"
-              placeholder="Búsqueda global..."
-              className="w-full pl-10 pr-4 py-2 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary focus:bg-white dark:focus:bg-dark-card text-zinc-700 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-600"
-            />
-          </div>
+          <GlobalSearch />
         </div>
 
         <div className="flex items-center gap-3">

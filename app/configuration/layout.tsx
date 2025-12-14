@@ -21,13 +21,15 @@ export default function ConfigurationLayout({
             <ConfigProvider>
                 <SidebarContext.Provider value={{ isCollapsed, setIsCollapsed }}>
                     <div className="flex min-h-screen bg-zinc-50 dark:bg-[#0f1115]">
-                        <Sidebar />
+                        <div className="hidden md:block">
+                            <Sidebar />
+                        </div>
                         <main
-                            className={`flex-1 transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'
+                            className={`flex-1 transition-all duration-300 overflow-x-hidden ${isCollapsed ? 'md:ml-20' : 'md:ml-64'
                                 }`}
                         >
                             <HeadToolbar />
-                            <div className="p-6 pb-24 md:pb-0">
+                            <div className="p-4 md:p-6 pb-24 md:pb-6">
                                 {children}
                             </div>
                         </main>

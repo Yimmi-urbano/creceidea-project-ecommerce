@@ -33,3 +33,6 @@ export { updateWhatsappHome } from './configuration/useWhatsappHome';
 // UI hooks
 export { default as useResizableSidebar } from './ui/useResizableSidebar';
 export { default as useIsMobile } from './ui/useIsMobile';
+
+// Keyboard hooks
+export { useKeyboardShortcut, useGlobalSearchShortcut } from './useKeyboardShortcut';
