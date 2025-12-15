@@ -12,7 +12,64 @@ import { updateProductOrder } from '@/src/application/products/productServices';
 function ProductsContent() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const [searchTerm, setSearchTerm] = useState('');
-  const { isOrdering, setIsOrdering, orderedProducts, fetchProducts } = useProductContext();
+  const { isOrdering, setIsOrdering, orderedProducts, fetchProducts, products, isLoading } = useProductContext();
+
+  /**
+   * Product Filtering and Statistics
+   * 
+   * This component implements dynamic filtering and real-time statistics calculation
+   * for the product catalog. The summary cards update automatically based on search results.
+   * 
+   * @filtering
+   * - Products are filtered by title (case-insensitive)
+   * - Search term is matched against product.title
+   * - Empty search shows all products
+   * 
+   * @statistics
+   * The component calculates 4 key metrics:
+   * 
+   * 1. totalProducts (number)
+   *    - Total count of ALL products in the catalog
+   *    - Never changes with search (shows original total)
+   *    - Used when searchTerm is empty
+   * 
+   * 2. visibleProducts (number)
+   *    - Count of products matching the search term
+   *    - Updates in real-time as user types
+   *    - Displayed when searchTerm has value
+   *    - Label changes from "Total de Productos" to "Visibles"
+   *    - Color changes from zinc to primary (blue) to highlight filtered state
+   * 
+   * 3. activeProducts (number)
+   *    - Count of products with is_available = true
+   *    - Calculated from FILTERED results (not total)
+   *    - Updates based on visible products
+   *    - Color: emerald (green) - indicates positive status
+   * 
+   * 4. outOfStockProducts (number)
+   *    - Count of products with stock = 0 or undefined
+   *    - Calculated from FILTERED results (not total)
+   *    - Updates based on visible products
+   *    - Color: rose (red) - indicates alert status
+   * 
+   * @example
+   * // Without search:
+   * // "Total de Productos: 15" (zinc)
+   * // "Activos: 12" (emerald)
+   * // "Sin Stock: 3" (rose)
+   * 
+   * @example
+   * // With search "Inka":
+   * // "Visibles: 3" (primary - blue)
+   * // "Activos: 2" (emerald - from 3 visible)
+   * // "Sin Stock: 1" (rose - from 3 visible)
+   * 
+   * @behavior
+   * - Summary cards are hidden when isOrdering = true
+   * - Skeleton loaders shown during initial data fetch
+   * - All statistics update instantly on search input change
+   * - Filter logic uses safe navigation (?.) to prevent errors
+   */
 
   const handleSaveOrder = async () => {
     const payload = orderedProducts.map((p: any) => ({
@@ -27,6 +84,17 @@ function ProductsContent() {
       await fetchProducts();
     }
   };
+
+  // Filter products by search term
+  const filteredProducts = products?.filter((p: any) =>
+    p.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || [];
+
+  // Calculate stats based on filtered results
+  const totalProducts = products?.length || 0;
+  const visibleProducts = filteredProducts.length;
+  const activeProducts = filteredProducts.filter((p: any) => p.is_available)?.length || 0;
+  const outOfStockProducts = filteredProducts.filter((p: any) => p.stock === 0 || !p.stock)?.length || 0;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -122,6 +190,39 @@ function ProductsContent() {
             <Filter size={16} /> Filtros Avanzados
           </button>
         </div>
+      )}
+
+      {/* Summary Stats - Hide when ordering */}
+      {!isOrdering && (
+        isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 animate-pulse">
+                <div className="h-3 w-24 bg-zinc-100 dark:bg-zinc-800 rounded mb-2"></div>
+                <div className="h-8 w-16 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">
+                {searchTerm ? 'Visibles' : 'Total de Productos'}
+              </p>
+              <p className={`text-2xl font-bold ${searchTerm ? 'text-primary' : 'text-zinc-900 dark:text-white'}`}>
+                {searchTerm ? visibleProducts : totalProducts}
+              </p>
+            </div>
+            <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Activos</p>
+              <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{activeProducts}</p>
+            </div>
+            <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Sin inventario</p>
+              <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">{outOfStockProducts}</p>
+            </div>
+          </div>
+        )
       )}
 
       {/* Products Grid/List */}

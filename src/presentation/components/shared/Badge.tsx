@@ -50,12 +50,12 @@ export const Badge: React.FC<BadgeProps> = ({ status, type = 'default' }) => {
         }
     } else {
         // Default Product Status
-        styles = status === 'active'
+        styles = status
             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20'
             : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700';
 
-        label = status === 'active' ? 'Activo' : 'Inactivo';
-        dotColor = status === 'active' ? 'bg-emerald-500' : 'bg-zinc-500';
+        label = status ? 'Activo' : 'Inactivo';
+        dotColor = status ? 'bg-emerald-500' : 'bg-zinc-500';
     }
 
     return (

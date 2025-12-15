@@ -89,25 +89,25 @@ function CategoriesContent() {
           <>
             <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
               <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-                Total de Categorías
+                {searchTerm ? 'Visibles' : 'Total de Categorías'}
               </p>
-              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                {allCategories?.length || 0}
+              <p className={`text-2xl font-bold ${searchTerm ? 'text-primary' : 'text-zinc-900 dark:text-zinc-100'}`}>
+                {searchTerm ? filteredCategories?.length || 0 : allCategories?.length || 0}
               </p>
             </div>
             <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
               <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-                Visibles
+                Activas
               </p>
-              <p className="text-2xl font-bold text-primary">
-                {filteredCategories?.length || 0}
+              <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                {filteredCategories?.filter((cat: any) => cat.is_active)?.length || 0}
               </p>
             </div>
             <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
               <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
                 Seleccionadas
               </p>
-              <p className="text-2xl font-bold text-primary">
+              <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">
                 {selectedCategories?.length || 0}
               </p>
             </div>

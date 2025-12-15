@@ -21,7 +21,7 @@ const PageOrders: React.FC = () => {
       </div>
 
       {/* Orders Table */}
-      <div className="rounded-xl overflow-hidden bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
+      <div className="overflow-hidden">
         <Orders />
       </div>
     </div>

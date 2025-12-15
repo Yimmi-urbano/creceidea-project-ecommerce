@@ -163,7 +163,7 @@ const Orders: React.FC = () => {
   // Calculate stats
   const totalOrders = orders.length;
   const visibleOrders = filteredOrders.length;
-  const completedOrders = orders.filter(o => (o as any).paymentStatus?.typeStatus === 'completed').length;
+  const completedOrders = filteredOrders.filter(o => (o as any).paymentStatus?.typeStatus === 'completed').length;
 
   return (
     <>
@@ -190,16 +190,22 @@ const Orders: React.FC = () => {
         {/* Summary Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
-            <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Total de Pedidos</p>
-            <p className="text-2xl font-bold text-zinc-900 dark:text-white">{totalOrders}</p>
-          </div>
-          <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
-            <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Visibles</p>
-            <p className="text-2xl font-bold text-primary">{visibleOrders}</p>
+            <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">
+              {searchTerm ? 'Visibles' : 'Total de Pedidos'}
+            </p>
+            <p className={`text-2xl font-bold ${searchTerm ? 'text-primary' : 'text-zinc-900 dark:text-white'}`}>
+              {searchTerm ? visibleOrders : totalOrders}
+            </p>
           </div>
           <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
             <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Completados</p>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{completedOrders}</p>
+            <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{completedOrders}</p>
+          </div>
+          <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
+            <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">Pendientes</p>
+            <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">
+              {visibleOrders - completedOrders}
+            </p>
           </div>
         </div>
 
@@ -208,7 +214,7 @@ const Orders: React.FC = () => {
           <table className="w-full text-left text-sm">
             <thead className="text-xs uppercase font-semibold bg-zinc-50 dark:bg-dark-bg text-zinc-700 dark:text-zinc-200">
               <tr>
-                <th className="px-6 py-4">Pedido ID</th>
+                <th className="px-6 py-4"># Pedido</th>
                 <th className="px-6 py-4">Cliente</th>
                 <th className="px-6 py-4">Fecha Compra</th>
                 <th className="px-6 py-4">Fecha Pago</th>
