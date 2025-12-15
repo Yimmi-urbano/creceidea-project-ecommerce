@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   DollarSign,
   ShoppingCart,
@@ -24,14 +24,22 @@ import {
   calculateKPIs
 } from '@/src/utils/dashboardData';
 
+type PeriodType = '30days' | '7days' | 'month' | 'year';
+
 export default function DashboardPage() {
-  // Generate all data once using useMemo
-  const salesData = useMemo(() => generateSalesData(), []);
-  const topProductsData = useMemo(() => generateTopProductsData(), []);
-  const ordersData = useMemo(() => generateOrdersData(), []);
-  const categorySalesData = useMemo(() => generateCategorySalesData(), []);
-  const recentOrders = useMemo(() => generateRecentOrders(), []);
-  const kpis = useMemo(() => calculateKPIs(), []);
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('30days');
+
+  // Generate all data based on selected period
+  const salesData = useMemo(() => generateSalesData(selectedPeriod), [selectedPeriod]);
+  const topProductsData = useMemo(() => generateTopProductsData(selectedPeriod), [selectedPeriod]);
+  const ordersData = useMemo(() => generateOrdersData(selectedPeriod), [selectedPeriod]);
+  const categorySalesData = useMemo(() => generateCategorySalesData(selectedPeriod), [selectedPeriod]);
+  const recentOrders = useMemo(() => generateRecentOrders(selectedPeriod), [selectedPeriod]);
+  const kpis = useMemo(() => calculateKPIs(selectedPeriod), [selectedPeriod]);
+
+  const handlePeriodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedPeriod(e.target.value as PeriodType);
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -46,11 +54,15 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <select className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 outline-none focus:border-primary">
-            <option>Últimos 30 días</option>
-            <option>Últimos 7 días</option>
-            <option>Este mes</option>
-            <option>Este año</option>
+          <select
+            value={selectedPeriod}
+            onChange={handlePeriodChange}
+            className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 outline-none focus:border-primary cursor-pointer"
+          >
+            <option value="30days">Últimos 30 días</option>
+            <option value="7days">Últimos 7 días</option>
+            <option value="month">Este mes</option>
+            <option value="year">Este año</option>
           </select>
         </div>
       </div>

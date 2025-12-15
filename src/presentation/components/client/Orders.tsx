@@ -170,7 +170,7 @@ const Orders: React.FC = () => {
       <div className="space-y-6">
         {/* Search Bar */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex-1 relative group">
+          <div className="flex-1 max-w-md relative group">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors" />
             <input
               type="text"
@@ -179,7 +179,7 @@ const Orders: React.FC = () => {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              placeholder="Buscar por N° orden, cliente, total..."
+              placeholder="Buscar pedidos..."
               className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none
                 border-zinc-200 dark:border-zinc-800 focus:border-primary bg-white dark:bg-dark-card
               "

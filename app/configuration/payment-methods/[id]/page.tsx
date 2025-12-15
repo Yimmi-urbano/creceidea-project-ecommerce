@@ -4,7 +4,7 @@ import React, { Suspense, lazy } from "react";
 import { useParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { CardBody } from "@nextui-org/react";
+import { CardBody, Skeleton } from "@nextui-org/react";
 
 const loadPaymentForm = (nameId: string) => {
   switch (nameId) {
@@ -34,6 +34,37 @@ const titleModule = (nameId: string) => {
 
 }
 
+// Skeleton loader component
+const PaymentFormSkeleton = () => (
+  <div className="space-y-6">
+    {/* Card principal */}
+    <div className="bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 space-y-6">
+      {/* Skeleton para campos de formulario */}
+      {[1, 2, 3, 4].map((i) => (
+        <div key={i} className="space-y-2">
+          <Skeleton className="h-4 w-32 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+          <Skeleton className="h-11 w-full rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+        </div>
+      ))}
+
+      {/* Skeleton para área de imagen/QR */}
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-40 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+        <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl p-8 flex flex-col items-center justify-center">
+          <Skeleton className="w-32 h-32 rounded-xl bg-zinc-200 dark:bg-zinc-800 mb-4" />
+          <Skeleton className="h-4 w-48 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+        </div>
+      </div>
+
+      {/* Skeleton para botones */}
+      <div className="flex gap-3 pt-4">
+        <Skeleton className="h-11 w-32 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+        <Skeleton className="h-11 w-32 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+      </div>
+    </div>
+  </div>
+);
+
 const ConfigPaymentMethod: React.FC = () => {
   const params = useParams();
   const nameId = params?.id as string;
@@ -61,7 +92,7 @@ const ConfigPaymentMethod: React.FC = () => {
         </div>
       </div>
 
-      <Suspense fallback={<p>Cargando formulario...</p>}>
+      <Suspense fallback={<PaymentFormSkeleton />}>
         <PaymentForm nameId={nameId} />
       </Suspense>
     </div>

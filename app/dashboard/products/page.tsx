@@ -182,7 +182,7 @@ function ProductsContent() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar en catálogo (ej: Inka Kola, Sopas)..."
+              placeholder="Buscar productos..."
               className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary bg-white dark:bg-dark-card"
             />
           </div>
