@@ -40,11 +40,11 @@ function ProductsContent() {
         </div>
         <div className="flex items-center gap-3">
           {/* View Mode Toggle */}
-          <div className="hidden md:flex p-1 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+          <div className="hidden md:flex p-1 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
             <button
               onClick={() => setViewMode('grid')}
               className={`p-1.5 rounded-md transition-all ${viewMode === 'grid'
-                ? 'bg-[#00A09D]/10 text-[#00A09D]'
+                ? 'bg-primary/10 text-primary'
                 : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'
                 }`}
             >
@@ -53,7 +53,7 @@ function ProductsContent() {
             <button
               onClick={() => setViewMode('list')}
               className={`p-1.5 rounded-md transition-all ${viewMode === 'list'
-                ? 'bg-[#00A09D]/10 text-[#00A09D]'
+                ? 'bg-primary/10 text-primary'
                 : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'
                 }`}
             >
@@ -65,7 +65,7 @@ function ProductsContent() {
           {viewMode === 'list' && !isOrdering && (
             <button
               onClick={() => setIsOrdering(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:border-[#00A09D] hover:text-[#00A09D]"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:border-primary hover:text-primary"
             >
               <ArrowUpDown size={16} />
               <span className="hidden sm:inline">Ordenar</span>
@@ -77,13 +77,13 @@ function ProductsContent() {
             <>
               <button
                 onClick={handleSaveOrder}
-                className="flex items-center gap-2 bg-[#00A09D] hover:bg-[#008f8c] text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-[#00A09D]/25 transition-all"
+                className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-primary/25 transition-all"
               >
                 Guardar
               </button>
               <button
                 onClick={() => setIsOrdering(false)}
-                className="flex items-center gap-2 border-2 border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white dark:bg-[#13161c]"
+                className="flex items-center gap-2 border-2 border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white dark:bg-dark-card"
               >
                 Cancelar
               </button>
@@ -93,7 +93,7 @@ function ProductsContent() {
           {/* Add Button - Hide when ordering */}
           {!isOrdering && (
             <Link href="/dashboard/products/create">
-              <button className="flex items-center gap-2 bg-[#00A09D] hover:bg-[#008f8c] text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-[#00A09D]/25 transition-all">
+              <button className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-primary/25 transition-all">
                 <Plus size={18} />
                 <span>Agregar</span>
               </button>
@@ -108,17 +108,17 @@ function ProductsContent() {
           <div className="flex-1 max-w-md relative group">
             <Search
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-[#00A09D] transition-colors"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors"
             />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar en catálogo (ej: Inka Kola, Sopas)..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-[#00A09D] bg-white dark:bg-[#13161c]"
+              className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary bg-white dark:bg-dark-card"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border transition-colors whitespace-nowrap bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700">
+          <button className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border transition-colors whitespace-nowrap bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700">
             <Filter size={16} /> Filtros Avanzados
           </button>
         </div>
@@ -128,7 +128,7 @@ function ProductsContent() {
       {viewMode === 'grid' ? (
         <ProductGridView searchTerm={searchTerm} />
       ) : (
-        <div className="rounded-xl border overflow-hidden bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+        <div className="rounded-xl border overflow-hidden bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
           {isOrdering ? (
             <CardProductEdit />
           ) : (

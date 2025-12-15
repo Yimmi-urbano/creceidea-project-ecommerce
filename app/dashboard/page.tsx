@@ -46,7 +46,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <select className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 outline-none focus:border-[#00A09D]">
+          <select className="px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 outline-none focus:border-primary">
             <option>Últimos 30 días</option>
             <option>Últimos 7 días</option>
             <option>Este mes</option>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
           value={`S/ ${kpis.averageTicket}`}
           change={3.2}
           icon={TrendingUp}
-          iconColor="bg-[#00A09D]"
+          iconColor="bg-blue-900"
         />
         <KPICard
           title="Clientes Nuevos"
@@ -133,7 +133,7 @@ export default function DashboardPage() {
       <RecentOrdersTable orders={recentOrders} />
 
       {/* Footer Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 rounded-2xl border bg-gradient-to-br from-[#00A09D]/5 to-transparent border-[#00A09D]/20">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 rounded-2xl border bg-gradient-to-br from-primary/5 to-transparent border-primary/20">
         <div className="text-center">
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-1">
             Productos Más Vendido
@@ -141,7 +141,7 @@ export default function DashboardPage() {
           <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
             {topProductsData[0]?.name}
           </p>
-          <p className="text-xs text-[#00A09D]">
+          <p className="text-xs text-primary">
             {topProductsData[0]?.sales} unidades
           </p>
         </div>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
           <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
             {salesData.reduce((max, day) => day.sales > max.sales ? day : max, salesData[0]).date}
           </p>
-          <p className="text-xs text-[#00A09D]">
+          <p className="text-xs text-primary">
             S/ {salesData.reduce((max, day) => day.sales > max.sales ? day : max, salesData[0]).sales}
           </p>
         </div>

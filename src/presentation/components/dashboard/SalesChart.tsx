@@ -22,8 +22,8 @@ export const SalesChart: React.FC<SalesChartProps> = ({ data }) => {
                 <AreaChart data={data}>
                     <defs>
                         <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#00A09D" stopOpacity={0.3} />
-                            <stop offset="95%" stopColor="#00A09D" stopOpacity={0} />
+                            <stop offset="5%" stopColor="#317eebff" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#317eebff" stopOpacity={0} />
                         </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-zinc-800" />
@@ -49,7 +49,7 @@ export const SalesChart: React.FC<SalesChartProps> = ({ data }) => {
                     <Area
                         type="monotone"
                         dataKey="sales"
-                        stroke="#00A09D"
+                        stroke="#317eebff"
                         strokeWidth={2}
                         fill="url(#colorSales)"
                     />

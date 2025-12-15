@@ -44,7 +44,7 @@ const CategoryList: React.FC = () => {
 
   const renderCategory = (category: Category) => (
     <div key={category._id} style={{ marginBottom: '10px' }}>
-      <Card isBlurred className="w-full rounded-lg justify-between flex flex-row border-1 border-[#0ea5e9]/30 bg-[#0891b2]">
+      <Card isBlurred className="w-full rounded-lg justify-between flex flex-row border-1 border-sky-200/30 bg-sky-300">
         <CardBody>
           <h4>{category.title}</h4>
         </CardBody>
@@ -82,7 +82,7 @@ const CategoryList: React.FC = () => {
     <div>
       {categories.map(category => renderCategory(category))}
 
-      <Modal isOpen={modalOpen} onOpenChange={setModalOpen} className='backdrop-blur-md border-1 border-[#0ea5e9]/20 bg-[#082f49]/40'>
+      <Modal isOpen={modalOpen} onOpenChange={setModalOpen} className='backdrop-blur-md border-1 border-sky-200/20 bg-sky-700/40'>
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">Editar Categoría - {title}</ModalHeader>
           <ModalBody>
@@ -123,8 +123,8 @@ const CategoryList: React.FC = () => {
               onChange={(e) => setSelectedParent(e.target.value || null)}
               description="Deje en blanco si es una categoría PRINCIPAL."
               classNames={{
-                trigger: ["bg-[#082f49]/90"],
-                popoverContent: ["backdrop-blur-md bg-[#082f49]/80"]
+                trigger: ["bg-sky-700/90"],
+                popoverContent: ["backdrop-blur-md bg-sky-700/80"]
               }}
             >
               {allCategories.map((category) => (

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -13,46 +13,16 @@ import {
   FileText,
   ChevronLeft,
   ChevronRight,
-  ExternalLink,
-  LogOut
 } from 'lucide-react';
 import { useSidebar } from '@/src/presentation/contexts/SidebarContext';
-import { useConfig } from '@/src/presentation/contexts/ConfigContext';
-import { Skeleton } from "@nextui-org/react";
 import { Logo } from './Icons';
+import UserButton from '@/src/presentation/components/client/user/UserButton';
 
 const Sidebar = () => {
   const { isCollapsed, setIsCollapsed } = useSidebar();
-  const { config, loading } = useConfig();
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const [domain, setDomain] = useState<string>('');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setDomain(localStorage.getItem('domainSelect') || '');
-    }
-  }, []);
 
   const isActive = (path: string) => pathname === path;
-
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuOpen]);
 
   const mainNavItems = [
     { id: 'dashboard', label: 'Tablero', icon: LayoutDashboard, href: '/dashboard' },
@@ -65,16 +35,6 @@ const Sidebar = () => {
   const accountNavItems = [
     { id: 'services', label: 'Mis Servicios', icon: Server, href: '/dashboard/services' },
     { id: 'billing', label: 'Mi Suscripción', icon: FileText, href: '/dashboard/billing' },
-  ];
-
-  const menuItems = [
-    //{ label: 'Empresa', href: '/dashboard/company' },
-    //{ label: 'Perfil', href: '/dashboard/profile' },
-    { label: 'Catálogo', href: '/configuration/catalog' },
-    { label: 'Ver Sitio', href: `https://${domain}`, external: true },
-    { label: 'Redes Sociales', href: '/configuration/social' },
-    { label: 'Banner', href: '/configuration/home' },
-    { label: 'Temas', href: '/configuration/themes' },
   ];
 
   return (
@@ -161,96 +121,9 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* User Profile with Dropdown */}
-        <div className="relative" ref={menuRef}>
-          {/* Floating Dropdown Menu */}
-          {isMenuOpen && (
-            <div className="absolute bottom-full left-0 mb-2 w-64 ml-4 rounded-2xl shadow-2xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 py-2 animate-in fade-in zoom-in duration-200 z-50">
-              {/* Company Header */}
-              <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    {config?.logo ? (
-                      <img src={config.logo} alt="Logo" className="w-full h-full object-cover rounded-full" />
-                    ) : (
-                      <span className="text-lg font-bold text-zinc-600 dark:text-zinc-400">
-                        {config?.title?.charAt(0) || 'G'}
-                      </span>
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">{config?.title || 'Empresa'}</p>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400 truncate">{domain}</p>
-                  </div>
-                </div>
-                <a
-                  href={`https://${domain}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 flex items-center gap-1 transition-colors truncate"
-                >
-                  {domain}
-                  <ExternalLink size={12} className="shrink-0" />
-                </a>
-              </div>
-
-              {/* Menu Items */}
-              <div className="py-2">
-                {menuItems.map((item, index) => (
-                  <Link
-                    key={index}
-                    href={item.href}
-                    className="flex items-center justify-between px-4 py-2.5 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                    {item.external && <ExternalLink size={14} className="text-zinc-400" />}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Logout */}
-              <div className="border-t border-zinc-200 dark:border-zinc-800 pt-2">
-                <button className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors">
-                  <LogOut size={16} />
-                  Salir
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* User Profile Button */}
-          <div className="p-4 border-t shrink-0 border-zinc-200 dark:border-zinc-800">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`w-full flex items-center gap-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg p-2 transition-colors ${isCollapsed && 'justify-center'}`}
-            >
-              <div className="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center border-2 border-primary/30 shrink-0">
-                {config?.logo ? (
-                  <img src={config.logo} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                ) : (
-                  <span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
-                    {config?.title?.charAt(0).toUpperCase() || 'U'}
-                  </span>
-                )}
-              </div>
-              {!isCollapsed && (
-                <div className="flex-1 min-w-0 text-left">
-                  {loading ? (
-                    <div className="space-y-1">
-                      <Skeleton className="h-3 w-20 rounded" />
-                      <Skeleton className="h-2 w-24 rounded" />
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-sm font-medium truncate">{config?.title || 'Usuario'}</p>
-                      <p className="text-xs text-zinc-500 truncate">{domain || 'Sin dominio'}</p>
-                    </>
-                  )}
-                </div>
-              )}
-            </button>
-          </div>
+        {/* User Profile - Using UserButton Component */}
+        <div className="p-4 border-t shrink-0 border-zinc-200 dark:border-zinc-800">
+          <UserButton isCollapsed={isCollapsed} showFullInfo={true} />
         </div>
 
         {/* Collapse Toggle */}

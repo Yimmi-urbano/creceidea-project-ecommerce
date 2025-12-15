@@ -116,7 +116,7 @@ const CardLogin = () => {
   return (
     <Card shadow="none" className="border-0 bg-transparent card-login gap-5 lg:w-[350px] w-[90%]">
       <div className="logo-crece-style"> <Logo /></div>
-      <Card isBlurred className="border-1 dark:border-[#0ea5e9]/30 dark:bg-[#0c4a6e]/40 card-login w-[100%] ">
+      <Card isBlurred className="border-1 dark:border-[#0ea5e9]/30 dark:bg-sky-600/40 card-login w-[100%] ">
         <CardBody className="p-5">
           <form onSubmit={handleSubmit}>
             <article className="prose">

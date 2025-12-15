@@ -45,11 +45,11 @@ function SortableImageItem({ url, index, onRemove }: SortableImageItemProps) {
   const style: React.CSSProperties = useMemo(() => {
     // Solo aplicar transición cuando no se está arrastrando y hay una transformación
     const shouldAnimate = !isDragging && transform !== null;
-    
+
     return {
       transform: CSS.Transform.toString(transform),
-      transition: isDragging 
-        ? 'none' 
+      transition: isDragging
+        ? 'none'
         : (shouldAnimate && transition ? transition : undefined),
       opacity: isDragging ? 0.5 : 1,
       zIndex: isDragging ? 50 : 1,
@@ -60,14 +60,14 @@ function SortableImageItem({ url, index, onRemove }: SortableImageItemProps) {
     <div
       ref={setNodeRef}
       style={style}
-      className="relative group overflow-visible border-1 border-[#0ea5e9]/30 h-[80px] min-w-20 md:h-[200px] md:w-[200px] w-full rounded-lg"
+      className="relative group overflow-visible border-1 border-sky-200/30 h-[80px] min-w-20 md:h-[200px] md:w-[200px] w-full rounded-lg"
     >
       <Image
         src={url}
         className="object-cover h-[80px] md:h-[200px] w-full pointer-events-none rounded-lg"
         isBlurred
       />
-      
+
       {/* Área arrastrable - toda la imagen */}
       <div
         {...attributes}
@@ -75,7 +75,7 @@ function SortableImageItem({ url, index, onRemove }: SortableImageItemProps) {
         className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing rounded-lg"
         style={{ touchAction: 'none' }}
       />
-      
+
       {/* Botón de arrastrar - indicador visual */}
       <div
         className="absolute top-2 left-2 z-20 bg-black/50 hover:bg-black/70 rounded-lg p-2 pointer-events-none"
@@ -128,7 +128,7 @@ export default function SortableImageList({
 }: SortableImageListProps) {
   // Estado local para manejar el orden durante la animación
   const [localImages, setLocalImages] = useState(images);
-  
+
   // Sincronizar cuando cambian las imágenes desde fuera
   useEffect(() => {
     setLocalImages(images);
@@ -153,10 +153,10 @@ export default function SortableImageList({
       const newIndex = over.id as number;
 
       const newOrder = arrayMove(localImages, oldIndex, newIndex);
-      
+
       // Actualizar estado local inmediatamente para la animación
       setLocalImages(newOrder);
-      
+
       // Actualizar estado padre después de que termine la animación
       requestAnimationFrame(() => {
         setTimeout(() => {
@@ -172,8 +172,8 @@ export default function SortableImageList({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext 
-        items={useMemo(() => localImages.map((_, index) => index), [localImages.length])} 
+      <SortableContext
+        items={useMemo(() => localImages.map((_, index) => index), [localImages.length])}
         strategy={rectSortingStrategy}
       >
         <div className="grid grid-cols-4 gap-4">

@@ -65,11 +65,11 @@ const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialIma
           onClick={handleAddImageClick}
           className="flex-1 border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer flex flex-col items-center justify-center gap-4 p-6 group"
         >
-          <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 group-hover:bg-[#00A09D]/10 transition-colors">
+          <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 group-hover:bg-primary/10 transition-colors">
             {loading ? (
               <Spinner size="lg" color="success" />
             ) : (
-              <UploadCloud className="w-8 h-8 text-zinc-400 group-hover:text-[#00A09D] transition-colors" />
+              <UploadCloud className="w-8 h-8 text-zinc-400 group-hover:text-primary transition-colors" />
             )}
           </div>
           <div className="text-center space-y-1">

@@ -19,7 +19,7 @@ const CardProducts: React.FC = () => {
   return (
     <div className="flex flex-wrap gap-3">
       {products.map((item) => (
-        <Card key={item._id} isPressable onPress={() => handlePress(item._id)} className="w-full rounded-lg flex flex-row border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40">
+        <Card key={item._id} isPressable onPress={() => handlePress(item._id)} className="w-full rounded-lg flex flex-row border-1 border-sky-200/30 bg-sky-600/40">
           <div className="flex items-center gap-4 p-2 flex-grow">
             <img src={item.image_default[0]} alt={item.title} className="w-12 h-12 rounded-xl object-cover" />
             <div>

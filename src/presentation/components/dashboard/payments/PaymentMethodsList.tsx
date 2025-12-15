@@ -36,7 +36,7 @@ export default function PaymentMethodsList() {
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                     <div
                         key={i}
-                        className="flex flex-col bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden"
+                        className="flex flex-col bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden"
                     >
                         <div className="p-6 flex-1 space-y-4">
                             {/* Icon skeleton */}
@@ -99,7 +99,7 @@ export default function PaymentMethodsList() {
             {modules.map((module) => (
                 <div
                     key={module.id}
-                    className="group flex flex-col bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300"
+                    className="group flex flex-col bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300"
                 >
                     <div className="p-6 flex-1">
                         <div className="w-12 h-12 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 flex items-center justify-center mb-4 p-2">
@@ -122,7 +122,7 @@ export default function PaymentMethodsList() {
                     <div className="p-6 pt-0 mt-auto">
                         <button
                             onClick={() => router.push(`/configuration/payment-methods/${module.nameId}`)}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#00A09D]/10 hover:bg-[#00A09D]/20 text-[#00A09D] font-medium transition-colors group-hover:bg-[#00A09D] group-hover:text-white"
+                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors group-hover:bg-primary group-hover:text-white"
                         >
                             <Settings size={18} />
                             Configurar

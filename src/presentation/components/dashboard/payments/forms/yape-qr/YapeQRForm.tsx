@@ -109,7 +109,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         {/* Left Column: Form Fields */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="p-6 md:p-8 bg-white dark:bg-[#13161c] rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+          <div className="p-6 md:p-8 bg-white dark:bg-dark-card rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 Información del Método
@@ -129,7 +129,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
                   }}
                   color="success"
                   classNames={{
-                    wrapper: "group-data-[selected=true]:bg-[#00A09D]",
+                    wrapper: "group-data-[selected=true]:bg-primary",
                   }}
                 />
               </div>
@@ -145,7 +145,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
                   placeholder="Ej: Pagar con Yape"
                   value={form.name ?? ""}
                   onChange={(e) => handleChange(e, undefined, "name")}
-                  className="w-full px-4 py-2.5 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-900/50 border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-[#00A09D] focus:ring-1 focus:ring-[#00A09D] text-zinc-900 dark:text-zinc-100 placeholder-zinc-400"
+                  className="w-full px-4 py-2.5 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-900/50 border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary focus:ring-1 focus:ring-primary text-zinc-900 dark:text-zinc-100 placeholder-zinc-400"
                 />
               </div>
 
@@ -158,7 +158,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
                   placeholder="Ej: 999 888 777"
                   value={form.details?.number_yape ?? ""}
                   onChange={(e) => handleChange(e, "details", "number_yape")}
-                  className="w-full px-4 py-2.5 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-900/50 border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-[#00A09D] focus:ring-1 focus:ring-[#00A09D] text-zinc-900 dark:text-zinc-100 placeholder-zinc-400"
+                  className="w-full px-4 py-2.5 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-900/50 border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary focus:ring-1 focus:ring-primary text-zinc-900 dark:text-zinc-100 placeholder-zinc-400"
                 />
               </div>
 
@@ -171,7 +171,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
                   value={form.details?.description ?? ""}
                   onChange={(e) => handleChange(e as any, "details", "description")}
                   rows={4}
-                  className="w-full px-4 py-2.5 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-900/50 border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-[#00A09D] focus:ring-1 focus:ring-[#00A09D] text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 resize-none"
+                  className="w-full px-4 py-2.5 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-900/50 border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary focus:ring-1 focus:ring-primary text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 resize-none"
                 />
               </div>
 
@@ -179,7 +179,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
                 <button
                   onClick={isUpdate ? updatePayment : createPayment}
                   disabled={loading}
-                  className="flex items-center gap-2 bg-[#00A09D] hover:bg-[#008f8c] text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all shadow-lg shadow-[#00A09D]/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -195,7 +195,7 @@ export default function YapeQRForm({ nameId }: { nameId: string }) {
 
         {/* Right Column: QR Upload */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 p-6 bg-white dark:bg-[#13161c] rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+          <div className="sticky top-24 p-6 bg-white dark:bg-dark-card rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
             <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-6">
               Código QR
             </h3>

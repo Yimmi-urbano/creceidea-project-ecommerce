@@ -13,7 +13,7 @@ import { Skeleton } from '@nextui-org/react';
  * Skeleton for stat cards (dashboard metrics)
  */
 export const StatCardSkeleton: React.FC = () => (
-    <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+    <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
         <Skeleton className="h-3 w-24 rounded-lg mb-3 bg-zinc-200 dark:bg-zinc-800" />
         <Skeleton className="h-8 w-16 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
     </div>
@@ -23,7 +23,7 @@ export const StatCardSkeleton: React.FC = () => (
  * Skeleton for table rows
  */
 export const TableRowSkeleton: React.FC<{ columns?: number }> = ({ columns = 4 }) => (
-    <div className="flex items-center gap-4 px-4 py-3.5 bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-lg">
+    <div className="flex items-center gap-4 px-4 py-3.5 bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-lg">
         {Array.from({ length: columns }).map((_, i) => (
             <Skeleton
                 key={i}
@@ -47,7 +47,7 @@ export const FormInputSkeleton: React.FC<{ label?: boolean }> = ({ label = true 
  * Skeleton for card components
  */
 export const CardSkeleton: React.FC<{ height?: string }> = ({ height = 'h-48' }) => (
-    <div className={`${height} rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 p-6 space-y-4`}>
+    <div className={`${height} rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 p-6 space-y-4`}>
         <Skeleton className="h-6 w-3/4 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
         <Skeleton className="h-4 w-full rounded-lg bg-zinc-200 dark:bg-zinc-800" />
         <Skeleton className="h-4 w-5/6 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
@@ -58,7 +58,7 @@ export const CardSkeleton: React.FC<{ height?: string }> = ({ height = 'h-48' })
  * Skeleton for product/order cards
  */
 export const ProductCardSkeleton: React.FC = () => (
-    <div className="bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 space-y-3">
+    <div className="bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 space-y-3">
         <Skeleton className="h-40 w-full rounded-lg bg-zinc-200 dark:bg-zinc-800" />
         <Skeleton className="h-5 w-3/4 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
         <Skeleton className="h-4 w-1/2 rounded-lg bg-zinc-200 dark:bg-zinc-800" />

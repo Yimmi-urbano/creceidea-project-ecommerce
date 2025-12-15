@@ -14,7 +14,7 @@ export default function PaymentMethodsPage() {
                         Administra los métodos de pago disponibles en tu tienda
                     </p>
                 </div>
-                <button className="flex items-center gap-2 bg-[#00A09D] hover:bg-[#008f8c] text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-[#00A09D]/25 transition-all hover:scale-105 active:scale-95">
+                <button className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-primary/25 transition-all hover:scale-105 active:scale-95">
                     <Plus size={18} />
                     <span>Agregar Método</span>
                 </button>
@@ -23,9 +23,9 @@ export default function PaymentMethodsPage() {
             {/* Payment Methods Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Placeholder cards */}
-                <div className="p-6 rounded-2xl border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 hover:border-[#00A09D]/30 dark:hover:border-[#00A09D]/30 hover:shadow-sm transition-all duration-200">
+                <div className="p-6 rounded-2xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-sm transition-all duration-200">
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="p-3 rounded-xl bg-[#00A09D]/10 text-[#00A09D]">
+                        <div className="p-3 rounded-xl bg-primary/10 text-primary">
                             <CreditCard size={24} />
                         </div>
                         <div>

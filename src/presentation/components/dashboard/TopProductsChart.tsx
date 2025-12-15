@@ -44,7 +44,7 @@ export const TopProductsChart: React.FC<TopProductsChartProps> = ({ data }) => {
                     />
                     <Bar
                         dataKey="sales"
-                        fill="#00A09D"
+                        fill="#317eebff"
                         radius={[0, 8, 8, 0]}
                     />
                 </BarChart>

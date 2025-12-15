@@ -5,7 +5,7 @@ interface NotificationModalProps {
   isOpen: boolean;
   onClose: () => void;
   isLoading: boolean;
-  message?: string; 
+  message?: string;
 }
 
 interface PaymentModalProps {
@@ -23,7 +23,7 @@ interface ConfirmDeleteModalProps {
 
 const NotificationModal: React.FC<NotificationModalProps> = ({ isOpen, onClose, isLoading, message }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-sm border-1 border-[#0ea5e9]/20 bg-[#082f49]/80'>
+    <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-sm border-1 border-sky-200/20 bg-sky-700/80'>
       <ModalContent>
         <ModalBody>
           {isLoading ? (
@@ -39,7 +39,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ isOpen, onClose, 
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, payThemeName }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-sm border-1 border-[#0ea5e9]/20 bg-[#082f49]/80'>
+    <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-sm border-1 border-sky-200/20 bg-sky-700/80'>
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">{payThemeName}</ModalHeader>
         <ModalBody>
@@ -58,22 +58,22 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, payThemeNa
 
 const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ isOpen, onClose, onConfirm, message }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-sm border-1 border-[#0ea5e9]/20 bg-[#082f49]/80'>
+    <Modal isOpen={isOpen} onClose={onClose} className='backdrop-blur-sm border-1 border-sky-200/20 bg-sky-700/80'>
       <ModalContent>
-       
+
         <ModalBody>
-        <ModalHeader>Confirmar eliminación</ModalHeader>
+          <ModalHeader>Confirmar eliminación</ModalHeader>
           <p>{message}</p>
           <ModalFooter className='p-0 flex gap-4'>
-          <Button color="danger" onClick={onConfirm}>
-            Eliminar
-          </Button>
-          <Button variant="light" onClick={onClose}>
-            Cancelar
-          </Button>
-        </ModalFooter>
+            <Button color="danger" onClick={onConfirm}>
+              Eliminar
+            </Button>
+            <Button variant="light" onClick={onClose}>
+              Cancelar
+            </Button>
+          </ModalFooter>
         </ModalBody>
-      
+
       </ModalContent>
     </Modal>
   );

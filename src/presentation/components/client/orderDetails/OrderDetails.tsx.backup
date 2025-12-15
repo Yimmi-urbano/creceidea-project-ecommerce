@@ -22,7 +22,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
     return (
         <div>
             
-            <Card shadow="sm" isBlurred className="mb-6 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/20">
+            <Card shadow="sm" isBlurred className="mb-6 border-1 border-[#0ea5e9]/30 bg-sky-600/20">
                 <CardHeader>
                     <h2 className="text-lg font-semibold">Información del Pedido</h2>
                 </CardHeader>
@@ -47,7 +47,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
                     </p>
                 </CardBody>
             </Card>
-            <Card isBlurred className="mb-6 border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/20 h-[400px]">
+            <Card isBlurred className="mb-6 border-1 border-[#0ea5e9]/30 bg-sky-600/20 h-[400px]">
                 <CardBody>
                     <h2 className="text-xl font-semibold mt-2 mb-2">Productos</h2>
                     <ul>

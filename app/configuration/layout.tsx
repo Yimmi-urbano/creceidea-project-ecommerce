@@ -20,7 +20,7 @@ export default function ConfigurationLayout({
         <ThemeProvider>
             <ConfigProvider>
                 <SidebarContext.Provider value={{ isCollapsed, setIsCollapsed }}>
-                    <div className="flex min-h-screen bg-zinc-50 dark:bg-[#0f1115]">
+                    <div className="flex min-h-screen bg-zinc-50 dark:bg-dark-bg">
                         <div className="hidden md:block">
                             <Sidebar />
                         </div>

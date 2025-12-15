@@ -39,7 +39,7 @@ export default function PageServices() {
                     return (
                         <div
                             key={service.id}
-                            className="p-6 rounded-2xl border flex flex-col justify-between h-full transition-all hover:shadow-lg bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 hover:border-[#00A09D]/30"
+                            className="p-6 rounded-2xl border flex flex-col justify-between h-full transition-all hover:shadow-lg bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 hover:border-primary/30"
                         >
                             <div className="mb-4">
                                 <div className="flex justify-between items-start mb-4">
@@ -49,7 +49,7 @@ export default function PageServices() {
                                     <Badge status={service.status} type="service" />
                                 </div>
                                 <h3 className="text-lg font-bold mb-1">{service.name}</h3>
-                                <p className="text-sm text-[#00A09D] font-medium mb-4">{service.detail}</p>
+                                <p className="text-sm text-primary font-medium mb-4">{service.detail}</p>
 
                                 <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
                                     <Clock size={14} />
@@ -57,7 +57,7 @@ export default function PageServices() {
                                 </div>
                             </div>
 
-                            <button className="w-full mt-4 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-[#00A09D] text-[#00A09D] font-medium hover:bg-[#00A09D] hover:text-white transition-all text-sm group">
+                            <button className="w-full mt-4 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-primary text-primary font-medium hover:bg-primary hover:text-white transition-all text-sm group">
                                 Auto Gestor
                                 <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform" />
                             </button>

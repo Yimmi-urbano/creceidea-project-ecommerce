@@ -82,7 +82,7 @@ const UpdateCatalogForm: React.FC = () => {
 
   return (
     <>
-      <Card key={1} isBlurred style={{ padding: '10px' }} className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]">
+      <Card key={1} isBlurred style={{ padding: '10px' }} className="h-full border-1 border-[#0ea5e9]/30 bg-sky-600/40 w-[100%]">
         <CardHeader className='w-full flex justify-between'>
           <span className="text-xl font-semibold text-gray-600 dark:text-white">Configura tu catálogo</span>
           <div className="flex items-center justify-end mt-4 mb-4 gap-3">

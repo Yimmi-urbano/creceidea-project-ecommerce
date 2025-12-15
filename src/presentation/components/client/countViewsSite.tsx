@@ -29,11 +29,11 @@ export default function CardProgressViews() {
   const value = (views / limit_views) * 100;
 
   return (
-    <Card isBlurred className="border-1 border-[#A2CADF] bg-[#E0EDF499] dark:bg-sky-950/30 dark:border-[#387EA3] max-w-[610px]">
+    <Card isBlurred className="border-1 border-sky-100 bg-sky-50/60 dark:bg-sky-950/30 dark:border-sky-400 max-w-[610px]">
       <CardBody className="justify-center items-center p-0 flex flex-col">
         <div className="flex items-center gap-2">
           <WorldIcon className="w-2 h-2 text-blue-500" />
-          <span className="font-bold text-[#25556D] text-xs dark:text-[#C1DCEA]">{limit_views} vistas por mes</span>
+          <span className="font-bold text-sky-500 text-xs dark:text-sky-100">{limit_views} vistas por mes</span>
         </div>
         <CircularProgress
           size="lg"
@@ -41,7 +41,7 @@ export default function CardProgressViews() {
             svg: "md:w-28 md:h-28 drop-shadow-md",
             value: "md:text-2xl font-semibold text-white",
           }}
-          value={value||0}
+          value={value || 0}
           strokeWidth={3}
           color="success"
           showValueLabel={true}
@@ -51,7 +51,7 @@ export default function CardProgressViews() {
         <Chip
           size="sm"
           variant="bordered"
-          className="border-1 border-[#A2CADF] text-[#C1DCEA]"
+          className="border-1 border-sky-100 text-sky-100"
         >
           {limit_views} Visitas
         </Chip>

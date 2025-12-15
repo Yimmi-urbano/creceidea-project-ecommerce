@@ -8,7 +8,7 @@ import {
 } from 'recharts';
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { Card, CardBody } from "@nextui-org/react";
-import withPermission from "@/src/presentation/components/client/WithPermission"; 
+import withPermission from "@/src/presentation/components/client/WithPermission";
 
 const data = [
   { name: 'Enero', uv: 500 },
@@ -35,7 +35,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, pa
 
 const AreaChartComponent: React.FC = () => {
   return (
-    <Card isBlurred className="border-1 border-[#B8F1D2] bg-[#D9F9E699] dark:bg-[#2F946199]/60 dark:border-[#53B483]">
+    <Card isBlurred className="border-1 border-teal-100 bg-teal-50/60 dark:bg-teal-300/40 dark:border-teal-200">
       <CardBody className="p-0">
         <div className="p-4">
           <h2 className=" text-xl md:text-2xl font-bold text-gray-800 dark:text-white">+ S/ 500.00</h2>

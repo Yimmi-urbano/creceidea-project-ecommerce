@@ -108,7 +108,7 @@ export default function CoordinaWhatsApp({ nameId }: { nameId: string }) {
 
   return (
     <div className="w-full p-0">
-      <Card shadow="none" className="h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]" isBlurred>
+      <Card shadow="none" className="h-full border-1 border-sky-200/30 bg-sky-600/40 w-[100%]" isBlurred>
         <CardBody className="flex flex-row gap-3">
           <div className="flex flex-col gap-3 w-full">
             <Input label="Nombre" placeholder="Ej: Coordinar pago por WhatsApp" value={form.name ?? ""} onChange={(e) => handleChange(e, undefined, "name")} classNames={

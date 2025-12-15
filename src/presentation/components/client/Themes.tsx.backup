@@ -79,8 +79,8 @@ const ThemesList: React.FC = () => {
 
             const isSelected = selected === name;
             const cardClassName = isSelected
-                ? 'border-2 border-[#0ea5e9]/70 cursor-pointer h-full  bg-[#0c4a6e]/40 w-[100%]'
-                : 'cursor-pointer h-full border-1 border-[#0ea5e9]/30 bg-[#0c4a6e]/40 w-[100%]'; // Aplicar borde si está seleccionado
+                ? 'border-2 border-[#0ea5e9]/70 cursor-pointer h-full  bg-sky-600/40 w-[100%]'
+                : 'cursor-pointer h-full border-1 border-[#0ea5e9]/30 bg-sky-600/40 w-[100%]'; // Aplicar borde si está seleccionado
 
             return (
                 <Card

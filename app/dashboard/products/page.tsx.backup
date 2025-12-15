@@ -8,7 +8,7 @@ import HeaderProducts from '@/components/products/header';
 
 export default function PageProducts() {
   return (
-    <Card shadow="none" className="p-0 h-full  border-[#0ea5e9]/0 bg-[#0c4a6e]/0 ">
+    <Card shadow="none" className="p-0 h-full  border-[#0ea5e9]/0 bg-sky-600/0 ">
       <ProductProvider>
         <HeaderProducts/>
         <CardBody className="h-[24rem] md:h-[31rem]">

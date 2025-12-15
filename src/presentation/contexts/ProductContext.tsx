@@ -103,6 +103,13 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 export const useProductContext = () => {
     const context = useContext(ProductContext);
     if (!context) {
+        // More descriptive error for debugging
+        if (typeof window !== 'undefined') {
+            const hasDomain = localStorage.getItem('domainSelect');
+            if (!hasDomain) {
+                throw new Error('Session expired: No domain found. Please log in again.');
+            }
+        }
         throw new Error('useProductContext must be used within a ProductProvider');
     }
     return context;

@@ -15,13 +15,13 @@ const PageOrders: React.FC = () => {
             Monitorea las ventas en tiempo real.
           </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800">
           <Download size={16} /> Exportar Reporte
         </button>
       </div>
 
       {/* Orders Table */}
-      <div className="rounded-xl overflow-hidden bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+      <div className="rounded-xl overflow-hidden bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
         <Orders />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, CardBody,Card } from '@nextui-org/react';
+import { Button, CardBody, Card } from '@nextui-org/react';
 import { ProductIcon, EyeIcon } from "@/src/presentation/components/shared/Icons"; // Asegúrate que estos iconos están correctamente definidos
 import withPermission from "@/src/presentation/components/client/WithPermission";
 
@@ -21,26 +21,26 @@ const sampleProduct: Product = {
 const TopProductComponent: React.FC = () => {
   const [product, setProduct] = useState<Product>(sampleProduct);
   return (
-    <Card isBlurred className="md:flex hidden border-1 border-[#B8F1D2] bg-[#53B48399] dark:bg-[#2F946199]/60 dark:border-[#53B483] max-w-[610px]">
-          <CardBody >
-            <div className="text-white flex flex-col items-center">
-              <h2 className="text-sm font-bold mb-1 mt-1">Producto más vendido</h2>
-              <div className="flex items-center justify-center w-full mb-5 mt-5">
-                <img src={product.image} alt={product.name} className="w-20 h-21 rounded-xl" />
-                <div className="flex flex-col ml-4">
-                  <p className="text-sm">{product.sales} Ventas</p>
-                  <div className="flex items-center mt-2">
-                    <ProductIcon />
-                    <span className="ml-1 text-sm">En stock</span>
-                  </div>
-                </div>
+    <Card isBlurred className="md:flex hidden border-1 border-teal-100 bg-teal-200/60 dark:bg-teal-300/40 dark:border-teal-200 max-w-[610px]">
+      <CardBody >
+        <div className="text-white flex flex-col items-center">
+          <h2 className="text-sm font-bold mb-1 mt-1">Producto más vendido</h2>
+          <div className="flex items-center justify-center w-full mb-5 mt-5">
+            <img src={product.image} alt={product.name} className="w-20 h-21 rounded-xl" />
+            <div className="flex flex-col ml-4">
+              <p className="text-sm">{product.sales} Ventas</p>
+              <div className="flex items-center mt-2">
+                <ProductIcon />
+                <span className="ml-1 text-sm">En stock</span>
               </div>
-
-              <Button type="submit" size="sm" variant='solid' endContent={<EyeIcon />} className="bg-white text-black m-auto block w-[80%] flex rounded-3xl" >
-                Ver producto
-              </Button>
             </div>
-          </CardBody>
+          </div>
+
+          <Button type="submit" size="sm" variant='solid' endContent={<EyeIcon />} className="bg-white text-black m-auto block w-[80%] flex rounded-3xl" >
+            Ver producto
+          </Button>
+        </div>
+      </CardBody>
     </Card>
   );
 

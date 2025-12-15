@@ -7,9 +7,9 @@ import { Card, CardBody } from '@nextui-org/react';
 export default function PageSocialLink() {
   return (
 
-    <Card shadow="none" className="p-0 h-full  border-[#0ea5e9]/0 bg-[#0c4a6e]/0 ">
+    <Card shadow="none" className="p-0 h-full  border-sky-200/0 bg-sky-600/0 ">
       <CardBody>
-      <SocialLinksManager />
+        <SocialLinksManager />
       </CardBody>
     </Card>
 

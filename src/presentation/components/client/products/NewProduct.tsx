@@ -273,26 +273,26 @@ function ProductForm() {
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke,
                 .ql-snow .ql-picker-item:hover .ql-stroke,
                 .ql-toolbar button:hover .ql-stroke {
-                    stroke: #00A09D !important; /* Primary */
+                    stroke: #317eebff !important; /* Primary */
                 }
                 .ql-snow .ql-active .ql-fill,
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill,
                 .ql-snow .ql-picker-item:hover .ql-fill,
                 .ql-toolbar button:hover .ql-fill {
-                    fill: #00A09D !important; /* Primary */
+                    fill: #317eebff !important; /* Primary */
                 }
                 .ql-snow .ql-active,
                 .ql-snow .ql-picker.ql-expanded .ql-picker-label,
                 .ql-snow .ql-picker-item:hover,
                 .ql-toolbar button:hover {
-                    color: #00A09D !important; /* Primary */
+                    color: #317eebff !important; /* Primary */
                 }
                 
                 /* Toolbar Button Hover Background */
                 .ql-toolbar button:hover,
                 .ql-toolbar button:focus,
                 .ql-toolbar button.ql-active {
-                    background-color: rgba(0, 160, 157, 0.1) !important;
+                    background-color: rgba(49, 126, 235, 0.1) !important;
                     border-radius: 4px;
                 }
                 

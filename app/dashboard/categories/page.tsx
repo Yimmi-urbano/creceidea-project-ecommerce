@@ -52,14 +52,14 @@ function CategoriesContent() {
         <div className="flex-1 relative group">
           <Search
             size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-[#00A09D] transition-colors"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors"
           />
           <input
             type="text"
             placeholder="Buscar categorías..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-[#00A09D] bg-white dark:bg-[#13161c]"
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary bg-white dark:bg-dark-card"
           />
         </div>
         {selectedCategories.length > 0 && (
@@ -79,7 +79,7 @@ function CategoriesContent() {
           // Skeleton for stats
           <>
             {[1, 2, 3].map((i) => (
-              <div key={i} className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+              <div key={i} className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
                 <Skeleton className="h-3 w-24 rounded-lg mb-3 bg-zinc-200 dark:bg-zinc-800" />
                 <Skeleton className="h-8 w-12 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
               </div>
@@ -87,7 +87,7 @@ function CategoriesContent() {
           </>
         ) : (
           <>
-            <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+            <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
               <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
                 Total de Categorías
               </p>
@@ -95,19 +95,19 @@ function CategoriesContent() {
                 {allCategories?.length || 0}
               </p>
             </div>
-            <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+            <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
               <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
                 Visibles
               </p>
-              <p className="text-2xl font-bold text-[#00A09D]">
+              <p className="text-2xl font-bold text-primary">
                 {filteredCategories?.length || 0}
               </p>
             </div>
-            <div className="p-4 rounded-lg border bg-white dark:bg-[#13161c] border-zinc-200 dark:border-zinc-800">
+            <div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
               <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
                 Seleccionadas
               </p>
-              <p className="text-2xl font-bold text-[#00A09D]">
+              <p className="text-2xl font-bold text-primary">
                 {selectedCategories?.length || 0}
               </p>
             </div>
@@ -123,7 +123,7 @@ function CategoriesContent() {
             type="checkbox"
             checked={selectedCategories.length === filteredCategories.length && filteredCategories.length > 0}
             onChange={toggleAll}
-            className="w-4 h-4 rounded accent-[#00A09D] cursor-pointer"
+            className="w-4 h-4 rounded accent-primary cursor-pointer"
             disabled={loading}
           />
           <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -137,7 +137,7 @@ function CategoriesContent() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="flex items-center gap-4 px-4 py-3.5 bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-lg"
+                className="flex items-center gap-4 px-4 py-3.5 bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-lg"
               >
                 <Skeleton className="w-4 h-4 rounded bg-zinc-200 dark:bg-zinc-800" />
                 <Skeleton className="flex-1 h-5 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
@@ -152,20 +152,20 @@ function CategoriesContent() {
           filteredCategories.map((category: any) => (
             <div
               key={category.id}
-              className="group flex items-center gap-4 px-4 py-3.5 bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-[#00A09D]/30 dark:hover:border-[#00A09D]/30 hover:shadow-sm transition-all duration-200"
+              className="group flex items-center gap-4 px-4 py-3.5 bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-sm transition-all duration-200"
             >
               <input
                 type="checkbox"
                 checked={selectedCategories.includes(category.id)}
                 onChange={() => toggleSelect(category.id)}
-                className="w-4 h-4 rounded accent-[#00A09D] cursor-pointer"
+                className="w-4 h-4 rounded accent-primary cursor-pointer"
               />
               <span className="flex-1 text-zinc-900 dark:text-zinc-100 font-medium text-sm">
                 {category.title}
               </span>
 
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button className="p-2 hover:bg-[#00A09D]/10 rounded-lg text-[#00A09D] transition-colors">
+                <button className="p-2 hover:bg-primary/10 rounded-lg text-primary transition-colors">
                   <Edit2 size={16} />
                 </button>
                 <button
@@ -178,7 +178,7 @@ function CategoriesContent() {
             </div>
           ))
         ) : (
-          <div className="text-center py-12 bg-white dark:bg-[#13161c] border border-zinc-200 dark:border-zinc-800 rounded-lg">
+          <div className="text-center py-12 bg-white dark:bg-dark-card border border-zinc-200 dark:border-zinc-800 rounded-lg">
             <p className="text-zinc-500 dark:text-zinc-400 mb-1">No se encontraron categorías</p>
             <p className="text-zinc-400 dark:text-zinc-500 text-sm">
               {searchTerm ? 'Intenta con otro término de búsqueda' : 'Comienza agregando tu primera categoría'}
