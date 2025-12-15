@@ -51,12 +51,18 @@ export default function LoginPage() {
 
     if (!validateForm()) return;
 
+    // Prevent multiple submissions
+    if (isLoading) return;
+
     setIsLoading(true);
 
     try {
       const response = await login(email, password);
 
       if (response.status === "error") {
+        // Reset loading state on error
+        setIsLoading(false);
+
         if (response.message === "Usuario no encontrado") {
           setFieldErrors(prev => ({ ...prev, email: "Usuario no encontrado" }));
         } else if (response.message === "Contraseña incorrecta") {
@@ -65,6 +71,7 @@ export default function LoginPage() {
           setError("Credenciales incorrectas. Por favor verifica tus datos.");
         }
       } else {
+        // Keep loading state active during successful login and redirect
         localStorage.setItem("token", response.data.token.value);
         localStorage.setItem("permissions", JSON.stringify(response.data.user.components));
 
@@ -72,16 +79,20 @@ export default function LoginPage() {
           const domainResponse = await getDomain();
           localStorage.setItem("domainSelect", domainResponse[0].domain);
           localStorage.setItem("domainAssigned", JSON.stringify(domainResponse));
+
+          // Keep loading state active during redirect
+          // Don't set isLoading to false here - let the page navigation handle it
           router.push("/dashboard");
         } catch (err) {
+          setIsLoading(false);
           setError("Error al configurar el entorno. Contacta soporte.");
         }
       }
     } catch (err) {
-      setError("Error de conexión. Inténtalo más tarde.");
-    } finally {
       setIsLoading(false);
+      setError("Error de conexión. Inténtalo más tarde.");
     }
+    // Note: We don't use finally here to keep loading state during successful redirect
   };
 
   return (
@@ -247,7 +258,7 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-end">
                 <Link
-                  href="#"
+                  href="/forgot-password"
                   className="text-sm font-medium text-primary hover:text-primary-hover transition-colors"
                 >
                   ¿Olvidaste tu contraseña?
@@ -269,7 +280,7 @@ export default function LoginPage() {
             <div className="mt-6 text-center">
               <p className="text-zinc-600 dark:text-zinc-400 text-sm">
                 ¿No tienes una cuenta?{' '}
-                <Link href="#" className="font-medium text-primary hover:text-primary-hover transition-colors">
+                <Link href="/register" className="font-medium text-primary hover:text-primary-hover transition-colors">
                   Regístrate aquí
                 </Link>
               </p>
