@@ -8,6 +8,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, AlertCircle, Loader2, TrendingUp, Shield, Sparkles, Zap } from "lucide-react";
 import { Logo } from "@/src/presentation/components/shared/Icons";
+import { setCookie } from "@/src/infrastructure/storage/cookies.server";
+import { COOKIE_KEYS } from "@/src/infrastructure/storage/cookieConfig";
+import { STORAGE_KEYS } from "@/src/infrastructure/storage/localStorage";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -72,16 +75,23 @@ export default function LoginPage() {
         }
       } else {
         // Keep loading state active during successful login and redirect
-        localStorage.setItem("token", response.data.token.value);
-        localStorage.setItem("permissions", JSON.stringify(response.data.user.components));
+        const tokenValue = response.data.token.value;
+        localStorage.setItem(STORAGE_KEYS.TOKEN, tokenValue);
+        localStorage.setItem(STORAGE_KEYS.PERMISSIONS, JSON.stringify(response.data.user.components));
+
+        // Use 'await' with server actions for cookie setting
+        await setCookie(COOKIE_KEYS.SESSION, tokenValue);
 
         try {
           const domainResponse = await getDomain();
-          localStorage.setItem("domainSelect", domainResponse[0].domain);
-          localStorage.setItem("domainAssigned", JSON.stringify(domainResponse));
+          const mainDomain = domainResponse[0].domain;
+
+          localStorage.setItem(STORAGE_KEYS.DOMAIN_SELECT, mainDomain);
+          localStorage.setItem(STORAGE_KEYS.DOMAIN_ASSIGNED, JSON.stringify(domainResponse));
+
+          await setCookie(COOKIE_KEYS.DOMAIN_SELECT, mainDomain);
 
           // Keep loading state active during redirect
-          // Don't set isLoading to false here - let the page navigation handle it
           router.push("/dashboard");
         } catch (err) {
           setIsLoading(false);

@@ -14,6 +14,9 @@ export const STORAGE_KEYS = {
     DOMAIN_SELECT: 'domainSelect',
     SELECTED_CARD_ID: 'selectedCardId',
     THEME: 'theme',
+    TOKEN: 'token',
+    PERMISSIONS: 'permissions',
+    DOMAIN_ASSIGNED: 'domainAssigned',
 } as const;
 
 /**
@@ -129,6 +132,26 @@ export const setItem = (key: string, value: string): void => {
 export const removeItem = (key: string): void => {
     if (typeof window !== 'undefined') {
         localStorage.removeItem(key);
+    }
+};
+
+/**
+ * Clear all auth data and redirect to login
+ */
+export const logout = (): void => {
+    if (typeof window !== 'undefined') {
+        // Clear LocalStorage
+        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.PERMISSIONS);
+        localStorage.removeItem(STORAGE_KEYS.DOMAIN_SELECT);
+        localStorage.removeItem(STORAGE_KEYS.DOMAIN_ASSIGNED);
+
+        // Clear Cookies (Client-side approach)
+        document.cookie = 'session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'domainSelect=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+        // Redirect
+        window.location.href = '/login';
     }
 };
 

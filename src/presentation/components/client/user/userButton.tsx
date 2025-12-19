@@ -28,7 +28,7 @@ export default function UserButton({
     }
   }, []);
 
-  const menuItems = [
+  const menuItems: { label: string; href: string; external?: boolean }[] = [
     { label: 'Catálogo', href: '/configuration/catalog' },
     { label: 'Ver Sitio', href: '/configuration/site' },
     { label: 'Redes Sociales', href: '/configuration/social' },
@@ -106,13 +106,17 @@ export default function UserButton({
 
             {/* Logout */}
             <div className="border-t border-zinc-200 dark:border-zinc-800 pt-2">
-              <Link
-                href="/login"
-                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
+              <button
+                onClick={() => {
+                  import('@/src/infrastructure/storage/localStorage').then(({ logout }) => {
+                    logout();
+                  });
+                }}
+                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors text-left"
               >
                 <LogOut size={16} />
                 Salir
-              </Link>
+              </button>
             </div>
           </div>
         </>

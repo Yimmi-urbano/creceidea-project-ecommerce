@@ -11,24 +11,7 @@
 
 import { cookies } from 'next/headers';
 
-/**
- * Cookie keys used in the application
- */
-export const COOKIE_KEYS = {
-    DOMAIN_SELECT: 'domainSelect',
-    SESSION: 'session',
-    THEME: 'theme',
-} as const;
-
-/**
- * Cookie options for secure cookies
- */
-const SECURE_COOKIE_OPTIONS = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    maxAge: 60 * 60 * 24 * 30, // 30 days
-};
+import { COOKIE_KEYS, SECURE_COOKIE_OPTIONS } from './cookieConfig';
 
 /**
  * Get domain from cookies (server-side)

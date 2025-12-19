@@ -8,7 +8,8 @@
  * @module serverApiClient
  */
 
-import { getDomainFromCookies } from '@/src/infrastructure/storage/cookies.server';
+import { getDomainFromCookies, getCookie } from '@/src/infrastructure/storage/cookies.server';
+import { COOKIE_KEYS } from '@/src/infrastructure/storage/cookieConfig';
 
 /**
  * Server-side fetch options
@@ -36,12 +37,17 @@ export async function serverFetch(
     options: ServerFetchOptions = {}
 ): Promise<Response> {
     const domain = await getDomainFromCookies();
+    const session = await getCookie(COOKIE_KEYS.SESSION);
 
     const headers = new Headers(options.headers);
     headers.set('Content-Type', 'application/json');
 
     if (domain) {
         headers.set('domain', domain);
+    }
+
+    if (session) {
+        headers.set('Authorization', `Bearer ${session}`);
     }
 
     const fetchOptions: RequestInit = {
@@ -60,6 +66,15 @@ export async function serverFetch(
     try {
         const response = await fetch(url, fetchOptions);
 
+        if (response.status === 401 || response.status === 403) {
+            console.error('Server API Unauthorized:', {
+                status: response.status,
+                url,
+                message: 'Session may have expired'
+            });
+            throw new Error('AUTH_ERROR_SESSION_EXPIRED');
+        }
+
         if (!response.ok) {
             console.error('Server API Error:', {
                 status: response.status,
@@ -70,6 +85,9 @@ export async function serverFetch(
 
         return response;
     } catch (error) {
+        if (error instanceof Error && error.message === 'AUTH_ERROR_SESSION_EXPIRED') {
+            throw error;
+        }
         console.error('Server Fetch Error:', error);
         throw error;
     }
