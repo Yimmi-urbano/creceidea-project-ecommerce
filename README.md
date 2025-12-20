@@ -607,6 +607,12 @@ Ejemplo de commit:
 git commit -m "feat: agregar filtro de búsqueda en productos"
 ```
 
+* Saltar el hook de husky (solo en casos excepcionales)
+
+```bash
+git commit -m "mensaje" --no-verify
+```
+
 ### 5. Push a tu Fork
 
 ```bash
