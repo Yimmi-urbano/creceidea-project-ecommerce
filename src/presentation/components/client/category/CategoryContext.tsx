@@ -34,7 +34,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [allCategories, setAllCategories] = useState<{ id: string; title: string }[]>([]);
 	const [message, setMessage] = useState<string>('');
-	const [loading, setLoading] = useState<boolean>(true);
+	const [_loading, setLoading] = useState<boolean>(true);
 
 	const flattenCategories = (
 		categories: Category[],
@@ -54,9 +54,9 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 		try {
 			setLoading(true);
 			const data = await getCategories();
-			// @ts-ignore - Category type mismatch is handled
+			// @ts-expect-error - Category type mismatch is handled
 			setCategories(data);
-			// @ts-ignore - Category type mismatch is handled
+			// @ts-expect-error - Category type mismatch is handled
 			setAllCategories(flattenCategories(data));
 			setMessage('');
 		} catch (error) {

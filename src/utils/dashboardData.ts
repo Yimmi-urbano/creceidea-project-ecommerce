@@ -1,10 +1,10 @@
-import { format, subDays, startOfMonth, startOfYear, differenceInDays } from 'date-fns';
+import { differenceInDays, format, startOfMonth, startOfYear, subDays } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 type PeriodType = '30days' | '7days' | 'month' | 'year';
 
 // Helper function to get date range based on period
-const getDateRange = (period: PeriodType = '30days') => {
+const getDateRange = (period: PeriodType = '30days'): { startDate: Date; days: number } => {
 	const now = new Date();
 	let startDate: Date;
 	let days: number;
@@ -33,7 +33,9 @@ const getDateRange = (period: PeriodType = '30days') => {
 };
 
 // Generate sales data based on period
-export const generateSalesData = (period: PeriodType = '30days') => {
+export const generateSalesData = (
+	period: PeriodType = '30days'
+): Array<{ date: string; sales: number; orders: number }> => {
 	const { days } = getDateRange(period);
 	const data = [];
 
@@ -78,7 +80,9 @@ export const generateSalesData = (period: PeriodType = '30days') => {
 };
 
 // Generate top products data based on period
-export const generateTopProductsData = (period: PeriodType = '30days') => {
+export const generateTopProductsData = (
+	period: PeriodType = '30days'
+): Array<{ name: string; sales: number }> => {
 	const products = [
 		'Inka Kola 1.5L',
 		'Arroz Costeño 5kg',
@@ -100,7 +104,9 @@ export const generateTopProductsData = (period: PeriodType = '30days') => {
 };
 
 // Generate orders distribution data
-export const generateOrdersData = (period: PeriodType = '30days') => {
+export const generateOrdersData = (
+	period: PeriodType = '30days'
+): Array<{ name: string; value: number; color: string }> => {
 	// Adjust values based on period
 	const multiplier =
 		period === 'year' ? 12 : period === 'month' ? 1 : period === '7days' ? 0.25 : 1;
@@ -130,7 +136,9 @@ export const generateOrdersData = (period: PeriodType = '30days') => {
 };
 
 // Generate category sales data
-export const generateCategorySalesData = (period: PeriodType = '30days') => {
+export const generateCategorySalesData = (
+	period: PeriodType = '30days'
+): Array<{ category: string; sales: number }> => {
 	const categories = ['Bebidas', 'Abarrotes', 'Lácteos', 'Snacks', 'Limpieza'];
 
 	// Adjust sales based on period
@@ -144,7 +152,16 @@ export const generateCategorySalesData = (period: PeriodType = '30days') => {
 };
 
 // Generate recent orders
-export const generateRecentOrders = (period: PeriodType = '30days') => {
+export const generateRecentOrders = (
+	_period: PeriodType = '30days'
+): Array<{
+	id: string;
+	customer: string;
+	product: string;
+	amount: number;
+	status: 'pending' | 'completed' | 'cancelled';
+	date: string;
+}> => {
 	const customers = ['Juan Pérez', 'María García', 'Carlos López', 'Ana Martínez', 'Luis Torres'];
 	const products = [
 		'Inka Kola 1.5L',
@@ -170,7 +187,18 @@ export const generateRecentOrders = (period: PeriodType = '30days') => {
 };
 
 // Calculate KPI metrics
-export const calculateKPIs = (period: PeriodType = '30days') => {
+export const calculateKPIs = (
+	period: PeriodType = '30days'
+): {
+	totalSales: number;
+	salesChange: number;
+	totalOrders: number;
+	ordersChange: number;
+	activeProducts: number;
+	conversionRate: number;
+	averageTicket: number;
+	newCustomers: number;
+} => {
 	const salesData = generateSalesData(period);
 	const totalSales = salesData.reduce((sum, day) => sum + day.sales, 0);
 	const totalOrders = salesData.reduce((sum, day) => sum + day.orders, 0);

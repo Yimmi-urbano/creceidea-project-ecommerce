@@ -17,7 +17,7 @@ interface Theme {
 
 export const useThemes = () => {
 	const [themes, setThemes] = useState<Theme[]>([]);
-	const [loading, setLoading] = useState<boolean>(true);
+	const [_loading, setLoading] = useState<boolean>(true);
 	const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
 	const [updateSuccess, setUpdateSuccess] = useState<boolean | null>(null);
 

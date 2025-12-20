@@ -33,7 +33,7 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 	const [text, setText] = useState('');
 	const [destino, setDestino] = useState('');
 	const [textButton, setTextButton] = useState('');
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 	const [uploadingImage, setUploadingImage] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -60,7 +60,7 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
-			const selectedFile = e.target.files[0];
+			const _selectedFile = e.target.files[0];
 
 			// Validate file type
 			if (!selectedFile.type.startsWith('image/')) {

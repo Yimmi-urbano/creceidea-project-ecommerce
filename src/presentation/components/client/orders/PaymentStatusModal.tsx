@@ -45,7 +45,7 @@ const PaymentStatusModal: React.FC<PaymentStatusModalProps> = ({
 }) => {
 	const [paymentStatus, setPaymentStatus] = useState(currentStatus);
 	const [paymentMethod, setPaymentMethod] = useState(currentMethod);
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 
 	const handleSave = async () => {
 		setLoading(true);
@@ -111,7 +111,7 @@ const PaymentStatusModal: React.FC<PaymentStatusModalProps> = ({
 							classNames={{
 								trigger: 'border-zinc-300 dark:border-zinc-700 data-[hover=true]:border-primary',
 							}}
-							renderValue={(items) => {
+							renderValue={(_items) => {
 								const selected = paymentStatusOptions.find((opt) => opt.key === paymentStatus);
 								const Icon = selected?.icon || Clock;
 								return (

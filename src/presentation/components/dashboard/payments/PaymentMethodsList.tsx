@@ -12,8 +12,8 @@ import { Module } from '@/src/domain/modules/Module';
 
 export default function PaymentMethodsList() {
 	const [modules, setModules] = useState<Module[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [_loading, setLoading] = useState(true);
+	const [_error, setError] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const domain = getDomainFromLocalStorage();
 	const router = useRouter();

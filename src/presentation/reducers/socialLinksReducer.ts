@@ -26,7 +26,7 @@ type Action =
 	| { type: 'CLOSE_DELETE_MODAL' };
 
 // Reducer para manejar el estado
-export const socialLinksReducer = (state = initialState, action: Action) => {
+export const socialLinksReducer = (state = initialState, action: Action): typeof initialState => {
 	switch (action.type) {
 		case 'SET_LINKS':
 			return { ...state, links: action.payload };

@@ -15,7 +15,7 @@ import { Payment } from '@/src/domain/payments_methods/Payment';
 import UploadQrImage from '@/src/presentation/components/dashboard/payments/forms/yape-qr/UploadQrImage';
 
 function usePaymentForm(nameId: string) {
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
 	const [isSelected, setIsSelected] = useState(false);
 

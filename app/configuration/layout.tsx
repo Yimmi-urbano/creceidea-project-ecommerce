@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 
-import { HeadToolbar } from '@/src/presentation/components/shared/HeadToolbar';
-import Sidebar from '@/src/presentation/components/shared/Sidebar';
-import OptionsToolbar from '@/src/presentation/components/shared/Toolbar';
+import { HeadToolbar } from '@/src/presentation/components/shared/headToolbar';
+import Sidebar from '@/src/presentation/components/shared/sidebar';
+import OptionsToolbar from '@/src/presentation/components/shared/toolbar';
 import { ConfigProvider } from '@/src/presentation/contexts/ConfigContext';
 import { SidebarContext } from '@/src/presentation/contexts/SidebarContext';
 import { ThemeProvider } from '@/src/presentation/contexts/ThemeContext';

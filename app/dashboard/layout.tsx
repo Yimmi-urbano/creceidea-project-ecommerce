@@ -2,9 +2,9 @@
 import { useState } from 'react';
 
 import ErrorBoundary from '@/src/presentation/components/shared/ErrorBoundary';
-import { HeadToolbar } from '@/src/presentation/components/shared/HeadToolbar';
-import Sidebar from '@/src/presentation/components/shared/Sidebar';
-import OptionsToolbar from '@/src/presentation/components/shared/Toolbar';
+import { HeadToolbar } from '@/src/presentation/components/shared/headToolbar';
+import Sidebar from '@/src/presentation/components/shared/sidebar';
+import OptionsToolbar from '@/src/presentation/components/shared/toolbar';
 import { ThemeProvider } from '@/src/presentation/contexts';
 import { ConfigProvider } from '@/src/presentation/contexts/ConfigContext';
 import { SidebarContext } from '@/src/presentation/contexts/SidebarContext';

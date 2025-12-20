@@ -13,11 +13,11 @@ export interface ProvidersProps {
 	themeProps?: ThemeProviderProps;
 }
 
-export function Providers({ children, themeProps }: ProvidersProps) {
+export function Providers({ children, themeProps }: ProvidersProps): React.ReactElement {
 	const router = useRouter();
 
 	return (
-		<NextUIProvider navigate={router.push}>
+		<NextUIProvider navigate={(path: string) => router.push(path)}>
 			<NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
 		</NextUIProvider>
 	);

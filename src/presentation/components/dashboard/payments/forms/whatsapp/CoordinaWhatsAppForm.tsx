@@ -13,7 +13,7 @@ import {
 import { Payment } from '@/src/domain/payments_methods/Payment';
 
 function usePaymentForm(nameId: string) {
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
 	const [isSelected, setIsSelected] = useState(false);
 

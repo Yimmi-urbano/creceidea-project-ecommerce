@@ -13,7 +13,7 @@ interface UploadQrImageProps {
 
 const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialImage }) => {
 	const [imageUrl, setImageUrl] = useState<string | null>(initialImage || null);
-	const [loading, setLoading] = useState<boolean>(false);
+	const [_loading, setLoading] = useState<boolean>(false);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	useEffect(() => {

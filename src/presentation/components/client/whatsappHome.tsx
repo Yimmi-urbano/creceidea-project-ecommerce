@@ -27,7 +27,7 @@ const WhatsappSettings: React.FC = () => {
 		}
 	}, [config]);
 
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 
 	const handleSubmit = async () => {
 		setLoading(true);

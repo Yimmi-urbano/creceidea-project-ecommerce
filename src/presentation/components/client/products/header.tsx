@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, CardHeader, Link } from '@nextui-org/react';
 
 import { updateProductOrder } from '@/src/application/products/productServices';
-import { SortIcon } from '@/src/presentation/components/shared/Icons';
+import { SortIcon } from '@/src/presentation/components/shared/icons';
 import { useProductContext } from '@/src/presentation/contexts';
 
 const HeaderProducts: React.FC = () => {

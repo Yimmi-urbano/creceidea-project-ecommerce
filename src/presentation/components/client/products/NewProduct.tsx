@@ -53,7 +53,7 @@ interface Category {
 function ProductForm() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-	const [loading, setLoading] = useState(true); // Changed to true for initial load
+	const [_loading, setLoading] = useState(true); // Changed to true for initial load
 	const [submitting, setSubmitting] = useState(false);
 	const [successcreate, setSuccessCreate] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -124,7 +124,7 @@ function ProductForm() {
 	const handleCreateProduct = async () => {
 		setSubmitting(true);
 		try {
-			// @ts-ignore - Handler accepts extended FormData type
+			// @ts-expect-error - Handler accepts extended FormData type
 			await handleSubmit(setSubmitting, formData, setSuccessCreate);
 			toast.success('Producto creado correctamente');
 		} catch (error) {
@@ -395,7 +395,7 @@ function ProductForm() {
 										variant="bordered"
 										placeholder="Ej: Camiseta de Algodón Premium"
 										value={formData.name}
-										// @ts-ignore - Handler accepts extended FormData type
+										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										name="name"
 										size="lg"
@@ -413,7 +413,7 @@ function ProductForm() {
 										variant="bordered"
 										placeholder="Ej: CMP-001"
 										value={formData.sku}
-										// @ts-ignore - Handler accepts extended FormData type
+										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										name="sku"
 										size="lg"
@@ -432,9 +432,9 @@ function ProductForm() {
 									</label>
 									<div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 max-h-[220px] overflow-y-auto">
 										<CategorySelector
-											// @ts-ignore - CategorySelector handles different category types
+											// @ts-expect-error - CategorySelector handles different category types
 											selectedCategories={formData.category}
-											// @ts-ignore - CategorySelector handles different category types
+											// @ts-expect-error - CategorySelector handles different category types
 											onChange={(selectedCategories) =>
 												setFormData({ ...formData, category: selectedCategories })
 											}
@@ -501,7 +501,7 @@ function ProductForm() {
 										accept="image/*"
 										style={{ display: 'none' }}
 										ref={fileInputRef}
-										// @ts-ignore - Handler accepts extended FormData type
+										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) =>
 											handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)
 										}
@@ -510,7 +510,7 @@ function ProductForm() {
 									{formData.imageUrls.length > 0 ? (
 										<SortableImageList
 											images={formData.imageUrls}
-											// @ts-ignore - Handler accepts extended FormData type
+											// @ts-expect-error - Handler accepts extended FormData type
 											onRemove={(index) => handleRemoveImage(index, setFormData, formData)}
 											onReorder={(newOrder) => setFormData({ ...formData, imageUrls: newOrder })}
 										/>
@@ -550,7 +550,7 @@ function ProductForm() {
 									name="description_corta"
 									variant="bordered"
 									value={formData.description_corta}
-									// @ts-ignore - Handler accepts extended FormData type
+									// @ts-expect-error - Handler accepts extended FormData type
 									onChange={(e) => handleChange(e, setFormData, formData)}
 									placeholder="Resumen breve para listados..."
 									minRows={2}
@@ -582,7 +582,7 @@ function ProductForm() {
 										variant="bordered"
 										placeholder="0.00"
 										value={formData.price}
-										// @ts-ignore - Handler accepts extended FormData type
+										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										startContent={<span className="text-zinc-500 font-medium">S/</span>}
 										classNames={{
@@ -601,7 +601,7 @@ function ProductForm() {
 										variant="bordered"
 										placeholder="0.00"
 										value={formData.sale}
-										// @ts-ignore - Handler accepts extended FormData type
+										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										startContent={<span className="text-zinc-500 font-medium">S/</span>}
 										classNames={{
@@ -620,7 +620,7 @@ function ProductForm() {
 										variant="bordered"
 										placeholder="0"
 										value={formData.stock}
-										// @ts-ignore - Handler accepts extended FormData type
+										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										classNames={{
 											inputWrapper:
@@ -638,7 +638,7 @@ function ProductForm() {
 										variant="bordered"
 										placeholder="0.5"
 										value={formData.weight}
-										// @ts-ignore - Handler accepts extended FormData type
+										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										classNames={{
 											inputWrapper:
@@ -666,7 +666,7 @@ function ProductForm() {
 									variant="bordered"
 									placeholder="Título optimizado para buscadores"
 									value={formData.seoTitle}
-									// @ts-ignore - Handler accepts extended FormData type
+									// @ts-expect-error - Handler accepts extended FormData type
 									onChange={(e) => handleChange(e, setFormData, formData)}
 									name="seoTitle"
 									classNames={{
@@ -685,7 +685,7 @@ function ProductForm() {
 									name="seoDescription"
 									variant="bordered"
 									value={formData.seoDescription}
-									// @ts-ignore - Handler accepts extended FormData type
+									// @ts-expect-error - Handler accepts extended FormData type
 									onChange={(e) => handleChange(e, setFormData, formData)}
 									placeholder="Descripción breve para resultados de búsqueda..."
 									minRows={2}

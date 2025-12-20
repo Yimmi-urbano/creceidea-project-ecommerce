@@ -1,38 +1,44 @@
-// @ts-nocheck
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { getOrders } from '@/src/application/orders/orderServices';
 import { Order } from '@/src/domain/orders/Order';
 
-const useIsOrders = () => {
+const useIsOrders = (): {
+	orders: Order[];
+	loading: boolean;
+	error: string | null;
+	refreshOrders: () => Promise<void>;
+} => {
 	const [orders, setOrders] = useState<Order[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [_loading, setLoading] = useState(true);
+	const [_error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const fetchOrders = async () => {
+		const fetchOrders = async (): Promise<void> => {
 			try {
 				const ordersData = await getOrders();
 				// Ensure we always set an array
-				setOrders(Array.isArray(ordersData?.data) ? ordersData.data : []);
-			} catch (err: any) {
-				setError(err.message || 'Error desconocido.');
+				setOrders(Array.isArray(ordersData) ? ordersData : []);
+			} catch (err) {
+				const errorMessage = err instanceof Error ? err.message : 'Error desconocido.';
+				setError(errorMessage);
 				setOrders([]); // Set empty array on error
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		fetchOrders();
+		void fetchOrders();
 	}, []);
 
-	const refreshOrders = async () => {
+	const refreshOrders = async (): Promise<void> => {
 		setLoading(true);
 		try {
 			const ordersData = await getOrders();
-			setOrders(Array.isArray(ordersData?.data) ? ordersData.data : []);
-		} catch (err: any) {
-			setError(err.message || 'Error desconocido.');
+			setOrders(Array.isArray(ordersData) ? ordersData : []);
+		} catch (err) {
+			const errorMessage = err instanceof Error ? err.message : 'Error desconocido.';
+			setError(errorMessage);
 			setOrders([]);
 		} finally {
 			setLoading(false);

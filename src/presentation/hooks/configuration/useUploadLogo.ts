@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { uploadLogo } from '@/src/infrastructure/repositories/uploadRepository';
 
 export const useUploadLogo = () => {
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 

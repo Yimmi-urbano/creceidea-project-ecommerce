@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Skeleton } from '@nextui-org/react';
 import { Search } from 'lucide-react';
 
-import AddCategory from '@/src/presentation/components/client/category/AddCategory';
+import AddCategory from '@/src/presentation/components/client/category/addCategory';
 import {
 	CategoryProvider,
 	useCategoryContext,

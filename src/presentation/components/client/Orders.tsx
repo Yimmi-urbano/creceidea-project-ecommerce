@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { updateOrderStatus, updatePaymentStatus } from '@/src/application/orders/orderServices';
 import OrderStatusModal from '@/src/presentation/components/client/orders/OrderStatusModal';
 import PaymentStatusModal from '@/src/presentation/components/client/orders/PaymentStatusModal';
-import withPermission from '@/src/presentation/components/client/WithPermission';
+import withPermission from '@/src/presentation/components/client/withPermission';
 import {
 	StatCardSkeleton,
 	SkeletonList,

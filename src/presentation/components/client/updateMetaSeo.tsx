@@ -15,7 +15,7 @@ const UpdateMetadata: React.FC = () => {
 		meta_description: '',
 	});
 
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 

@@ -66,7 +66,7 @@ const OrderStatusModal: React.FC<OrderStatusModalProps> = ({
 	currentStatus = 'pending',
 }) => {
 	const [orderStatus, setOrderStatus] = useState(currentStatus);
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 
 	const handleSave = async () => {
 		setLoading(true);
@@ -133,7 +133,7 @@ const OrderStatusModal: React.FC<OrderStatusModalProps> = ({
 							classNames={{
 								trigger: 'border-zinc-300 dark:border-zinc-700 data-[hover=true]:border-primary',
 							}}
-							renderValue={(items) => {
+							renderValue={(_items) => {
 								const Icon = selectedOption?.icon || Clock;
 								return (
 									<div className="flex items-center gap-2">

@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { Search, Filter, Plus, LayoutGrid, List, ArrowUpDown } from 'lucide-react';
 
 import { updateProductOrder } from '@/src/application/products/productServices';
-import CardProductEdit from '@/src/presentation/components/client/products/CardProductEdit';
-import Paginator from '@/src/presentation/components/client/products/Paginator';
+import CardProductEdit from '@/src/presentation/components/client/products/cardProductEdit';
+import Paginator from '@/src/presentation/components/client/products/paginator';
 import { ProductGridView } from '@/src/presentation/components/client/products/ProductGridView';
 import { ProductTableView } from '@/src/presentation/components/client/products/ProductTableView';
 import { ProductProvider, useProductContext } from '@/src/presentation/contexts';

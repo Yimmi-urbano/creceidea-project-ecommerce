@@ -1,4 +1,4 @@
-// @ts-nocheck
+// Tipos temporalmente relajados - TODO: agregar tipos correctos
 import { ChangeEvent } from 'react';
 
 import { toast } from 'sonner';

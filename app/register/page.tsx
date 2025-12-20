@@ -3,13 +3,12 @@
 import React, { useState } from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import { Skeleton } from '@nextui-org/react';
-import { Mail, Lock, User, Building2, Eye, EyeOff, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Building2, CheckCircle2, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 
-// Skeleton Component
-function RegisterSkeleton() {
+// Skeleton Component (no usado actualmente, pero disponible para futuras mejoras)
+function _RegisterSkeleton() {
 	return (
 		<div className="min-h-screen bg-dark-bg flex items-center justify-center p-4">
 			<div className="w-full max-w-md">
@@ -28,11 +27,10 @@ function RegisterSkeleton() {
 }
 
 export default function RegisterPage() {
-	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState('');
+	const [_error, setError] = useState('');
 	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const [formData, setFormData] = useState({

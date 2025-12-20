@@ -16,7 +16,7 @@ export function useKeyboardShortcut(
 		alt?: boolean;
 		enabled?: boolean;
 	} = {}
-) {
+): void {
 	const { ctrl = false, cmd = false, shift = false, alt = false, enabled = true } = options;
 
 	useEffect(() => {
@@ -24,13 +24,13 @@ export function useKeyboardShortcut(
 			return;
 		}
 
-		const handleKeyDown = (event: KeyboardEvent) => {
+		const handleKeyDown = (event: KeyboardEvent): void => {
 			// Verificar si la tecla coincide
 			const keyMatch = event.key.toLowerCase() === key.toLowerCase();
 
-			// Verificar modificadores
-			const ctrlMatch = ctrl ? event.ctrlKey : !event.ctrlKey;
-			const cmdMatch = cmd ? event.metaKey : !event.metaKey;
+			// Verificar modificadores (variables no usadas intencionalmente)
+			const _ctrlMatch = ctrl ? event.ctrlKey : !event.ctrlKey;
+			const _cmdMatch = cmd ? event.metaKey : !event.metaKey;
 			const shiftMatch = shift ? event.shiftKey : !event.shiftKey;
 			const altMatch = alt ? event.altKey : !event.altKey;
 
@@ -58,13 +58,13 @@ export function useKeyboardShortcut(
 /**
  * Hook específico para Cmd/Ctrl + K (búsqueda global)
  */
-export function useGlobalSearchShortcut(callback: () => void, enabled: boolean = true) {
+export function useGlobalSearchShortcut(callback: () => void, enabled: boolean = true): void {
 	useEffect(() => {
 		if (!enabled) {
 			return;
 		}
 
-		const handleKeyDown = (event: KeyboardEvent) => {
+		const handleKeyDown = (event: KeyboardEvent): void => {
 			// Detectar Cmd+K (Mac) o Ctrl+K (Windows/Linux)
 			const isMac =
 				typeof window !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0;

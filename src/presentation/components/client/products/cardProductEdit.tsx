@@ -24,8 +24,8 @@ import {
 
 import { deleteProduct } from '@/src/application/products/productServices';
 import { API_ENDPOINTS, buildUrl } from '@/src/infrastructure/http/apiConfig';
-import withPermission from '@/src/presentation/components/client/WithPermission';
-import { MiniEyeIcon, MiniTrashIcon } from '@/src/presentation/components/shared/Icons';
+import withPermission from '@/src/presentation/components/client/withPermission';
+import { MiniEyeIcon, MiniTrashIcon } from '@/src/presentation/components/shared/icons';
 import { useProductContext } from '@/src/presentation/contexts';
 
 async function updateOrderApi(id_product: string, order: number, order_type: string) {

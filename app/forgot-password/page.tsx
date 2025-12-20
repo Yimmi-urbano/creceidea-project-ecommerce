@@ -5,10 +5,10 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 import { Skeleton } from '@nextui-org/react';
-import { ArrowLeft, Mail, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Mail } from 'lucide-react';
 
-// Skeleton Component
-function ForgotPasswordSkeleton() {
+// Skeleton Component (no usado actualmente)
+function _ForgotPasswordSkeleton() {
 	return (
 		<div className="min-h-screen bg-dark-bg flex items-center justify-center p-4">
 			<div className="w-full max-w-md">
@@ -31,7 +31,7 @@ export default function ForgotPasswordPage() {
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [error, setError] = useState('');
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent): void => {
 		e.preventDefault();
 		setError('');
 		setIsLoading(true);

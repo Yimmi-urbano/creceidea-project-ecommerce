@@ -22,8 +22,8 @@ import { Product, ProductFilters } from '@/src/domain/products/Product';
  */
 export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
 	const [products, setProducts] = useState<Product[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [_loading, setLoading] = useState(true);
+	const [_error, setError] = useState<string | null>(null);
 	const [filters, setFilters] = useState<ProductFilters>(initialFilters);
 
 	/**
@@ -68,11 +68,11 @@ export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
 	 * Refresh products
 	 */
 	const refresh = () => {
-		fetchProducts();
+		void fetchProducts();
 	};
 
 	useEffect(() => {
-		fetchProducts();
+		void fetchProducts();
 	}, [filters]);
 
 	return {
@@ -95,8 +95,8 @@ export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
  */
 export const useProduct = (productId: string) => {
 	const [product, setProduct] = useState<Product | null>(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [_loading, setLoading] = useState(true);
+	const [_error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchProduct = async () => {
@@ -127,8 +127,8 @@ export const useProduct = (productId: string) => {
  * @returns Product mutation functions
  */
 export const useProductMutations = () => {
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const [_loading, setLoading] = useState(false);
+	const [_error, setError] = useState<string | null>(null);
 
 	/**
 	 * Create new product

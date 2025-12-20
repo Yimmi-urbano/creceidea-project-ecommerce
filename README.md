@@ -55,6 +55,7 @@
 ## ✨ Características Principales
 
 ### 🛍️ Gestión de Productos
+
 - **CRUD completo** de productos con soporte para múltiples variantes
 - **Gestión de inventario** en tiempo real
 - **Categorización avanzada** con soporte para subcategorías
@@ -63,6 +64,7 @@
 - **Vistas múltiples**: Grid y tabla con filtros avanzados
 
 ### 📦 Gestión de Pedidos
+
 - **Dashboard de pedidos** con estados personalizables
 - **Seguimiento en tiempo real** del estado de pedidos
 - **Gestión de estados de pago** (pendiente, completado, fallido)
@@ -71,6 +73,7 @@
 - **Exportación de datos** para análisis
 
 ### 💳 Métodos de Pago
+
 - **Integración con múltiples pasarelas** de pago
 - **Configuración de Yape QR** para pagos locales
 - **Gestión de credenciales** de pago de forma segura
@@ -78,6 +81,7 @@
 - **Webhooks** para confirmación de pagos
 
 ### 🎨 Personalización de Tienda
+
 - **Sistema de temas** (claro/oscuro) con persistencia
 - **Configuración de colores** de marca con selector visual
 - **Gestión de página de inicio** con componentes drag-and-drop
@@ -86,12 +90,14 @@
 - **SEO optimizado** con meta tags personalizables
 
 ### 📊 Dashboard y Analytics
+
 - **Métricas en tiempo real**: ventas, pedidos, productos
 - **Gráficos interactivos** con Recharts
 - **Análisis de tendencias** de ventas
 - **Reportes personalizables** por período
 
 ### 🔐 Autenticación y Seguridad
+
 - **NextAuth** para autenticación robusta
 - **Protección de rutas** con middleware
 - **Gestión de sesiones** segura
@@ -103,6 +109,7 @@
 ## 🛠️ Tecnologías Utilizadas
 
 ### Frontend
+
 - **[Next.js 14.2.4](https://nextjs.org/)** - Framework React con SSR y SSG
 - **[React 18.3.1](https://reactjs.org/)** - Biblioteca de UI
 - **[TypeScript 5.0.4](https://www.typescriptlang.org/)** - Tipado estático
@@ -112,11 +119,13 @@
 - **[Lucide React](https://lucide.dev/)** - Iconos modernos
 
 ### Gestión de Estado y Datos
+
 - **[Axios 1.7.2](https://axios-http.com/)** - Cliente HTTP
 - **[React Hooks](https://reactjs.org/docs/hooks-intro.html)** - Gestión de estado local
 - **[date-fns 4.1.0](https://date-fns.org/)** - Manipulación de fechas
 
 ### UI/UX Avanzado
+
 - **[React Quill 2.0.0](https://github.com/zenoamaro/react-quill)** - Editor de texto enriquecido
 - **[Recharts 2.15.4](https://recharts.org/)** - Gráficos y visualizaciones
 - **[DND Kit](https://dndkit.com/)** - Drag and drop
@@ -124,16 +133,19 @@
 - **[React Colorful 5.6.1](https://omgovich.github.io/react-colorful/)** - Selector de colores
 
 ### Autenticación y Seguridad
+
 - **[NextAuth 4.24.7](https://next-auth.js.org/)** - Autenticación
 - **[Google reCAPTCHA v3](https://www.google.com/recaptcha/)** - Protección anti-bot
 - **[DOMPurify 3.2.4](https://github.com/cure53/DOMPurify)** - Sanitización de HTML
 
 ### Herramientas de Desarrollo
+
 - **[ESLint 8.57.0](https://eslint.org/)** - Linter de código
 - **[Prettier](https://prettier.io/)** - Formateador de código
 - **[Autoprefixer](https://github.com/postcss/autoprefixer)** - Prefijos CSS automáticos
 
 ### Backend APIs (Microservicios)
+
 - **API Auth**: Gestión de autenticación y usuarios
 - **API Products**: CRUD de productos y categorías
 - **API Configuration**: Configuración de tienda
@@ -175,11 +187,13 @@ cd creceidea-project-ecommerce
 ### 2. Instalar dependencias
 
 Usando npm:
+
 ```bash
 npm install
 ```
 
 O usando yarn:
+
 ```bash
 yarn install
 ```
@@ -238,17 +252,17 @@ NEXT_PUBLIC_DOMAIN=localhost:3000
 
 ### Descripción de Variables
 
-| Variable | Descripción | Requerida |
-|----------|-------------|-----------|
-| `NEXT_PUBLIC_API_URL_AUTH` | URL de la API de autenticación | ✅ Sí |
-| `NEXT_PUBLIC_DOMAINS_ASSIGNED` | URL para obtener dominios asignados | ✅ Sí |
-| `NEXT_PUBLIC_PRODUCTS` | URL de la API de productos | ✅ Sí |
-| `NEXT_PUBLIC_CONFIGURATION` | URL de la API de configuración | ✅ Sí |
-| `NODE_ENV` | Entorno de ejecución (development/production) | ✅ Sí |
-| `NEXTAUTH_URL` | URL base de la aplicación | ✅ Sí |
-| `NEXTAUTH_SECRET` | Secreto para encriptación de sesiones | ✅ Sí |
-| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Site key de Google reCAPTCHA | ⚠️ Opcional |
-| `RECAPTCHA_SECRET_KEY` | Secret key de Google reCAPTCHA | ⚠️ Opcional |
+| Variable                         | Descripción                                   | Requerida   |
+| -------------------------------- | --------------------------------------------- | ----------- |
+| `NEXT_PUBLIC_API_URL_AUTH`       | URL de la API de autenticación                | ✅ Sí       |
+| `NEXT_PUBLIC_DOMAINS_ASSIGNED`   | URL para obtener dominios asignados           | ✅ Sí       |
+| `NEXT_PUBLIC_PRODUCTS`           | URL de la API de productos                    | ✅ Sí       |
+| `NEXT_PUBLIC_CONFIGURATION`      | URL de la API de configuración                | ✅ Sí       |
+| `NODE_ENV`                       | Entorno de ejecución (development/production) | ✅ Sí       |
+| `NEXTAUTH_URL`                   | URL base de la aplicación                     | ✅ Sí       |
+| `NEXTAUTH_SECRET`                | Secreto para encriptación de sesiones         | ✅ Sí       |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Site key de Google reCAPTCHA                  | ⚠️ Opcional |
+| `RECAPTCHA_SECRET_KEY`           | Secret key de Google reCAPTCHA                | ⚠️ Opcional |
 
 ### Generar NEXTAUTH_SECRET
 
@@ -275,6 +289,7 @@ npm run dev
 La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
 **Características del modo desarrollo:**
+
 - ⚡ Hot Module Replacement (HMR) con Turbopack
 - 🔍 Source maps para debugging
 - 📝 Logs detallados en consola
@@ -289,6 +304,7 @@ npm run build
 ```
 
 Este comando:
+
 - Compila TypeScript a JavaScript
 - Optimiza y minifica el código
 - Genera páginas estáticas (SSG) cuando es posible
@@ -312,12 +328,12 @@ npm run lint
 
 ### Scripts Disponibles
 
-| Script | Descripción |
-|--------|-------------|
-| `npm run dev` | Inicia el servidor de desarrollo con Turbopack |
-| `npm run build` | Construye la aplicación para producción |
-| `npm start` | Inicia el servidor de producción en el puerto 3001 |
-| `npm run lint` | Ejecuta ESLint y corrige problemas automáticamente |
+| Script          | Descripción                                        |
+| --------------- | -------------------------------------------------- |
+| `npm run dev`   | Inicia el servidor de desarrollo con Turbopack     |
+| `npm run build` | Construye la aplicación para producción            |
+| `npm start`     | Inicia el servidor de producción en el puerto 3001 |
+| `npm run lint`  | Ejecuta ESLint y corrige problemas automáticamente |
 
 ---
 
@@ -409,6 +425,7 @@ La aplicación se comunica con múltiples microservicios backend. A continuació
 **Base URL:** `https://api-auth.creceidea.pe/api`
 
 #### Login
+
 ```http
 POST /auth/login
 Content-Type: application/json
@@ -420,14 +437,15 @@ Content-Type: application/json
 ```
 
 **Respuesta exitosa (200):**
+
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": "123",
-    "email": "usuario@ejemplo.com",
-    "name": "Usuario Ejemplo"
-  }
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+	"user": {
+		"id": "123",
+		"email": "usuario@ejemplo.com",
+		"name": "Usuario Ejemplo"
+	}
 }
 ```
 
@@ -436,33 +454,36 @@ Content-Type: application/json
 **Base URL:** `https://api-products.creceidea.pe/api/products`
 
 #### Listar Productos
+
 ```http
 GET /products?page=1&limit=20&category=electronics
 Authorization: Bearer {token}
 ```
 
 **Respuesta exitosa (200):**
+
 ```json
 {
-  "data": [
-    {
-      "id": "prod_123",
-      "name": "Producto Ejemplo",
-      "price": 99.99,
-      "stock": 50,
-      "category": "electronics",
-      "images": ["url1.jpg", "url2.jpg"]
-    }
-  ],
-  "pagination": {
-    "total": 100,
-    "page": 1,
-    "limit": 20
-  }
+	"data": [
+		{
+			"id": "prod_123",
+			"name": "Producto Ejemplo",
+			"price": 99.99,
+			"stock": 50,
+			"category": "electronics",
+			"images": ["url1.jpg", "url2.jpg"]
+		}
+	],
+	"pagination": {
+		"total": 100,
+		"page": 1,
+		"limit": 20
+	}
 }
 ```
 
 #### Crear Producto
+
 ```http
 POST /products
 Authorization: Bearer {token}
@@ -479,6 +500,7 @@ Content-Type: application/json
 ```
 
 #### Actualizar Producto
+
 ```http
 PUT /products/{id}
 Authorization: Bearer {token}
@@ -491,6 +513,7 @@ Content-Type: application/json
 ```
 
 #### Eliminar Producto
+
 ```http
 DELETE /products/{id}
 Authorization: Bearer {token}
@@ -501,12 +524,14 @@ Authorization: Bearer {token}
 **Base URL:** `https://api-configuration.creceidea.pe/api`
 
 #### Obtener Configuración de Tienda
+
 ```http
 GET /configuration/store
 Authorization: Bearer {token}
 ```
 
 #### Actualizar Tema
+
 ```http
 PUT /configuration/theme
 Authorization: Bearer {token}
@@ -522,6 +547,7 @@ Content-Type: application/json
 ### 💳 Métodos de Pago
 
 #### Configurar Yape QR
+
 ```http
 POST /configuration/payment-methods/yape
 Authorization: Bearer {token}
@@ -536,12 +562,14 @@ Content-Type: multipart/form-data
 ### 📦 Gestión de Pedidos
 
 #### Listar Pedidos
+
 ```http
 GET /orders?status=pending&page=1&limit=20
 Authorization: Bearer {token}
 ```
 
 #### Actualizar Estado de Pedido
+
 ```http
 PATCH /orders/{id}/status
 Authorization: Bearer {token}
@@ -555,15 +583,15 @@ Content-Type: application/json
 
 ### Códigos de Estado HTTP
 
-| Código | Descripción |
-|--------|-------------|
-| 200 | Solicitud exitosa |
-| 201 | Recurso creado exitosamente |
-| 400 | Solicitud inválida (datos incorrectos) |
-| 401 | No autenticado (token inválido o expirado) |
-| 403 | No autorizado (sin permisos) |
-| 404 | Recurso no encontrado |
-| 500 | Error interno del servidor |
+| Código | Descripción                                |
+| ------ | ------------------------------------------ |
+| 200    | Solicitud exitosa                          |
+| 201    | Recurso creado exitosamente                |
+| 400    | Solicitud inválida (datos incorrectos)     |
+| 401    | No autenticado (token inválido o expirado) |
+| 403    | No autorizado (sin permisos)               |
+| 404    | Recurso no encontrado                      |
+| 500    | Error interno del servidor                 |
 
 ---
 
@@ -589,6 +617,7 @@ git checkout -b feature/nueva-caracteristica
 ```
 
 Nomenclatura de ramas:
+
 - `feature/` - Para nuevas características
 - `fix/` - Para corrección de bugs
 - `docs/` - Para cambios en documentación
@@ -603,11 +632,12 @@ Realiza tus cambios siguiendo las convenciones de código del proyecto:
 - **Commits**: Usa mensajes descriptivos en español o inglés
 
 Ejemplo de commit:
+
 ```bash
 git commit -m "feat: agregar filtro de búsqueda en productos"
 ```
 
-* Saltar el hook de husky (solo en casos excepcionales)
+- Saltar el hook de husky (solo en casos excepcionales)
 
 ```bash
 git commit -m "mensaje" --no-verify
@@ -622,6 +652,7 @@ git push origin feature/nueva-caracteristica
 ### 6. Crear Pull Request
 
 Ve a tu fork en GitHub y haz clic en "New Pull Request". Describe claramente:
+
 - ¿Qué cambia tu PR?
 - ¿Por qué es necesario?
 - ¿Cómo se puede probar?
@@ -637,6 +668,7 @@ Ve a tu fork en GitHub y haz clic en "New Pull Request". Describe claramente:
 ### Reportar Bugs
 
 Si encuentras un bug, por favor [abre un issue](https://github.com/Yimmi-urbano/creceidea-project-ecommerce/issues) con:
+
 - Descripción clara del problema
 - Pasos para reproducirlo
 - Comportamiento esperado vs. comportamiento actual
@@ -682,7 +714,8 @@ Ver el archivo [LICENSE](LICENSE) para más detalles.
 <div align="center">
 
 ### **Yimmi Urbano**
-*Full Stack Developer & Creator of CreceIdea*
+
+_Full Stack Developer & Creator of CreceIdea_
 
 [![GitHub](https://img.shields.io/badge/GitHub-Yimmi--urbano-181717?style=for-the-badge&logo=github)](https://github.com/Yimmi-urbano)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/yimmi-urbano)
@@ -767,6 +800,6 @@ Estas son las características y mejoras planificadas para futuras versiones de 
 
 **Hecho con ❤️ por el equipo de CreceIdea**
 
-*Última actualización: Diciembre 2024*
+_Última actualización: Diciembre 2024_
 
 </div>

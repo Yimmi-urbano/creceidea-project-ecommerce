@@ -9,7 +9,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as categoryServices from '@/src/application/categories/categoryServices';
 import { Category } from '@/src/domain/categories/Category';
@@ -19,16 +19,25 @@ import { Category } from '@/src/domain/categories/Category';
  *
  * @returns Category data and operations
  */
-export const useCategories = () => {
+export const useCategories = (): {
+	categories: Category[];
+	categoryTree: Category[];
+	loading: boolean;
+	error: string | null;
+	createCategory: (title: string, parent?: string | null) => Promise<void>;
+	updateCategory: (id: string, title: string, parent?: string | null) => Promise<void>;
+	deleteCategory: (id: string) => Promise<void>;
+	refresh: () => Promise<void>;
+} => {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [categoryTree, setCategoryTree] = useState<Category[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [_loading, setLoading] = useState(true);
+	const [_error, setError] = useState<string | null>(null);
 
 	/**
 	 * Fetch all categories
 	 */
-	const fetchCategories = async () => {
+	const fetchCategories = async (): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -49,7 +58,7 @@ export const useCategories = () => {
 	/**
 	 * Create new category
 	 */
-	const createCategory = async (title: string, parent?: string | null) => {
+	const createCategory = async (title: string, parent?: string | null): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -68,7 +77,11 @@ export const useCategories = () => {
 	/**
 	 * Update existing category
 	 */
-	const updateCategory = async (id: string, title: string, parent?: string | null) => {
+	const updateCategory = async (
+		id: string,
+		title: string,
+		parent?: string | null
+	): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -87,7 +100,7 @@ export const useCategories = () => {
 	/**
 	 * Delete category
 	 */
-	const deleteCategory = async (id: string) => {
+	const deleteCategory = async (id: string): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -104,7 +117,7 @@ export const useCategories = () => {
 	};
 
 	useEffect(() => {
-		fetchCategories();
+		void fetchCategories();
 	}, []);
 
 	return {

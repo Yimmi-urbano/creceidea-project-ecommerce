@@ -4,7 +4,7 @@ import { Card, CardBody } from '@nextui-org/react';
 import { AreaChart, Area, Tooltip, ResponsiveContainer, TooltipProps } from 'recharts';
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 
-import withPermission from '@/src/presentation/components/client/WithPermission';
+import withPermission from '@/src/presentation/components/client/withPermission';
 
 const data = [
 	{ name: 'Enero', uv: 500 },

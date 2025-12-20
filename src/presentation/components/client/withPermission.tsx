@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const withPermission = (WrappedComponent: React.ComponentType, componentName: string) => {
-	const ComponentWithPermission: React.FC = (props) => {
+	const ComponentwithPermission: React.FC = (props) => {
 		const [isAllowed, setIsAllowed] = useState<boolean>(false);
 		const router = useRouter();
 
@@ -27,7 +27,7 @@ const withPermission = (WrappedComponent: React.ComponentType, componentName: st
 		return <WrappedComponent {...props} />;
 	};
 
-	return ComponentWithPermission;
+	return ComponentwithPermission;
 };
 
 export default withPermission;

@@ -1,4 +1,4 @@
-// @ts-nocheck
+// Tipos temporalmente relajados - TODO: agregar tipos correctos
 import React, { useState, useEffect, useRef } from 'react';
 
 import dynamic from 'next/dynamic';
@@ -51,7 +51,7 @@ interface Category {
 function ProductForm() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-	const [loading, setLoading] = useState(false);
+	const [_loading, setLoading] = useState(false);
 	const [submitting, setSubmittingEdit] = useState(false);
 	const [detailproduct, setGetProductById] = useState<any>(null);
 	const [productId, setProductId] = useState<string | null>(null);
@@ -118,7 +118,7 @@ function ProductForm() {
 				return;
 			}
 			try {
-				// @ts-ignore - The service expects a string
+				// @ts-expect-error - The service expects a string
 				const data = await getProductById(productId);
 				setGetProductById(data);
 			} catch (error) {
