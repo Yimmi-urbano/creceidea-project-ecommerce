@@ -1,8 +1,8 @@
 /**
  * Presentation Contexts - Barrel Export
- * 
+ *
  * Centralized exports for all presentation contexts.
- * 
+ *
  * @module contexts
  */
 

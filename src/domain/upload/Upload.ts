@@ -1,4 +1,3 @@
 export interface Upload {
-    file: File;
-  }
-  
+	file: File;
+}

@@ -1,48 +1,46 @@
-"use client"
-import { useState } from "react";
-import OptionsToolbar from "@/src/presentation/components/shared/Toolbar";
-import Sidebar from "@/src/presentation/components/shared/Sidebar";
-import { HeadToolbar } from "@/src/presentation/components/shared/HeadToolbar";
-import { ThemeProvider } from "@/src/presentation/contexts";
-import { ConfigProvider } from "@/src/presentation/contexts/ConfigContext";
-import ErrorBoundary from "@/src/presentation/components/shared/ErrorBoundary";
+'use client';
+import { useState } from 'react';
 
-import { SidebarContext } from "@/src/presentation/contexts/SidebarContext";
+import ErrorBoundary from '@/src/presentation/components/shared/ErrorBoundary';
+import { HeadToolbar } from '@/src/presentation/components/shared/HeadToolbar';
+import Sidebar from '@/src/presentation/components/shared/Sidebar';
+import OptionsToolbar from '@/src/presentation/components/shared/Toolbar';
+import { ThemeProvider } from '@/src/presentation/contexts';
+import { ConfigProvider } from '@/src/presentation/contexts/ConfigContext';
+import { SidebarContext } from '@/src/presentation/contexts/SidebarContext';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+	const [isCollapsed, setIsCollapsed] = useState(false);
 
-  return (
-    <ErrorBoundary>
-      <ThemeProvider>
-        <ConfigProvider>
-          <SidebarContext.Provider value={{ isCollapsed, setIsCollapsed }}>
-            <div className="min-h-screen font-sans transition-colors duration-300 bg-zinc-50 dark:bg-dark-bg text-zinc-900 dark:text-white">
-              {/* Desktop Sidebar */}
-              <div className="md:flex hidden">
-                <Sidebar />
-              </div>
+	return (
+		<ErrorBoundary>
+			<ThemeProvider>
+				<ConfigProvider>
+					<SidebarContext.Provider value={{ isCollapsed, setIsCollapsed }}>
+						<div className="min-h-screen font-sans transition-colors duration-300 bg-zinc-50 dark:bg-dark-bg text-zinc-900 dark:text-white">
+							{/* Desktop Sidebar */}
+							<div className="md:flex hidden">
+								<Sidebar />
+							</div>
 
-              {/* Mobile Toolbar */}
-              <div className="md:hidden visible">
-                <OptionsToolbar />
-              </div>
+							{/* Mobile Toolbar */}
+							<div className="md:hidden visible">
+								<OptionsToolbar />
+							</div>
 
-              {/* Main Content - adapts to sidebar state */}
-              <main className={`transition-all duration-300 min-h-screen flex flex-col ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
-                <HeadToolbar />
-                <div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full pb-24 md:pb-8">
-                  {children}
-                </div>
-              </main>
-            </div>
-          </SidebarContext.Provider>
-        </ConfigProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+							{/* Main Content - adapts to sidebar state */}
+							<main
+								className={`transition-all duration-300 min-h-screen flex flex-col ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}
+							>
+								<HeadToolbar />
+								<div className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full pb-24 md:pb-8">
+									{children}
+								</div>
+							</main>
+						</div>
+					</SidebarContext.Provider>
+				</ConfigProvider>
+			</ThemeProvider>
+		</ErrorBoundary>
+	);
 }

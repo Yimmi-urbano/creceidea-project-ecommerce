@@ -1,18 +1,14 @@
 /**
  * Presentation Hooks - Barrel Export
- * 
+ *
  * Centralized exports for all presentation hooks.
  * Simplifies imports throughout the application.
- * 
+ *
  * @module hooks
  */
 
 // Product hooks
-export {
-    useProducts,
-    useProduct,
-    useProductMutations,
-} from './products/useProducts';
+export { useProducts, useProduct, useProductMutations } from './products/useProducts';
 
 // Category hooks
 export { useCategories } from './categories/useCategories';

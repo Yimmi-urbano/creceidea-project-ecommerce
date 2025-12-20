@@ -1,9 +1,7 @@
-"use client"
-import ProductForm from "@/src/presentation/components/client/products/EditProduct";
-import { Card, CardBody } from "@nextui-org/react";
+'use client';
+
+import ProductForm from '@/src/presentation/components/client/products/EditProduct';
 
 export default function NewProducts() {
-  return (
-      <ProductForm />
-  );
+	return <ProductForm />;
 }

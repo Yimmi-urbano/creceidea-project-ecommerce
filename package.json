@@ -1,6 +1,6 @@
 {
-	"name": "next-app-template",
-	"version": "0.0.1",
+	"name": "creceidea-project-ecommerce",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"dev:turbo": "next dev --turbo",

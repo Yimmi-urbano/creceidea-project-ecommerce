@@ -216,10 +216,10 @@ Crea un archivo `.env.local` en la raíz del proyecto con las siguientes variabl
 
 ```env
 # APIs de Backend
-NEXT_PUBLIC_API_URL_AUTH=https://api-auth.creceidea.pe/api
-NEXT_PUBLIC_DOMAINS_ASSIGNED=https://api-domain.creceidea.pe/domains/my/domain
-NEXT_PUBLIC_PRODUCTS=https://api-products.creceidea.pe/api/products
-NEXT_PUBLIC_CONFIGURATION=https://api-configuration.creceidea.pe/api
+NEXT_PUBLIC_API_URL_AUTH=https://test-api-auth.creceidea.pe/api
+NEXT_PUBLIC_DOMAINS_ASSIGNED=https://test-api-domain.creceidea.pe/domains/my/domain
+NEXT_PUBLIC_PRODUCTS=https://test-api-products.creceidea.pe/api/products
+NEXT_PUBLIC_CONFIGURATION=https://test-api-configuration.creceidea.pe/api
 
 # Entorno
 NODE_ENV=development
