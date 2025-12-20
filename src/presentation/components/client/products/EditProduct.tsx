@@ -56,7 +56,7 @@ function ProductForm() {
 	const [detailproduct, setGetProductById] = useState<any>(null);
 	const [productId, setProductId] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
-	const router = useRouter();
+	const _router = useRouter();
 
 	// Extended Form Data including new fields
 	const [formData, setFormData] = useState<

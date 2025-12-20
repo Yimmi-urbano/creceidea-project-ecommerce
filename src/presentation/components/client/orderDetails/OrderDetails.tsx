@@ -26,7 +26,7 @@ import useOrderDetails from '@/src/presentation/hooks/orders/useOrderDetails';
 
 const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 	const { orderData, loading, error } = useOrderDetails(orderId);
-	const [activeTab, setActiveTab] = useState<'details' | 'timeline'>('details');
+	const [_activeTab, _setActiveTab] = useState<'details' | 'timeline'>('details');
 
 	if (loading) {
 		return <OrderDetailSkeleton />;

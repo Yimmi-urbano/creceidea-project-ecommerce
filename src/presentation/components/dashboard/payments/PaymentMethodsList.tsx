@@ -16,7 +16,7 @@ export default function PaymentMethodsList() {
 	const [_error, setError] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const domain = getDomainFromLocalStorage();
-	const router = useRouter();
+	const _router = useRouter();
 
 	useEffect(() => {
 		const loadModules = async () => {

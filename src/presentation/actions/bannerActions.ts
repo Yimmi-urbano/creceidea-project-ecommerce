@@ -17,7 +17,9 @@ import { revalidatePath } from 'next/cache';
  * @param bannerId - Banner ID
  * @returns Success status
  */
-export async function deleteBannerAction(bannerId: string): Promise<{ success: boolean; error?: string }> {
+export async function deleteBannerAction(
+	bannerId: string
+): Promise<{ success: boolean; error?: string }> {
 	try {
 		// Import dynamically to avoid issues
 		const { deleteBanner } = await import('@/src/infrastructure/repositories/bannerRepository');

@@ -23,7 +23,7 @@ export default function LoginPage() {
 	const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
 	const [isLoading, setIsLoading] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
-	const router = useRouter();
+	const _router = useRouter();
 
 	useEffect(() => {
 		document.body.classList.remove('login-page');

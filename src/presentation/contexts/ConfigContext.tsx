@@ -47,7 +47,7 @@ export const ConfigProvider = ({ children }: { children: ReactNode }) => {
 	const [config, setConfig] = useState<SiteConfiguration | null>(null);
 	const [_loading, setLoading] = useState(true);
 	const [_error, setError] = useState<string | null>(null);
-	const router = useRouter();
+	const _router = useRouter();
 
 	useEffect(() => {
 		const fetchConfig = async () => {

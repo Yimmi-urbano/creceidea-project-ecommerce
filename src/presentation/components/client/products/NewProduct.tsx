@@ -57,7 +57,7 @@ function ProductForm() {
 	const [submitting, setSubmitting] = useState(false);
 	const [successcreate, setSuccessCreate] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
-	const router = useRouter();
+	const _router = useRouter();
 	const { config } = useConfig();
 	const integrations = config?.integrations;
 

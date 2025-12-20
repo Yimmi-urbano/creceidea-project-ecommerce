@@ -16,7 +16,7 @@ const BannerList: React.FC<BannerListProps> = ({ onEdit, onOpenModal }) => {
 	const [banners, setBanners] = useState<Banner[]>([]);
 	const [_loading, setLoading] = useState<boolean>(true);
 	const [_error, setError] = useState<string | null>(null);
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [_isModalOpen, _setIsModalOpen] = useState<boolean>(false);
 	const [bannerToDelete, setBannerToDelete] = useState<Banner | null>(null);
 
 	useEffect(() => {

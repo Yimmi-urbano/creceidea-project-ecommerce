@@ -216,9 +216,9 @@ const CardProducts: React.FC = () => {
 		setOrderedProducts,
 	} = useProductContext();
 	const [isLoading, setIsLoading] = useState(true);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [_isModalOpen, _setIsModalOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-	const router = useRouter();
+	const _router = useRouter();
 
 	useEffect(() => {
 		const loadProducts = async () => {

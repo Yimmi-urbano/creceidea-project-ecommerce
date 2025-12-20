@@ -6,7 +6,7 @@ import BannerModal from '@/src/presentation/components/client/home/BannerModal';
 import BannerList from '@/src/presentation/components/client/home/CardBanners';
 
 export default function Home() {
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [_isModalOpen, _setIsModalOpen] = useState(false);
 	const [currentBanner, setCurrentBanner] = useState<Banner | undefined>();
 	const [refreshKey, setRefreshKey] = useState(0);
 

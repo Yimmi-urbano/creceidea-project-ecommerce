@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 const withPermission = (WrappedComponent: React.ComponentType, componentName: string) => {
 	const ComponentwithPermission: React.FC = (props) => {
 		const [isAllowed, setIsAllowed] = useState<boolean>(false);
-		const router = useRouter();
+		const _router = useRouter();
 
 		useEffect(() => {
 			const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');

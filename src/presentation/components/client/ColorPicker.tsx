@@ -25,9 +25,9 @@ const ColorPicker: React.FC = () => {
 	const pickerRefs = useRef<Array<HTMLDivElement | null>>([]);
 
 	// Estado para controlar el modal
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [modalMessage, setModalMessage] = useState('');
-	const [isModalLoading, setIsModalLoading] = useState(false);
+	const [_isModalOpen, _setIsModalOpen] = useState(false);
+	const [_modalMessage, _setModalMessage] = useState('');
+	const [_isModalLoading, _setIsModalLoading] = useState(false);
 
 	useEffect(() => {
 		if (config && !loading) {

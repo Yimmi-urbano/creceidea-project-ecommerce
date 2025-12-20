@@ -17,7 +17,7 @@ import UploadQrImage from '@/src/presentation/components/dashboard/payments/form
 function usePaymentForm(nameId: string) {
 	const [_loading, setLoading] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
-	const [isSelected, setIsSelected] = useState(false);
+	const [_isSelected, _setIsSelected] = useState(false);
 
 	const [form, setForm] = useState<Payment>({
 		name: '',

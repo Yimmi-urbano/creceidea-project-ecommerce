@@ -20,7 +20,7 @@ export const GlobalSearch: React.FC = () => {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const dropdownRef = useRef<HTMLDivElement>(null);
-	const router = useRouter();
+	const _router = useRouter();
 
 	// Detectar Cmd/Ctrl + K para abrir búsqueda
 	useGlobalSearchShortcut(() => {

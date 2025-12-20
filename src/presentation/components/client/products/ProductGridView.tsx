@@ -25,8 +25,8 @@ interface ProductGridViewProps {
 
 export const ProductGridView: React.FC<ProductGridViewProps> = ({ searchTerm = '' }) => {
 	const { products, isLoading, fetchProducts } = useProductContext();
-	const router = useRouter();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const _router = useRouter();
+	const [_isModalOpen, _setIsModalOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 	const [isDeleting, setIsDeleting] = useState(false);
 

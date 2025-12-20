@@ -10,7 +10,7 @@ import { useProductContext } from '@/src/presentation/contexts';
 
 const CardProducts: React.FC = () => {
 	const { products } = useProductContext();
-	const router = useRouter();
+	const _router = useRouter();
 
 	const handlePress = (id: string) => {
 		if (typeof window !== 'undefined') {

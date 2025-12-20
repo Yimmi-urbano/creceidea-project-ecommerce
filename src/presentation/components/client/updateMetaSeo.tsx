@@ -16,13 +16,13 @@ const UpdateMetadata: React.FC = () => {
 	});
 
 	const [_loading, setLoading] = useState(false);
-	const [successMessage, setSuccessMessage] = useState('');
-	const [errorMessage, setErrorMessage] = useState('');
+	const [_successMessage, _setSuccessMessage] = useState('');
+	const [_errorMessage, _setErrorMessage] = useState('');
 
 	// Estado para controlar el modal
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [modalMessage, setModalMessage] = useState('');
-	const [isModalLoading, setIsModalLoading] = useState(false);
+	const [_isModalOpen, _setIsModalOpen] = useState(false);
+	const [_modalMessage, _setModalMessage] = useState('');
+	const [_isModalLoading, _setIsModalLoading] = useState(false);
 
 	useEffect(() => {
 		if (config) {

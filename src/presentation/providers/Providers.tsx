@@ -14,7 +14,7 @@ export interface ProvidersProps {
 }
 
 export function Providers({ children, themeProps }: ProvidersProps): React.ReactElement {
-	const router = useRouter();
+	const _router = useRouter();
 
 	return (
 		<NextUIProvider navigate={(path: string) => router.push(path)}>

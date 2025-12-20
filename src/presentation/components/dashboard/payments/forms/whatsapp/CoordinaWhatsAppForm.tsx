@@ -15,7 +15,7 @@ import { Payment } from '@/src/domain/payments_methods/Payment';
 function usePaymentForm(nameId: string) {
 	const [_loading, setLoading] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
-	const [isSelected, setIsSelected] = useState(false);
+	const [_isSelected, _setIsSelected] = useState(false);
 
 	const [form, setForm] = useState<Payment>({
 		name: '',

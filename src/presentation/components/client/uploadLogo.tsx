@@ -7,7 +7,7 @@ import { useConfig } from '@/src/presentation/contexts';
 import { useUploadLogo } from '@/src/presentation/hooks/configuration/useUploadLogo';
 
 const UploadLogo: React.FC = () => {
-	const [showImage, setShowImage] = useState<boolean>(false);
+	const [_showImage, _setShowImage] = useState<boolean>(false);
 	const { handleFileChange, handleAddImageClick, loading, imageUrl, fileInputRef } =
 		useUploadLogo();
 	const { config } = useConfig();
