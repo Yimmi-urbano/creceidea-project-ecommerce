@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Input, Button } from '@nextui-org/react';
+import { Button, Input } from '@nextui-org/react';
 import { ChromePicker } from 'react-color';
 import { toast } from 'sonner';
 
@@ -25,15 +25,15 @@ const ColorPicker: React.FC = () => {
 	const pickerRefs = useRef<Array<HTMLDivElement | null>>([]);
 
 	// Estado para controlar el modal
-	const [_isModalOpen, _setIsModalOpen] = useState(false);
-	const [_modalMessage, _setModalMessage] = useState('');
-	const [_isModalLoading, _setIsModalLoading] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalMessage, setModalMessage] = useState('');
+	const [isModalLoading, setIsModalLoading] = useState(false);
 
 	useEffect(() => {
 		if (config && !loading) {
-			const fetchedColors = (config as any).colors || [];
+			const fetchedColors = ((config as any).colors as string[]) || [];
 			if (fetchedColors.length > 0) {
-				const colorObjects = fetchedColors.map((color: string, index: number) => ({
+				const colorObjects: Color[] = fetchedColors.map((color: string, index: number) => ({
 					title: `Color ${index + 1}`,
 					hex: color,
 				}));
@@ -127,7 +127,12 @@ const ColorPicker: React.FC = () => {
 						/>
 						{showPickers[index] && (
 							<div className="absolute z-50 mt-2">
-								<div className="fixed inset-0" onClick={() => handlePickerToggle(index)} />
+								<button
+									type="button"
+									className="fixed inset-0 cursor-default"
+									onClick={() => handlePickerToggle(index)}
+									aria-label="Cerrar selector de color"
+								/>
 								<ChromePicker
 									color={colorObj.hex}
 									disableAlpha

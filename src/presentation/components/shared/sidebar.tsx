@@ -6,15 +6,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import {
-	LayoutDashboard,
-	ShoppingBag,
-	ShoppingCart,
-	Layers,
-	CreditCard,
-	Server,
-	FileText,
 	ChevronLeft,
 	ChevronRight,
+	CreditCard,
+	FileText,
+	Layers,
+	LayoutDashboard,
+	Server,
+	ShoppingBag,
+	ShoppingCart,
 } from 'lucide-react';
 
 import UserButton from '@/src/presentation/components/client/user/UserButton';
@@ -22,11 +22,11 @@ import { useSidebar } from '@/src/presentation/contexts/SidebarContext';
 
 import { Logo } from './Icons';
 
-const Sidebar = () => {
+const Sidebar = (): React.ReactElement => {
 	const { isCollapsed, setIsCollapsed } = useSidebar();
 	const pathname = usePathname();
 
-	const isActive = (path: string) => pathname === path;
+	const isActive = (path: string): boolean => pathname === path;
 
 	const mainNavItems = [
 		{ id: 'dashboard', label: 'Tablero', icon: LayoutDashboard, href: '/dashboard' },
@@ -56,7 +56,9 @@ const Sidebar = () => {
 				{/* Logo */}
 				<div className="h-16 flex items-center px-6 border-b border-transparent shrink-0">
 					<div className="flex items-center gap-3">
-						{(!isCollapsed && <Logo width={120} height={50} />) || (
+						{isCollapsed === false ? (
+							<Logo width={120} height={50} />
+						) : (
 							<div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">
 								C
 							</div>
@@ -138,7 +140,7 @@ const Sidebar = () => {
 
 				{/* Collapse Toggle */}
 				<button
-					onClick={() => setIsCollapsed(!isCollapsed)}
+					onClick={() => setIsCollapsed(isCollapsed === false)}
 					className="absolute -right-3 top-20 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-primary-hover transition-colors z-50"
 				>
 					{isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}

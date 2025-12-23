@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Input, Textarea } from '@nextui-org/react';
+import { Button, Input, Textarea } from '@nextui-org/react';
 
 import { updateSeoMetadata } from '@/src/application/configuration/configurationServices';
 import { SeoMetadata } from '@/src/domain/configuration/SeoMetadata';
@@ -15,14 +15,13 @@ const UpdateMetadata: React.FC = () => {
 		meta_description: '',
 	});
 
-	const [_loading, setLoading] = useState(false);
-	const [_successMessage, _setSuccessMessage] = useState('');
-	const [_errorMessage, _setErrorMessage] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [successMessage, setSuccessMessage] = useState('');
+	const [errorMessage, setErrorMessage] = useState('');
 
 	// Estado para controlar el modal
-	const [_isModalOpen, _setIsModalOpen] = useState(false);
-	const [_modalMessage, _setModalMessage] = useState('');
-	const [_isModalLoading, _setIsModalLoading] = useState(false);
+	const [modalMessage, setModalMessage] = useState('');
+	const [isModalLoading, setIsModalLoading] = useState(false);
 
 	useEffect(() => {
 		if (config) {
@@ -35,21 +34,23 @@ const UpdateMetadata: React.FC = () => {
 		}
 	}, [config]);
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof SeoMetadata) => {
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+		field: keyof SeoMetadata
+	): void => {
 		setFormData((prev) => ({
 			...prev,
 			[field]: e.target.value,
 		}));
 	};
 
-	const handleUpdateMetadata = async () => {
+	const handleUpdateMetadata = async (): Promise<void> => {
 		setLoading(true);
 		setSuccessMessage('');
 		setErrorMessage('');
 
 		try {
 			setIsModalLoading(true); // Comienza la carga
-			setIsModalOpen(true); // Abre el modal
 			await updateSeoMetadata(formData);
 			setModalMessage('SEO actualizado correctamente!'); // Actualiza el mensaje con el resultado
 			setIsModalLoading(false); // Finaliza la carga
@@ -115,6 +116,23 @@ const UpdateMetadata: React.FC = () => {
 					input: 'text-zinc-900 dark:text-zinc-100',
 				}}
 			/>
+
+			<Button
+				color="primary"
+				className="w-full font-medium mt-2"
+				onClick={handleUpdateMetadata}
+				isLoading={loading || isModalLoading}
+			>
+				Guardar SEO
+			</Button>
+
+			{(successMessage !== '' || modalMessage !== '') && (
+				<p className="text-sm text-success mt-2">
+					{successMessage !== '' ? successMessage : modalMessage}
+				</p>
+			)}
+
+			{errorMessage !== '' && <p className="text-sm text-danger mt-2">{errorMessage}</p>}
 		</div>
 	);
 };

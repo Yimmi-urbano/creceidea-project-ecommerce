@@ -1,10 +1,10 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import {
+	createCategory,
+	deleteCategory,
 	getCategories,
 	updateCategory,
-	deleteCategory,
-	createCategory,
 } from '@/src/application/categories/categoryServices';
 
 interface Category {
@@ -34,7 +34,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [allCategories, setAllCategories] = useState<{ id: string; title: string }[]>([]);
 	const [message, setMessage] = useState<string>('');
-	const [_loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const flattenCategories = (
 		categories: Category[],
@@ -50,7 +50,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 		return result;
 	};
 
-	const fetchAndSetCategories = async () => {
+	const fetchAndSetCategories = async (): Promise<void> => {
 		try {
 			setLoading(true);
 			const data = await getCategories();
@@ -67,10 +67,14 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 	};
 
 	useEffect(() => {
-		fetchAndSetCategories();
-	}, []);
+		void fetchAndSetCategories();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const handleUpdateCategory = async (id: string, title: string, parent: string | null) => {
+	const handleUpdateCategory = async (
+		id: string,
+		title: string,
+		parent: string | null
+	): Promise<void> => {
 		try {
 			if (id === parent) {
 				setMessage('No puede asignarse a sí mismo como categoría principal');
@@ -86,7 +90,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 		}
 	};
 
-	const handleDeleteCategory = async (id: string) => {
+	const handleDeleteCategory = async (id: string): Promise<void> => {
 		if (window.confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
 			try {
 				await deleteCategory(id);
@@ -97,7 +101,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 		}
 	};
 
-	const handleAddCategory = async (title: string, parent: string | null) => {
+	const handleAddCategory = async (title: string, parent: string | null): Promise<void> => {
 		try {
 			await createCategory(title, parent);
 			setMessage('Categoría agregada con éxito');

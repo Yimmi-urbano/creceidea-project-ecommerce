@@ -3,16 +3,16 @@
 import React, { useState } from 'react';
 
 import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
 	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 	Select,
 	SelectItem,
 } from '@nextui-org/react';
-import { CreditCard, CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { CheckCircle2, Clock, CreditCard, XCircle } from 'lucide-react';
 
 interface PaymentStatusModalProps {
 	isOpen: boolean;
@@ -45,7 +45,7 @@ const PaymentStatusModal: React.FC<PaymentStatusModalProps> = ({
 }) => {
 	const [paymentStatus, setPaymentStatus] = useState(currentStatus);
 	const [paymentMethod, setPaymentMethod] = useState(currentMethod);
-	const [_loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const handleSave = async () => {
 		setLoading(true);
@@ -99,14 +99,23 @@ const PaymentStatusModal: React.FC<PaymentStatusModalProps> = ({
 				<ModalBody className="py-6 space-y-5">
 					{/* Payment Status */}
 					<div className="space-y-2">
-						<label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+						<label
+							htmlFor="payment-status-select"
+							className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2"
+						>
 							<CheckCircle2 size={16} className="text-zinc-600 dark:text-zinc-400" />
 							Estado del Pago
 							<span className="text-rose-500">*</span>
 						</label>
 						<Select
+							id="payment-status-select"
 							selectedKeys={[paymentStatus]}
-							onSelectionChange={(keys) => setPaymentStatus(Array.from(keys)[0] as string)}
+							onSelectionChange={(keys) => {
+								const selected = Array.from(keys)[0];
+								if (selected) {
+									setPaymentStatus(selected as string);
+								}
+							}}
 							variant="bordered"
 							classNames={{
 								trigger: 'border-zinc-300 dark:border-zinc-700 data-[hover=true]:border-primary',
@@ -142,14 +151,23 @@ const PaymentStatusModal: React.FC<PaymentStatusModalProps> = ({
 
 					{/* Payment Method */}
 					<div className="space-y-2">
-						<label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+						<label
+							htmlFor="payment-method-select"
+							className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2"
+						>
 							<CreditCard size={16} className="text-zinc-600 dark:text-zinc-400" />
 							Método de Pago
 							<span className="text-rose-500">*</span>
 						</label>
 						<Select
+							id="payment-method-select"
 							selectedKeys={[paymentMethod]}
-							onSelectionChange={(keys) => setPaymentMethod(Array.from(keys)[0] as string)}
+							onSelectionChange={(keys) => {
+								const selected = Array.from(keys)[0];
+								if (selected) {
+									setPaymentMethod(selected as string);
+								}
+							}}
 							variant="bordered"
 							classNames={{
 								trigger: 'border-zinc-300 dark:border-zinc-700 data-[hover=true]:border-primary',

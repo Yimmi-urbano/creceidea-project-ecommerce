@@ -7,9 +7,12 @@ export const SidebarContext = createContext<{
 	setIsCollapsed: (value: boolean) => void;
 } | null>(null);
 
-export const useSidebar = () => {
+export const useSidebar = (): {
+	isCollapsed: boolean;
+	setIsCollapsed: (value: boolean) => void;
+} => {
 	const context = useContext(SidebarContext);
-	if (!context) {
+	if (context === null) {
 		throw new Error('useSidebar must be used within SidebarProvider (SidebarContext.Provider)');
 	}
 	return context;

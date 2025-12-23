@@ -2,20 +2,20 @@
 
 import { useEffect, useState } from 'react';
 
-import { Input, Button, Card, CardBody, Textarea, Switch } from '@nextui-org/react';
+import { Button, Card, CardBody, Input, Switch, Textarea } from '@nextui-org/react';
 import { toast } from 'sonner';
 
 import {
-	getPayment,
 	addPayment,
 	editPayment,
+	getPayment,
 } from '@/src/application/payments_methods/paymentsServices';
 import { Payment } from '@/src/domain/payments_methods/Payment';
 
 function usePaymentForm(nameId: string) {
-	const [_loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
-	const [_isSelected, _setIsSelected] = useState(false);
+	const [isSelected, setIsSelected] = useState(false);
 
 	const [form, setForm] = useState<Payment>({
 		name: '',

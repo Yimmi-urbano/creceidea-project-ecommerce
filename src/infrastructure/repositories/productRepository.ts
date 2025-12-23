@@ -18,7 +18,7 @@ import { API_ENDPOINTS } from '@/src/infrastructure/http/apiConfig';
  */
 export const fetchCategories = async (): Promise<any[]> => {
 	const response = await apiClient.get(API_ENDPOINTS.CATEGORIES);
-	return response.data;
+	return response.data as any[];
 };
 
 /**
@@ -30,9 +30,9 @@ export const fetchCategories = async (): Promise<any[]> => {
 export const fetchProducts = async (filters: ProductFilters): Promise<Product[]> => {
 	let url = API_ENDPOINTS.PRODUCTS;
 
-	if (filters.title) {
+	if (filters.title !== undefined && filters.title !== '') {
 		url += `/title/${filters.title}`;
-	} else if (filters.category) {
+	} else if (filters.category !== undefined && filters.category !== '') {
 		url += `/category/${filters.category}`;
 	}
 
@@ -40,7 +40,7 @@ export const fetchProducts = async (filters: ProductFilters): Promise<Product[]>
 		params: { page: filters.page },
 	});
 
-	return response.data;
+	return response.data as Product[];
 };
 
 /**
@@ -51,7 +51,7 @@ export const fetchProducts = async (filters: ProductFilters): Promise<Product[]>
  */
 export const fetchProductById = async (productId: string): Promise<Product> => {
 	const response = await apiClient.get(`${API_ENDPOINTS.PRODUCTS}/${productId}`);
-	return response.data;
+	return response.data as Product;
 };
 
 /**
@@ -62,7 +62,7 @@ export const fetchProductById = async (productId: string): Promise<Product> => {
  */
 export const createProduct = async (productData: Partial<Product>): Promise<Product> => {
 	const response = await apiClient.post(API_ENDPOINTS.PRODUCTS, productData);
-	return response.data;
+	return response.data as Product;
 };
 
 /**
@@ -77,7 +77,7 @@ export const updateProduct = async (
 	productData: Partial<Product>
 ): Promise<Product> => {
 	const response = await apiClient.patch(`${API_ENDPOINTS.PRODUCTS}/${productId}`, productData);
-	return response.data;
+	return response.data as Product;
 };
 
 /**
@@ -96,7 +96,7 @@ export const deleteProduct = async (productId: string): Promise<void> => {
  * @param orderData - Array of product IDs in new order
  * @returns Promise with updated data
  */
-export const updateProductOrder = async (orderData: any): Promise<any> => {
+export const updateProductOrder = async (orderData: unknown): Promise<any> => {
 	const response = await apiClient.patch(`${API_ENDPOINTS.PRODUCTS}/sorter_custom`, orderData);
 	return response.data;
 };

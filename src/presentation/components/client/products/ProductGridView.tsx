@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import {
-    Button,
-    Image,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
+	Button,
+	Image,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 } from '@nextui-org/react';
 import { Edit3, Trash2 } from 'lucide-react';
 

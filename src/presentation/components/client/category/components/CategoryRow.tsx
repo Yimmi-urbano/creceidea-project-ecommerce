@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Edit3, Trash2, Plus, ChevronDown, FolderOpen } from 'lucide-react';
+import { ChevronDown, Edit3, FolderOpen, Plus, Trash2 } from 'lucide-react';
+
+import { Category, CategoryWithCount } from '@/src/domain/categories/Category';
 
 import { CategoryIcon } from './CategoryIcon';
 import { SubCategoryRow } from './SubCategoryRow';
 
 interface CategoryRowProps {
-	item: any;
+	item: Category | CategoryWithCount;
 	onEdit: (id: string) => void;
 	onDelete: (id: string) => void;
 	onAddSubcategory: (parentId: string) => void;
@@ -34,6 +36,8 @@ export const CategoryRow: React.FC<CategoryRowProps> = ({
 		<div className="mb-3 select-none">
 			{/* Tarjeta Principal */}
 			<div
+				role="button"
+				tabIndex={0}
 				className={`
           relative flex items-center justify-between p-4 bg-white dark:bg-dark-card border rounded-xl cursor-pointer transition-all duration-200 shadow-sm
           ${
@@ -43,6 +47,11 @@ export const CategoryRow: React.FC<CategoryRowProps> = ({
 					}
         `}
 				onClick={() => setIsOpen(!isOpen)}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						setIsOpen(!isOpen);
+					}
+				}}
 			>
 				<div className="flex items-center gap-4">
 					{/* Icono + Título */}
@@ -58,7 +67,9 @@ export const CategoryRow: React.FC<CategoryRowProps> = ({
 							<span className="bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-700">
 								/{item.slug}
 							</span>
-							{item.productCount > 0 && <span>• {item.productCount} productos</span>}
+							{(item as any).productCount > 0 && (
+								<span>• {(item as any).productCount} productos</span>
+							)}
 						</div>
 					</div>
 				</div>
@@ -72,7 +83,7 @@ export const CategoryRow: React.FC<CategoryRowProps> = ({
               ${isOpen ? 'bg-primary/10 text-primary' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}
             `}
 						>
-							<span>{item.children.length} subcat.</span>
+							<span>{item.children?.length} subcat.</span>
 						</div>
 					)}
 
@@ -137,7 +148,7 @@ export const CategoryRow: React.FC<CategoryRowProps> = ({
 					</div>
 
 					{hasChildren ? (
-						item.children.map((child: any) => (
+						(item.children as Category[]).map((child) => (
 							<SubCategoryRow key={child._id} item={child} onEdit={onEdit} onDelete={onDelete} />
 						))
 					) : (

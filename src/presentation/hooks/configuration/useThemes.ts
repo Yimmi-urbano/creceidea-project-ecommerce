@@ -15,16 +15,28 @@ interface Theme {
 	sale_price: number;
 }
 
-export const useThemes = () => {
+export const useThemes = (): {
+	themes: Theme[];
+	loading: boolean;
+	selectedTheme: string | null;
+	handleSingleCheckboxChange: (
+		themeId: string,
+		checked: boolean,
+		themeName: string,
+		isFree: boolean
+	) => void;
+	updateSuccess: boolean | null;
+	setUpdateSuccess: (success: boolean | null) => void;
+} => {
 	const [themes, setThemes] = useState<Theme[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
 	const [updateSuccess, setUpdateSuccess] = useState<boolean | null>(null);
 
-	const fetchThemes = async () => {
+	const fetchThemes = async (): Promise<void> => {
 		try {
 			const response = await fetch(API_ENDPOINTS.THEMES);
-			const data = await response.json();
+			const data = (await response.json()) as Theme[];
 			setThemes(data);
 			setLoading(false);
 		} catch (error) {
@@ -34,13 +46,17 @@ export const useThemes = () => {
 	};
 
 	useEffect(() => {
-		fetchThemes();
-	}, []);
+		void fetchThemes();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const updateTheme = async (themeName: string | null) => {
+	const updateTheme = async (themeName: string | null): Promise<void> => {
 		try {
-			const domain = localStorage.getItem('domainSelect') || 'donguston.creceidea.pe';
-			console.log('Enviando actualización a la API con theme:', themeName);
+			const domainFromStorage = localStorage.getItem('domainSelect');
+			const domain =
+				domainFromStorage !== null && domainFromStorage !== ''
+					? domainFromStorage
+					: 'donguston.creceidea.pe';
+			console.log('Enviando actualización a la API con theme:', String(themeName));
 
 			const response = await fetch(buildUrl(API_ENDPOINTS.CONFIGURATION, '/config/theme'), {
 				method: 'PUT',
@@ -51,7 +67,7 @@ export const useThemes = () => {
 				body: JSON.stringify({ theme: themeName }),
 			});
 
-			if (!response.ok) {
+			if (response.ok === false) {
 				setUpdateSuccess(false);
 				throw new Error('Error al actualizar el tema');
 			}
@@ -69,15 +85,15 @@ export const useThemes = () => {
 		checked: boolean,
 		themeName: string,
 		isFree: boolean
-	) => {
-		if (checked) {
+	): void => {
+		if (checked === true) {
 			setSelectedTheme(themeName);
-			if (isFree) {
-				updateTheme(themeName);
+			if (isFree === true) {
+				void updateTheme(themeName);
 			}
 		} else {
 			setSelectedTheme(null);
-			updateTheme(null);
+			void updateTheme(null);
 		}
 	};
 

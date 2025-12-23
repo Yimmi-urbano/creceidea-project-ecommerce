@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Card, CardBody } from '@nextui-org/react';
-import { AreaChart, Area, Tooltip, ResponsiveContainer, TooltipProps } from 'recharts';
-import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
+import { Area, AreaChart, ResponsiveContainer, Tooltip, TooltipProps } from 'recharts';
+import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 
 import withPermission from '@/src/presentation/components/client/withPermission';
 
@@ -17,11 +17,12 @@ const data = [
 ];
 
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, payload }) => {
-	if (active && payload?.length) {
+	if (active === true && payload !== undefined && payload !== null && payload.length > 0) {
+		const dataItem = payload[0].payload as { name: string };
 		return (
 			<div className="custom-tooltip bg-green-700 text-white p-2 rounded-md">
-				<p className="label font-bold text-xs">{`${payload[0].payload.name}`}</p>
-				<p className="intro text-xs">{`S/ ${payload[0].value}`}</p>
+				<p className="label font-bold text-xs">{`${dataItem.name}`}</p>
+				<p className="intro text-xs">{`S/ ${String(payload[0].value)}`}</p>
 			</div>
 		);
 	}

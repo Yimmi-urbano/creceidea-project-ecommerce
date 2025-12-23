@@ -9,7 +9,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as orderServices from '@/src/application/orders/orderServices';
 import { Order, OrderStatus } from '@/src/domain/orders/Order';
@@ -19,7 +19,19 @@ import { Order, OrderStatus } from '@/src/domain/orders/Order';
  *
  * @returns Order data and operations
  */
-export const useOrders = () => {
+export const useOrders = (): {
+	orders: Order[];
+	stats: any;
+	loading: boolean;
+	error: string | null;
+	updateStatus: (orderId: string, status: OrderStatus) => Promise<void>;
+	updatePayment: (
+		orderId: string,
+		status: 'pending' | 'paid' | 'failed' | 'refunded',
+		paymentMethod: string
+	) => Promise<void>;
+	refresh: () => Promise<void>;
+} => {
 	const [orders, setOrders] = useState<Order[]>([]);
 	const [stats, setStats] = useState<any>(null);
 	const [loading, setLoading] = useState(true);
@@ -28,7 +40,7 @@ export const useOrders = () => {
 	/**
 	 * Fetch all orders
 	 */
-	const fetchOrders = async () => {
+	const fetchOrders = async (): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -49,7 +61,7 @@ export const useOrders = () => {
 	/**
 	 * Update order status
 	 */
-	const updateStatus = async (orderId: string, status: OrderStatus) => {
+	const updateStatus = async (orderId: string, status: OrderStatus): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -72,7 +84,7 @@ export const useOrders = () => {
 		orderId: string,
 		status: 'pending' | 'paid' | 'failed' | 'refunded',
 		paymentMethod: string
-	) => {
+	): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -109,13 +121,19 @@ export const useOrders = () => {
  * @param orderId - Order ID
  * @returns Order data and loading state
  */
-export const useOrderDetails = (orderId: string) => {
+export const useOrderDetails = (
+	orderId: string
+): {
+	order: Order | null;
+	loading: boolean;
+	error: string | null;
+} => {
 	const [order, setOrder] = useState<Order | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const fetchOrder = async () => {
+		const fetchOrder = async (): Promise<void> => {
 			setLoading(true);
 			setError(null);
 
@@ -129,8 +147,8 @@ export const useOrderDetails = (orderId: string) => {
 			}
 		};
 
-		if (orderId) {
-			fetchOrder();
+		if (orderId !== '') {
+			void fetchOrder();
 		}
 	}, [orderId]);
 

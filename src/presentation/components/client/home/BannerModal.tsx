@@ -2,17 +2,20 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+import Image from 'next/image';
+
 import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
 	Button,
 	Input,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 	Spinner,
 } from '@nextui-org/react';
-import { Upload, X, Image as ImageIcon, Type, Link as LinkIcon, MousePointer } from 'lucide-react';
+import { Image as ImageIcon, Link as LinkIcon, MousePointer, Type, Upload, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import {
 	createBanner,
@@ -33,7 +36,7 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 	const [text, setText] = useState('');
 	const [destino, setDestino] = useState('');
 	const [textButton, setTextButton] = useState('');
-	const [_loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [uploadingImage, setUploadingImage] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -54,23 +57,23 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 		}
 	}, [banner, isOpen]);
 
-	const handleAddImageClick = () => {
+	const handleAddImageClick = (): void => {
 		fileInputRef.current?.click();
 	};
 
-	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files && e.target.files[0]) {
-			const _selectedFile = e.target.files[0];
+	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+		if (e.target.files?.[0] !== undefined) {
+			const selectedFile = e.target.files[0];
 
 			// Validate file type
 			if (!selectedFile.type.startsWith('image/')) {
-				alert('Por favor selecciona un archivo de imagen válido');
+				toast.error('Por favor selecciona un archivo de imagen válido');
 				return;
 			}
 
 			// Validate file size (max 5MB)
 			if (selectedFile.size > 5 * 1024 * 1024) {
-				alert('La imagen no debe superar los 5MB');
+				toast.error('La imagen no debe superar los 5MB');
 				return;
 			}
 
@@ -82,7 +85,7 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 				setImageUrl(uploadedImageUrl);
 			} catch (error) {
 				console.error('Error al subir la imagen:', error);
-				alert('Error al subir la imagen. Por favor intenta de nuevo.');
+				toast.error('Error al subir la imagen. Por favor intenta de nuevo.');
 				setFile(null);
 			} finally {
 				setUploadingImage(false);
@@ -90,28 +93,28 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 		}
 	};
 
-	const handleRemoveImage = () => {
+	const handleRemoveImage = (): void => {
 		setImageUrl(null);
 		setFile(null);
-		if (fileInputRef.current) {
+		if (fileInputRef.current !== null) {
 			fileInputRef.current.value = '';
 		}
 	};
 
-	const handleSubmit = async () => {
-		if (!imageUrl) {
-			alert('Por favor sube una imagen para el banner');
+	const handleSubmit = async (): Promise<void> => {
+		if (imageUrl === null || imageUrl === undefined) {
+			toast.error('Por favor sube una imagen para el banner');
 			return;
 		}
 
 		setLoading(true);
 
 		try {
-			if (banner?._id) {
+			if (banner?._id !== undefined) {
 				await updateBannerService(banner._id, file, imageUrl, text, 'href', destino, textButton);
 			} else {
-				if (!file) {
-					alert('Por favor sube una imagen');
+				if (file === null || file === undefined) {
+					toast.error('Por favor sube una imagen');
 					return;
 				}
 				await createBanner(file, text, 'href', destino, textButton);
@@ -124,16 +127,17 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 			setTextButton('');
 
 			onClose();
+			toast.success('Banner guardado correctamente');
 			// Parent component should handle refresh
 		} catch (error) {
 			console.error('Error al guardar el banner:', error);
-			alert('Error al guardar el banner. Por favor intenta de nuevo.');
+			toast.error('Error al guardar el banner. Por favor intenta de nuevo.');
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const handleClose = () => {
+	const handleClose = (): void => {
 		if (!loading) {
 			handleRemoveImage();
 			setText('');
@@ -173,9 +177,9 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 					<div className="space-y-3">
 						<div className="flex items-center gap-2">
 							<ImageIcon size={18} className="text-zinc-600 dark:text-zinc-400" />
-							<label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+							<span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
 								Imagen del Banner <span className="text-rose-500">*</span>
-							</label>
+							</span>
 						</div>
 						<p className="text-xs text-zinc-500 dark:text-zinc-400 -mt-1">
 							Tamaño recomendado: 1920x600px. Máximo 5MB. Formatos: JPG, PNG, WebP
@@ -221,9 +225,11 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 							</button>
 						) : (
 							<div className="relative group">
-								<img
+								<Image
 									src={imageUrl}
 									alt="Banner Preview"
+									width={1000}
+									height={312}
 									className="w-full h-48 rounded-xl object-cover border border-zinc-200 dark:border-zinc-800"
 								/>
 								<button
@@ -246,9 +252,9 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 							<div className="space-y-2">
 								<div className="flex items-center gap-2">
 									<Type size={16} className="text-zinc-600 dark:text-zinc-400" />
-									<label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+									<span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
 										Texto del Banner
-									</label>
+									</span>
 									<span className="text-xs text-zinc-400">(Opcional)</span>
 								</div>
 								<Input
@@ -270,9 +276,9 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 							<div className="space-y-2">
 								<div className="flex items-center gap-2">
 									<MousePointer size={16} className="text-zinc-600 dark:text-zinc-400" />
-									<label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+									<span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
 										Texto del Botón
-									</label>
+									</span>
 									<span className="text-xs text-zinc-400">(Opcional)</span>
 								</div>
 								<Input
@@ -294,9 +300,9 @@ const BannerModal: React.FC<BannerModalProps> = ({ isOpen, onClose, banner }) =>
 							<div className="space-y-2">
 								<div className="flex items-center gap-2">
 									<LinkIcon size={16} className="text-zinc-600 dark:text-zinc-400" />
-									<label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+									<span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
 										Enlace de Destino
-									</label>
+									</span>
 									<span className="text-xs text-zinc-400">(Opcional)</span>
 								</div>
 								<Input

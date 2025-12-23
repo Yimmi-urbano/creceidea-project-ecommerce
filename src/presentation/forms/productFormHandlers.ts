@@ -4,16 +4,16 @@ import { ChangeEvent } from 'react';
 import { toast } from 'sonner';
 
 import { createProduct, updateProduct } from '@/src/application/products/productServices';
-import { ProductFormData } from '@/src/domain/products/Product';
+import { Product, ProductFormData } from '@/src/domain/products/Product';
 import { uploadProductImage } from '@/src/infrastructure/repositories/uploadRepository';
 
-export type { ProductFormData as FormData };
+export type { ProductFormData };
 
 export const handleChange = (
 	e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-	setFormData: React.Dispatch<React.SetStateAction<FormData>>,
-	formData: FormData
-) => {
+	setFormData: React.Dispatch<React.SetStateAction<ProductFormData>>,
+	formData: ProductFormData
+): void => {
 	const { name, value } = e.target;
 	setFormData({
 		...formData,
@@ -21,24 +21,24 @@ export const handleChange = (
 	});
 };
 
-export const handleAddImageClick = (fileInputRef: React.RefObject<HTMLInputElement>) => {
+export const handleAddImageClick = (fileInputRef: React.RefObject<HTMLInputElement>): void => {
 	fileInputRef.current?.click();
 };
 
 export const handleFileChange = async (
 	e: ChangeEvent<HTMLInputElement>,
-	setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>,
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-	setFormData: React.Dispatch<React.SetStateAction<FormData>>,
-	formData: FormData
-) => {
+	setSelectedFile: (file: File | null) => void,
+	setLoading: (loading: boolean) => void,
+	setFormData: React.Dispatch<React.SetStateAction<ProductFormData>>,
+	_formData: ProductFormData
+): Promise<void> => {
 	const file = e.target.files?.[0] || null;
-	if (file) {
+	if (file !== null) {
 		setSelectedFile(file);
 		setLoading(true);
 		try {
 			const imageUrl = await uploadProductImage(file);
-			setFormData((prevData) => ({
+			setFormData((prevData: ProductFormData) => ({
 				...prevData,
 				imageUrls: [...prevData.imageUrls, imageUrl],
 			}));
@@ -54,19 +54,19 @@ export const handleFileChange = async (
 
 export const handleRemoveImage = (
 	index: number,
-	setFormData: React.Dispatch<React.SetStateAction<FormData>>,
-	formData: FormData
-) => {
-	setFormData((prevData) => ({
+	setFormData: React.Dispatch<React.SetStateAction<ProductFormData>>,
+	_formData: ProductFormData
+): void => {
+	setFormData((prevData: ProductFormData) => ({
 		...prevData,
-		imageUrls: prevData.imageUrls.filter((_, i) => i !== index),
+		imageUrls: prevData.imageUrls.filter((_, i: number) => i !== index),
 	}));
 };
 
 export const handleNext = (
 	activeTab: string,
 	setActiveTab: React.Dispatch<React.SetStateAction<string>>
-) => {
+): void => {
 	if (parseInt(activeTab) < 3) {
 		setActiveTab((prev) => (parseInt(prev) + 1).toString());
 	}
@@ -75,74 +75,51 @@ export const handleNext = (
 export const handleBack = (
 	activeTab: string,
 	setActiveTab: React.Dispatch<React.SetStateAction<string>>
-) => {
+): void => {
 	if (parseInt(activeTab) > 0) {
 		setActiveTab((prev) => (parseInt(prev) - 1).toString());
 	}
 };
 
-export const handleSubmit = async (
-	setSubmitting: React.Dispatch<React.SetStateAction<boolean>>,
-	formData: FormData,
-	setSuccessCreate: React.Dispatch<React.SetStateAction<boolean>>
-) => {
-	setSubmitting(true);
-	const data = {
-		id: 'CASACA00032BC00000',
+export const mapFormDataToProduct = (formData: ProductFormData): Partial<Product> => {
+	const mappedCategories = Array.isArray(formData.category)
+		? formData.category.map((cat: any) => ({
+				idcat: cat._id || cat.idcat || '',
+				slug: cat.slug || '',
+			}))
+		: [];
+
+	return {
 		title: formData.name,
 		type_product: 'basic',
 		image_default: formData.imageUrls,
-		category: formData.category,
+		category: mappedCategories,
 		stock: formData.stock,
-		is_available: true,
+		is_available: formData.visible,
 		price: {
-			regular: formData.price,
-			sale: formData.sale || 0,
+			regular: Number(formData.price),
+			sale: Number(formData.sale !== undefined && formData.sale !== '' ? formData.sale : 0),
 			tag: '',
 		},
 		is_trash: {
 			date: '',
 			status: false,
 		},
-		default_variations: ['attr002', 'attr005'],
-		atributos: [
-			{
-				name_attr: 'Talla',
-				values: [
-					{ Id: 'attr001', valor: 'S' },
-					{ Id: 'attr002', valor: 'M' },
-					{ Id: 'attr003', valor: 'L' },
-				],
-			},
-			{
-				name_attr: 'Color',
-				values: [
-					{ Id: 'attr004', valor: 'rojo' },
-					{ Id: 'attr005', valor: 'verde' },
-					{ Id: 'attr006', valor: 'amarillo' },
-				],
-			},
-		],
-		variations: [
-			{
-				chill_attr: ['attr001', 'attr006'],
-				price: { regular: 50, sale: 40, tag: 'x 3 meses' },
-			},
-			{
-				chill_attr: ['attr002', 'attr005'],
-				price: { regular: 100, sale: 80, tag: 'x 6 meses' },
-			},
-			{
-				chill_attr: ['attr003', 'attr004'],
-				price: { regular: 160, sale: 90, tag: 'x 12 meses' },
-			},
-		],
 		description_long: formData.description_long,
 		description_short: formData.description_corta,
 	};
+};
+
+export const handleSubmit = async (
+	setSubmitting: React.Dispatch<React.SetStateAction<boolean>>,
+	formData: ProductFormData,
+	setSuccessCreate: React.Dispatch<React.SetStateAction<boolean>>
+): Promise<void> => {
+	setSubmitting(true);
+	const data = mapFormDataToProduct(formData);
 
 	try {
-		await createProduct(data as any);
+		await createProduct(data);
 		toast.success('Producto enviado correctamente');
 		setSuccessCreate(true);
 	} catch (error) {
@@ -154,75 +131,21 @@ export const handleSubmit = async (
 
 export const handleSubmitUpdate = async (
 	setSubmittingEdit: React.Dispatch<React.SetStateAction<boolean>>,
-	formData: FormData,
-	setSuccessCreate: React.Dispatch<React.SetStateAction<boolean>>
-) => {
+	formData: ProductFormData,
+	productId: string
+): Promise<void> => {
 	setSubmittingEdit(true);
-	const data = {
-		id: 'CASACA00032BC00000',
-		title: formData.name,
-		type_product: 'basic',
-		image_default: formData.imageUrls,
-		category: formData.category,
-		stock: formData.stock,
-		is_available: true,
-		price: {
-			regular: formData.price,
-			sale: formData.sale || 0,
-			tag: '',
-		},
-		is_trash: {
-			date: '',
-			status: false,
-		},
-		default_variations: ['attr002', 'attr005'],
-		atributos: [
-			{
-				name_attr: 'Talla',
-				values: [
-					{ Id: 'attr001', valor: 'S' },
-					{ Id: 'attr002', valor: 'M' },
-					{ Id: 'attr003', valor: 'L' },
-				],
-			},
-			{
-				name_attr: 'Color',
-				values: [
-					{ Id: 'attr004', valor: 'rojo' },
-					{ Id: 'attr005', valor: 'verde' },
-					{ Id: 'attr006', valor: 'amarillo' },
-				],
-			},
-		],
-		variations: [
-			{
-				chill_attr: ['attr001', 'attr006'],
-				price: { regular: 50, sale: 40, tag: 'x 3 meses' },
-			},
-			{
-				chill_attr: ['attr002', 'attr005'],
-				price: { regular: 100, sale: 80, tag: 'x 6 meses' },
-			},
-			{
-				chill_attr: ['attr003', 'attr004'],
-				price: { regular: 160, sale: 90, tag: 'x 12 meses' },
-			},
-		],
-		description_long: formData.description_long,
-		description_short: formData.description_corta,
-	};
+	const data = mapFormDataToProduct(formData);
 
 	try {
-		const success = await updateProduct('CASACA00032BC00000', data as any);
-		if (success) {
-			toast.success('Producto enviado correctamente');
-			// Assuming router is available in the scope or passed as an argument
-			// router.push("/dashboard/products");
+		const success = await updateProduct(productId, data);
+		if (success !== null) {
+			toast.success('Producto actualizado correctamente');
 		} else {
-			toast.error('Error al enviar el producto');
+			toast.error('Error al actualizar el producto');
 		}
 	} catch (error) {
-		toast.error('Error al enviar el producto');
+		toast.error('Error al actualizar el producto');
 	} finally {
 		setSubmittingEdit(false);
 	}

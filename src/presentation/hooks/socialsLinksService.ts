@@ -4,7 +4,7 @@ const API_URL = API_ENDPOINTS.SOCIAL_LINK;
 
 const getDomainFromLocalStorage = (): string => {
 	const domain = localStorage.getItem('domainSelect');
-	return domain ? domain : '';
+	return domain !== null ? domain : '';
 };
 
 // Obtener los enlaces sociales
@@ -18,14 +18,15 @@ export const fetchSocialLinks = async (): Promise<any[]> => {
 		},
 	});
 
-	if (!response.ok) {
+	if (response.ok === false) {
 		throw new Error('Error al obtener los enlaces sociales');
 	}
-	return response.json();
+	const data = (await response.json()) as any[];
+	return data;
 };
 
 // Agregar un nuevo enlace social
-export const addSocialLink = async (newLink: any) => {
+export const addSocialLink = async (newLink: any): Promise<any> => {
 	const domain = getDomainFromLocalStorage();
 	const response = await fetch(`${API_URL}/new`, {
 		method: 'POST',
@@ -36,17 +37,16 @@ export const addSocialLink = async (newLink: any) => {
 		body: JSON.stringify(newLink),
 	});
 
-	if (!response.ok) {
+	if (response.ok === false) {
 		throw new Error('Error al agregar el enlace social');
 	}
 	return response.json();
 };
 
 // Editar un enlace social existente
-export const updateSocialLink = async (updatedLink: any) => {
+export const updateSocialLink = async (updatedLink: any): Promise<any> => {
 	const domain = getDomainFromLocalStorage();
-	console.log(updatedLink);
-	const response = await fetch(`${API_URL}/${updatedLink._id}`, {
+	const response = await fetch(`${API_URL}/${String(updatedLink._id)}`, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
@@ -55,14 +55,14 @@ export const updateSocialLink = async (updatedLink: any) => {
 		body: JSON.stringify(updatedLink),
 	});
 
-	if (!response.ok) {
+	if (response.ok === false) {
 		throw new Error('Error al actualizar el enlace social');
 	}
 	return response.json();
 };
 
 // Eliminar un enlace social
-export const deleteSocialLink = async (linkId: string) => {
+export const deleteSocialLink = async (linkId: string): Promise<any> => {
 	const domain = getDomainFromLocalStorage();
 	const response = await fetch(`${API_URL}/${linkId}`, {
 		method: 'DELETE',
@@ -72,14 +72,14 @@ export const deleteSocialLink = async (linkId: string) => {
 		},
 	});
 
-	if (!response.ok) {
+	if (response.ok === false) {
 		throw new Error('Error al eliminar el enlace social');
 	}
 	return response.json();
 };
 
 // Cambiar el estado activo/inactivo de un enlace social
-export const toggleSocialLinkActive = async (linkId: string) => {
+export const toggleSocialLinkActive = async (linkId: string): Promise<any> => {
 	const domain = getDomainFromLocalStorage();
 	const response = await fetch(`${API_URL}/${linkId}/toggle`, {
 		method: 'PATCH',
@@ -89,7 +89,7 @@ export const toggleSocialLinkActive = async (linkId: string) => {
 		},
 	});
 
-	if (!response.ok) {
+	if (response.ok === false) {
 		throw new Error('Error al cambiar el estado del enlace social');
 	}
 	return response.json();
@@ -97,7 +97,7 @@ export const toggleSocialLinkActive = async (linkId: string) => {
 
 // hooks/socialsLinksService.ts
 
-export const fetchAvailableIcons = () => {
+export const fetchAvailableIcons = (): { key: string; value: string }[] => {
 	// Array estático de iconos
 	const icons = [
 		{ key: 'facebook', value: 'Facebook' },

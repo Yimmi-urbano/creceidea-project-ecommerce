@@ -18,18 +18,15 @@ import {
 import { CameraIcon, ChevronLeft, Eye, Info, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
-import {
-	fetchCategories,
-	getProductById,
-	updateProduct,
-} from '@/src/application/products/productServices';
+import { fetchCategories, getProductById } from '@/src/application/products/productServices';
 import CategorySelector from '@/src/presentation/components/client/CategorySelect';
 import {
-	FormData,
+	ProductFormData,
 	handleAddImageClick,
 	handleChange,
 	handleFileChange,
 	handleRemoveImage,
+	handleSubmitUpdate,
 } from '@/src/presentation/forms/productFormHandlers';
 
 import LivePreview from './LivePreview';
@@ -48,7 +45,7 @@ interface Category {
 	children?: Category[];
 }
 
-function ProductForm() {
+function ProductForm(): React.ReactElement {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [submitting, setSubmittingEdit] = useState(false);
@@ -57,16 +54,8 @@ function ProductForm() {
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 	const router = useRouter();
 
-	// Extended Form Data including new fields
-	const [formData, setFormData] = useState<
-		FormData & {
-			visible: boolean;
-			sku?: string;
-			weight?: string;
-			seoTitle?: string;
-			seoDescription?: string;
-		}
-	>({
+	// Form Data
+	const [formData, setFormData] = useState<ProductFormData>({
 		name: '',
 		description_corta: '',
 		description_long: '',
@@ -101,7 +90,7 @@ function ProductForm() {
 	useEffect(() => {
 		const loadCategories = async () => {
 			try {
-				const data = await fetchCategories();
+				const data = (await fetchCategories()) as Category[];
 				setCategories(data);
 			} catch (error) {
 				console.error('Error al cargar categorías:', error);
@@ -117,7 +106,6 @@ function ProductForm() {
 				return;
 			}
 			try {
-				// @ts-expect-error - The service expects a string
 				const data = await getProductById(productId);
 				setGetProductById(data);
 			} catch (error) {
@@ -168,20 +156,15 @@ function ProductForm() {
 		);
 	}, [formData]);
 
-	const handleUpdateProduct = async () => {
+	const handleUpdateProduct = async (): Promise<void> => {
 		if (!productId) {
 			return;
 		}
-		setSubmittingEdit(true);
 		try {
-			await updateProduct(productId, formData as any);
-			toast.success('Producto actualizado correctamente');
+			await handleSubmitUpdate(setSubmittingEdit, formData, productId);
 			router.push('/dashboard/products');
 		} catch (error) {
 			console.error(error);
-			toast.error('Error al actualizar el producto');
-		} finally {
-			setSubmittingEdit(false);
 		}
 	};
 
@@ -441,7 +424,7 @@ function ProductForm() {
 							variant="light"
 							size="sm"
 							onClick={() => router.back()}
-							className="-ml-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+							className="-ml-2 text-zinc-500 hover:text-zinc-900 dark:hover:white"
 						>
 							<ChevronLeft size={24} />
 						</Button>
@@ -487,14 +470,18 @@ function ProductForm() {
 						<CardBody className="p-8 gap-8">
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="edit-product-name"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Nombre del Producto <span className="text-danger">*</span>
 									</label>
 									<Input
+										id="edit-product-name"
 										variant="bordered"
 										placeholder="Ej: Camiseta de Algodón Premium"
 										value={formData.name}
-										onChange={(e) => handleChange(e, setFormData as any, formData)}
+										onChange={(e) => handleChange(e, setFormData, formData)}
 										name="name"
 										size="lg"
 										classNames={{
@@ -504,10 +491,14 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="edit-product-sku"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										SKU (Referencia)
 									</label>
 									<Input
+										id="edit-product-sku"
 										variant="bordered"
 										placeholder="Ej: CMP-001"
 										value={formData.sku}
@@ -530,10 +521,10 @@ function ProductForm() {
 									<div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 max-h-[220px] overflow-y-auto">
 										<CategorySelector
 											selectedCategories={formData.category}
-											onChange={(selectedCategories) =>
-												setFormData({ ...formData, category: selectedCategories })
-											}
-											categories={categories}
+											onChange={(selected: Category[]) => {
+												setFormData({ ...formData, category: selected });
+											}}
+											categories={categories as any}
 										/>
 									</div>
 									<p className="text-xs text-zinc-500 mt-2 ml-1">
@@ -596,11 +587,11 @@ function ProductForm() {
 										accept="image/*"
 										style={{ display: 'none' }}
 										ref={fileInputRef}
-										onChange={(e) =>
+										onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 											handleFileChange(
 												e,
-												() => {},
-												() => {},
+												(_file) => {},
+												(_l) => {},
 												setFormData,
 												formData
 											)
@@ -671,10 +662,14 @@ function ProductForm() {
 						<CardBody className="p-8">
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="edit-price-normal"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Precio Normal <span className="text-danger">*</span>
 									</label>
 									<Input
+										id="edit-price-normal"
 										type="number"
 										name="price"
 										variant="bordered"
@@ -689,10 +684,14 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="edit-price-sale"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Precio Oferta
 									</label>
 									<Input
+										id="edit-price-sale"
 										type="number"
 										name="sale"
 										variant="bordered"
@@ -707,10 +706,14 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="edit-product-stock"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Stock <span className="text-danger">*</span>
 									</label>
 									<Input
+										id="edit-product-stock"
 										type="number"
 										name="stock"
 										variant="bordered"
@@ -724,10 +727,14 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="edit-product-weight"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Peso (kg)
 									</label>
 									<Input
+										id="edit-product-weight"
 										type="number"
 										name="weight"
 										variant="bordered"
@@ -753,10 +760,14 @@ function ProductForm() {
 						</CardHeader>
 						<CardBody className="p-8 gap-6">
 							<div>
-								<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+								<label
+									htmlFor="edit-product-seo-title"
+									className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+								>
 									Título SEO (Meta Title)
 								</label>
 								<Input
+									id="edit-product-seo-title"
 									variant="bordered"
 									placeholder="Título optimizado para buscadores"
 									value={formData.seoTitle}
@@ -771,10 +782,14 @@ function ProductForm() {
 							</div>
 
 							<div>
-								<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+								<label
+									htmlFor="edit-product-seo-desc"
+									className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+								>
 									Meta Descripción
 								</label>
 								<Textarea
+									id="edit-product-seo-desc"
 									name="seoDescription"
 									variant="bordered"
 									value={formData.seoDescription}

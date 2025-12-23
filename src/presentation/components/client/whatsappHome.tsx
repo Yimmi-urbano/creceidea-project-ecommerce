@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Input, Button, Switch, Textarea } from '@nextui-org/react';
+import { Button, Input, Switch, Textarea } from '@nextui-org/react';
 import { toast } from 'sonner';
 
 import { useConfig } from '@/src/presentation/contexts';
@@ -12,28 +12,28 @@ import {
 const WhatsappSettings: React.FC = () => {
 	const { config } = useConfig();
 	const [whatsappHome, setWhatsappHome] = useState<WhatsappHome>({
-		number: config?.whatsapp_home?.number || '',
-		message_custom: config?.whatsapp_home?.message_custom || '',
-		isActive: config?.whatsapp_home?.isActive || false,
+		number: config?.whatsapp_home?.number ?? '',
+		message_custom: config?.whatsapp_home?.message_custom ?? '',
+		isActive: config?.whatsapp_home?.isActive ?? false,
 	});
 
 	useEffect(() => {
-		if (config?.whatsapp_home) {
+		if (config?.whatsapp_home !== undefined && config?.whatsapp_home !== null) {
 			setWhatsappHome({
-				number: config.whatsapp_home.number || '',
-				message_custom: config.whatsapp_home.message_custom || '',
-				isActive: config.whatsapp_home.isActive || false,
+				number: config.whatsapp_home.number ?? '',
+				message_custom: config.whatsapp_home.message_custom ?? '',
+				isActive: config.whatsapp_home.isActive ?? false,
 			});
 		}
 	}, [config]);
 
-	const [_loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (): Promise<void> => {
 		setLoading(true);
 		try {
 			const success = await updateWhatsappHome(whatsappHome);
-			if (success) {
+			if (success === true) {
 				toast.success('Configuración actualizada correctamente');
 			}
 		} finally {

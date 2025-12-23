@@ -1,23 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Switch } from '@nextui-org/react';
-import { Save, RefreshCw } from 'lucide-react';
+import { RefreshCw, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
-	getPayment,
 	addPayment,
 	editPayment,
+	getPayment,
 } from '@/src/application/payments_methods/paymentsServices';
 import { Payment } from '@/src/domain/payments_methods/Payment';
 import UploadQrImage from '@/src/presentation/components/dashboard/payments/forms/yape-qr/UploadQrImage';
 
 function usePaymentForm(nameId: string) {
-	const [_loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
-	const [_isSelected, _setIsSelected] = useState(false);
+	const [isSelected, setIsSelected] = useState(false);
 
 	const [form, setForm] = useState<Payment>({
 		name: '',

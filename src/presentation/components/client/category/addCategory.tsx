@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
 import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
 	Button,
 	Input,
-	useDisclosure,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 	Select,
 	SelectItem,
+	useDisclosure,
 } from '@nextui-org/react';
 import { Plus } from 'lucide-react';
 
@@ -82,7 +82,6 @@ const AddCategory: React.FC = () => {
 					</ModalHeader>
 					<ModalBody>
 						<Input
-							autoFocus
 							label="Nombre de la categoría"
 							placeholder="Ej: Bebidas, Postres, etc."
 							value={title}

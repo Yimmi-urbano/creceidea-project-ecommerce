@@ -26,7 +26,7 @@ import {
 } from '@/src/presentation/components/shared/SkeletonLoaders';
 import { useConfig } from '@/src/presentation/contexts';
 import {
-	FormData,
+	ProductFormData,
 	handleAddImageClick,
 	handleChange,
 	handleFileChange,
@@ -50,7 +50,7 @@ interface Category {
 	children?: Category[];
 }
 
-function ProductForm() {
+function ProductForm(): React.ReactElement {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [loading, setLoading] = useState(true); // Changed to true for initial load
 	const [submitting, setSubmitting] = useState(false);
@@ -60,16 +60,8 @@ function ProductForm() {
 	const { config } = useConfig();
 	const integrations = config?.integrations;
 
-	// Extended Form Data including new fields
-	const [formData, setFormData] = useState<
-		FormData & {
-			visible: boolean;
-			sku?: string;
-			weight?: string;
-			seoTitle?: string;
-			seoDescription?: string;
-		}
-	>({
+	// Form Data
+	const [formData, setFormData] = useState<ProductFormData>({
 		name: '',
 		description_corta: '',
 		description_long: '',
@@ -102,7 +94,7 @@ function ProductForm() {
 		const loadCategories = async () => {
 			try {
 				setLoading(true);
-				const data = await fetchCategories();
+				const data = (await fetchCategories()) as Category[];
 				setCategories(data);
 			} catch (error) {
 				console.error('Error al cargar categorías:', error);
@@ -123,7 +115,6 @@ function ProductForm() {
 	const handleCreateProduct = async () => {
 		setSubmitting(true);
 		try {
-			// @ts-expect-error - Handler accepts extended FormData type
 			await handleSubmit(setSubmitting, formData, setSuccessCreate);
 			toast.success('Producto creado correctamente');
 		} catch (error) {
@@ -387,14 +378,17 @@ function ProductForm() {
 						<CardBody className="p-8 gap-8">
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="product-name"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Nombre del Producto <span className="text-danger">*</span>
 									</label>
 									<Input
+										id="product-name"
 										variant="bordered"
 										placeholder="Ej: Camiseta de Algodón Premium"
 										value={formData.name}
-										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										name="name"
 										size="lg"
@@ -405,14 +399,17 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="product-sku"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										SKU (Referencia)
 									</label>
 									<Input
+										id="product-sku"
 										variant="bordered"
 										placeholder="Ej: CMP-001"
 										value={formData.sku}
-										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										name="sku"
 										size="lg"
@@ -431,13 +428,11 @@ function ProductForm() {
 									</label>
 									<div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 max-h-[220px] overflow-y-auto">
 										<CategorySelector
-											// @ts-expect-error - CategorySelector handles different category types
 											selectedCategories={formData.category}
-											// @ts-expect-error - CategorySelector handles different category types
-											onChange={(selectedCategories) =>
-												setFormData({ ...formData, category: selectedCategories })
+											onChange={(selected: Category[]) =>
+												setFormData({ ...formData, category: selected })
 											}
-											categories={categories}
+											categories={categories as any}
 										/>
 									</div>
 									<p className="text-xs text-zinc-500 mt-2 ml-1">
@@ -500,16 +495,20 @@ function ProductForm() {
 										accept="image/*"
 										style={{ display: 'none' }}
 										ref={fileInputRef}
-										// @ts-expect-error - Handler accepts extended FormData type
-										onChange={(e) =>
-											handleFileChange(e, () => {}, setLoading, setFormData, formData)
+										onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+											handleFileChange(
+												e,
+												(_file) => {},
+												(_l) => {},
+												setFormData,
+												formData
+											)
 										}
 									/>
 
 									{formData.imageUrls.length > 0 ? (
 										<SortableImageList
 											images={formData.imageUrls}
-											// @ts-expect-error - Handler accepts extended FormData type
 											onRemove={(index) => handleRemoveImage(index, setFormData, formData)}
 											onReorder={(newOrder) => setFormData({ ...formData, imageUrls: newOrder })}
 										/>
@@ -549,7 +548,6 @@ function ProductForm() {
 									name="description_corta"
 									variant="bordered"
 									value={formData.description_corta}
-									// @ts-expect-error - Handler accepts extended FormData type
 									onChange={(e) => handleChange(e, setFormData, formData)}
 									placeholder="Resumen breve para listados..."
 									minRows={2}
@@ -572,16 +570,19 @@ function ProductForm() {
 						<CardBody className="p-8">
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="price-normal"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Precio Normal <span className="text-danger">*</span>
 									</label>
 									<Input
+										id="price-normal"
 										type="number"
 										name="price"
 										variant="bordered"
 										placeholder="0.00"
 										value={formData.price}
-										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										startContent={<span className="text-zinc-500 font-medium">S/</span>}
 										classNames={{
@@ -591,16 +592,19 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="price-sale"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Precio Oferta
 									</label>
 									<Input
+										id="price-sale"
 										type="number"
 										name="sale"
 										variant="bordered"
 										placeholder="0.00"
 										value={formData.sale}
-										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										startContent={<span className="text-zinc-500 font-medium">S/</span>}
 										classNames={{
@@ -610,16 +614,19 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="stock-qty"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Stock
 									</label>
 									<Input
+										id="stock-qty"
 										type="number"
 										name="stock"
 										variant="bordered"
 										placeholder="0"
 										value={formData.stock}
-										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										classNames={{
 											inputWrapper:
@@ -628,16 +635,19 @@ function ProductForm() {
 									/>
 								</div>
 								<div>
-									<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+									<label
+										htmlFor="weight-kg"
+										className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+									>
 										Peso (kg)
 									</label>
 									<Input
+										id="weight-kg"
 										type="number"
 										name="weight"
 										variant="bordered"
 										placeholder="0.5"
 										value={formData.weight}
-										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) => handleChange(e, setFormData, formData)}
 										classNames={{
 											inputWrapper:
@@ -658,14 +668,17 @@ function ProductForm() {
 						</CardHeader>
 						<CardBody className="p-8 gap-6">
 							<div>
-								<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+								<label
+									htmlFor="seo-title"
+									className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+								>
 									Título SEO (Meta Title)
 								</label>
 								<Input
+									id="seo-title"
 									variant="bordered"
 									placeholder="Título optimizado para buscadores"
 									value={formData.seoTitle}
-									// @ts-expect-error - Handler accepts extended FormData type
 									onChange={(e) => handleChange(e, setFormData, formData)}
 									name="seoTitle"
 									classNames={{
@@ -677,14 +690,17 @@ function ProductForm() {
 							</div>
 
 							<div>
-								<label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+								<label
+									htmlFor="seo-description"
+									className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2"
+								>
 									Meta Descripción
 								</label>
 								<Textarea
+									id="seo-description"
 									name="seoDescription"
 									variant="bordered"
 									value={formData.seoDescription}
-									// @ts-expect-error - Handler accepts extended FormData type
 									onChange={(e) => handleChange(e, setFormData, formData)}
 									placeholder="Descripción breve para resultados de búsqueda..."
 									minRows={2}

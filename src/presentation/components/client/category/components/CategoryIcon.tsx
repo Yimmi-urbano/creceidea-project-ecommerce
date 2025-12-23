@@ -8,7 +8,7 @@ interface CategoryIconProps {
 }
 
 export const CategoryIcon: React.FC<CategoryIconProps> = ({ url, alt }) => {
-	const [_error, setError] = useState(false);
+	const [error, setError] = useState(false);
 
 	if (error || !url || url.includes('placeholder')) {
 		return (

@@ -62,7 +62,7 @@ export const generateSalesData = (
 		const monthlyData: { [key: string]: { sales: number; orders: number } } = {};
 
 		data.forEach((item) => {
-			if (!monthlyData[item.date]) {
+			if (!(item.date in monthlyData)) {
 				monthlyData[item.date] = { sales: 0, orders: 0 };
 			}
 			monthlyData[item.date].sales += item.sales;

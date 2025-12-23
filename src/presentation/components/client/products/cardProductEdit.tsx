@@ -28,8 +28,12 @@ import withPermission from '@/src/presentation/components/client/withPermission'
 import { MiniEyeIcon, MiniTrashIcon } from '@/src/presentation/components/shared/Icons';
 import { useProductContext } from '@/src/presentation/contexts';
 
-async function updateOrderApi(id_product: string, order: number, order_type: string) {
-	const domain = localStorage.getItem('domainSelect') ?? '';
+async function updateOrderApi(
+	id_product: string,
+	order: number,
+	order_type: string
+): Promise<void> {
+	const domain = typeof window !== 'undefined' ? (localStorage.getItem('domainSelect') ?? '') : '';
 	const domainPrimary = domain;
 	await fetch(buildUrl(API_ENDPOINTS.PRODUCTS, '/sorter_custom/update-order-single'), {
 		method: 'PATCH',
@@ -38,18 +42,40 @@ async function updateOrderApi(id_product: string, order: number, order_type: str
 	});
 }
 
-const SortableItem = ({
+interface SortableItemProps {
+	item: any;
+	isOrdering: boolean;
+	handlePress: (id: string) => void;
+	openModal: (id: string) => void;
+	updateOrderDirect: (
+		id: string,
+		newOrder: number,
+		range: { pageStart: number; pageEnd: number },
+		order_type: string
+	) => Promise<void>;
+	bumpOrder: (
+		id: string,
+		delta: 1 | -1,
+		range: { pageStart: number; pageEnd: number },
+		order_type: string
+	) => Promise<void>;
+	pageStart: number;
+	pageEnd: number;
+	minOrder?: number;
+	maxOrder?: number;
+}
+
+const SortableItem: React.FC<SortableItemProps> = ({
 	item,
 	isOrdering,
 	handlePress,
 	openModal,
-	updateOrderDirect,
 	bumpOrder,
 	pageStart,
 	pageEnd,
 	minOrder = 1,
 	maxOrder,
-}: any) => {
+}) => {
 	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
 		id: item._id,
 	});
@@ -60,7 +86,7 @@ const SortableItem = ({
 	};
 
 	const disableUp = item.order <= minOrder;
-	const disableDown = maxOrder ? item.order >= maxOrder : false;
+	const disableDown = maxOrder !== undefined ? item.order >= maxOrder : false;
 
 	return (
 		<div ref={setNodeRef} style={style} {...(isOrdering ? { ...attributes, ...listeners } : {})}>
@@ -69,7 +95,11 @@ const SortableItem = ({
 			>
 				<div
 					className="flex items-center gap-4 p-2 flex-grow"
-					onClick={() => !isOrdering && handlePress(item._id)}
+					onClick={() => {
+						if (isOrdering === false) {
+							handlePress(item._id);
+						}
+					}}
 				>
 					{isOrdering && (
 						<div className="flex items-center gap-2 mr-2">
@@ -158,7 +188,7 @@ const SortableItem = ({
 						/>
 						<div className="flex-1 min-w-0">
 							<h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100 mb-1 truncate">
-								{item.title}
+								{String(item.title)}
 							</h3>
 							<div className="flex items-baseline gap-2">
 								{item.price.sale > 0 && item.price.sale !== item.price.regular ? (
@@ -221,9 +251,9 @@ const CardProducts: React.FC = () => {
 	const router = useRouter();
 
 	useEffect(() => {
-		const loadProducts = () => {
+		const loadProducts = (): void => {
 			setIsLoading(true);
-			fetchProducts();
+			void fetchProducts();
 			setIsLoading(false);
 		};
 		loadProducts();
@@ -239,38 +269,39 @@ const CardProducts: React.FC = () => {
 	const pageStart = (page - 1) * limit + 1;
 	const pageEnd = pageStart + orderedProducts.length - 1;
 
-	const normalizeOrder = (items: any[]) => items.map((p, i) => ({ ...p, order: pageStart + i }));
+	const normalizeOrder = (items: any[]): any[] =>
+		items.map((p, i) => ({ ...p, order: pageStart + i }));
 
-	const handlePress = (id: string) => {
+	const handlePress = (id: string): void => {
 		if (typeof window !== 'undefined') {
 			localStorage.setItem('selectedCardId', id);
 		}
 		router.push('/dashboard/products/edit');
 	};
 
-	const openModal = (productId: string) => {
+	const openModal = (productId: string): void => {
 		setSelectedProductId(productId);
 		setIsModalOpen(true);
 	};
 
-	const closeModal = () => {
+	const closeModal = (): void => {
 		setIsModalOpen(false);
 		setSelectedProductId(null);
 	};
 
-	const handleDelete = async () => {
-		if (selectedProductId) {
+	const handleDelete = async (): Promise<void> => {
+		if (selectedProductId !== null) {
 			await deleteProduct(selectedProductId);
-			fetchProducts();
+			void fetchProducts();
 			closeModal();
 		}
 	};
 
 	const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
 
-	const handleDragEnd = (event: any) => {
+	const handleDragEnd = (event: any): void => {
 		const { active, over } = event;
-		if (over && active.id !== over.id) {
+		if (over !== null && active.id !== over.id) {
 			const oldIndex = orderedProducts.findIndex((i: any) => i._id === active.id);
 			const newIndex = orderedProducts.findIndex((i: any) => i._id === over.id);
 			setOrderedProducts(normalizeOrder(arrayMove(orderedProducts, oldIndex, newIndex)));
@@ -280,47 +311,49 @@ const CardProducts: React.FC = () => {
 	const updateOrderDirect = async (
 		id: string,
 		newOrder: number,
-		{ pageStart, pageEnd }: { pageStart: number; pageEnd: number },
+		range: { pageStart: number; pageEnd: number },
 		order_type: string
-	) => {
+	): Promise<void> => {
+		const { pageStart: ps, pageEnd: pe } = range;
 		if (!Number.isFinite(newOrder) || newOrder < 1) {
 			return;
 		}
 		const item = orderedProducts.find((i: any) => i._id === id);
-		if (!item || newOrder === (item as any).order) {
+		if (item === undefined || newOrder === (item as any).order) {
 			return;
 		}
 
-		if (newOrder < pageStart || newOrder > pageEnd) {
+		if (newOrder < ps || newOrder > pe) {
 			try {
 				await updateOrderApi(id, newOrder, order_type);
-				fetchProducts();
+				void fetchProducts();
 			} finally {
-				fetchProducts();
+				void fetchProducts();
 			}
 			return;
 		}
 
 		const currentIndex = orderedProducts.findIndex((i: any) => i._id === id);
-		const targetIndex = newOrder - pageStart;
+		const targetIndex = newOrder - ps;
 		setOrderedProducts(normalizeOrder(arrayMove(orderedProducts, currentIndex, targetIndex)));
 	};
 
 	const bumpOrder = async (
 		id: string,
 		delta: 1 | -1,
-		{ pageStart, pageEnd }: { pageStart: number; pageEnd: number },
+		range: { pageStart: number; pageEnd: number },
 		order_type: string
-	) => {
+	): Promise<void> => {
+		const { pageStart: ps, pageEnd: pe } = range;
 		const item = orderedProducts.find((i: any) => i._id === id);
-		if (!item) {
+		if (item === undefined) {
 			return;
 		}
 		const newOrder = (item as any).order + delta;
 		if (newOrder < 1) {
 			return;
 		}
-		if (newOrder < pageStart || newOrder > pageEnd) {
+		if (newOrder < ps || newOrder > pe) {
 			try {
 				await updateOrderApi(id, newOrder, order_type);
 				await fetchProducts();
@@ -331,7 +364,7 @@ const CardProducts: React.FC = () => {
 		}
 
 		const currentIndex = orderedProducts.findIndex((i: any) => i._id === id);
-		const targetIndex = newOrder - pageStart;
+		const targetIndex = newOrder - ps;
 		setOrderedProducts(normalizeOrder(arrayMove(orderedProducts, currentIndex, targetIndex)));
 	};
 

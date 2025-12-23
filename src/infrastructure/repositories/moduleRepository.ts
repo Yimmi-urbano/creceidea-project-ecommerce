@@ -65,8 +65,8 @@ export const fetchModules = async (domain: string): Promise<Module[]> => {
 			activeType: item.type_active,
 			logo: item.logo,
 			description: item.description,
-			createdAt: new Date(item.createdAt),
-			updatedAt: new Date(item.updatedAt),
+			createdAt: new Date(String(item.createdAt)),
+			updatedAt: new Date(String(item.updatedAt)),
 		}));
 	} catch (error) {
 		// Log error for debugging purposes

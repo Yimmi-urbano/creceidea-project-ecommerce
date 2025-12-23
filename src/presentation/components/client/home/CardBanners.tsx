@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button } from '@nextui-org/react';
-import { Trash2, Edit3, Plus, ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 
-import { getBanners, deleteBanner } from '@/src/application/banners/bannerServices';
+import { Button } from '@nextui-org/react';
+import { Edit3, ImageIcon, Plus, Trash2 } from 'lucide-react';
+
+import { deleteBanner, getBanners } from '@/src/application/banners/bannerServices';
 import { Banner } from '@/src/domain/banners/Banner';
 import { ConfirmDeleteModal } from '@/src/presentation/components/client/utils/NotificationModal';
 
@@ -14,33 +16,34 @@ interface BannerListProps {
 
 const BannerList: React.FC<BannerListProps> = ({ onEdit, onOpenModal }) => {
 	const [banners, setBanners] = useState<Banner[]>([]);
-	const [_loading, setLoading] = useState<boolean>(true);
-	const [_error, setError] = useState<string | null>(null);
-	const [_isModalOpen, _setIsModalOpen] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<string | null>(null);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [bannerToDelete, setBannerToDelete] = useState<Banner | null>(null);
 
 	useEffect(() => {
-		const loadBanners = async () => {
+		const loadBanners = async (): Promise<void> => {
 			try {
 				const data = await getBanners();
 				setBanners(data);
-			} catch (err) {
-				setError((err as Error).message || 'Error fetching banners');
+			} catch (err: unknown) {
+				const message = (err as Error)?.message ?? 'Error fetching banners';
+				setError(String(message));
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		loadBanners();
+		void loadBanners();
 	}, []);
 
-	const confirmDelete = (banner: Banner) => {
+	const confirmDelete = (banner: Banner): void => {
 		setBannerToDelete(banner);
 		setIsModalOpen(true);
 	};
 
-	const handleDelete = async () => {
-		if (!bannerToDelete) {
+	const handleDelete = async (): Promise<void> => {
+		if (bannerToDelete === null) {
 			return;
 		}
 
@@ -140,9 +143,11 @@ const BannerList: React.FC<BannerListProps> = ({ onEdit, onOpenModal }) => {
 
 									{/* Banner Image */}
 									<div className="relative flex-shrink-0 w-16 h-16 md:w-48 md:h-20 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
-										<img
+										<Image
 											src={banner.image}
 											alt={`Banner ${index + 1} `}
+											width={192}
+											height={80}
 											className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
 										/>
 									</div>

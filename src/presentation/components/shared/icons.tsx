@@ -191,7 +191,7 @@ export const SearchIconProducts: React.FC<IconSvgProps> = ({ size: _size = 24, .
 		/>
 	</svg>
 );
-export const WorldIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
+export const WorldIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ..._props }) => (
 	<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
 			fillRule="evenodd"
@@ -202,7 +202,7 @@ export const WorldIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }
 	</svg>
 );
 
-export const PlusIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
+export const PlusIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ..._props }) => (
 	<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
 			d="M0 26C0 11.6406 11.6406 0 26 0C40.3594 0 52 11.6406 52 26C52 40.3594 40.3594 52 26 52C11.6406 52 0 40.3594 0 26Z"
@@ -227,8 +227,8 @@ export const CameraIcon: React.FC<IconSvgProps> = ({
 }) => {
 	return (
 		<svg
-			width={size || width || 24}
-			height={size || height || 24}
+			width={size !== '' ? size : width !== '' ? width : 24}
+			height={size !== '' ? size : height !== '' ? height : 24}
 			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
@@ -292,7 +292,7 @@ export const PagesIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
 	</svg>
 );
 
-export const MenuMobile: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
+export const MenuMobile: React.FC<IconSvgProps> = ({ size: _size = 24, ..._props }) => (
 	<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
 			fillRule="evenodd"
@@ -426,7 +426,12 @@ export const GithubIcon: React.FC<IconSvgProps> = ({ size = 24, width, height, .
 	);
 };
 
-export const MoonFilledIcon = ({ size = 24, width, height, ...props }: IconSvgProps) => (
+export const MoonFilledIcon = ({
+	size = 24,
+	width,
+	height,
+	...props
+}: IconSvgProps): React.ReactElement => (
 	<svg
 		aria-hidden="true"
 		focusable="false"
@@ -443,7 +448,12 @@ export const MoonFilledIcon = ({ size = 24, width, height, ...props }: IconSvgPr
 	</svg>
 );
 
-export const SunFilledIcon = ({ size = 24, width, height, ...props }: IconSvgProps) => (
+export const SunFilledIcon = ({
+	size = 24,
+	width,
+	height,
+	...props
+}: IconSvgProps): React.ReactElement => (
 	<svg
 		aria-hidden="true"
 		focusable="false"
@@ -460,7 +470,12 @@ export const SunFilledIcon = ({ size = 24, width, height, ...props }: IconSvgPro
 	</svg>
 );
 
-export const HeartFilledIcon = ({ size = 24, width, height, ...props }: IconSvgProps) => (
+export const HeartFilledIcon = ({
+	size = 24,
+	width,
+	height,
+	...props
+}: IconSvgProps): React.ReactElement => (
 	<svg
 		aria-hidden="true"
 		focusable="false"
@@ -480,7 +495,7 @@ export const HeartFilledIcon = ({ size = 24, width, height, ...props }: IconSvgP
 	</svg>
 );
 
-export const SearchIcon = (props: IconSvgProps) => (
+export const SearchIcon = (props: IconSvgProps): React.ReactElement => (
 	<svg
 		aria-hidden="true"
 		fill="none"
@@ -508,7 +523,7 @@ export const SearchIcon = (props: IconSvgProps) => (
 	</svg>
 );
 
-export const NextUILogo: React.FC<IconSvgProps> = (props) => {
+export const NextUILogo: React.FC<IconSvgProps> = (props): React.ReactElement => {
 	const { width, height = 40 } = props;
 
 	return (
@@ -537,8 +552,8 @@ export const NextUILogo: React.FC<IconSvgProps> = (props) => {
 };
 
 export const GalleryIcon = (
-	props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
-) => (
+	_props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+): React.ReactElement => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		x="0px"
@@ -560,7 +575,7 @@ export const GalleryIcon = (
 	</svg>
 );
 
-export const ProductIconSvg: React.FC<IconSvgProps> = ({ size: _size = 15, ...props }) => (
+export const ProductIconSvg: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		x="0px"
@@ -576,7 +591,7 @@ export const ProductIconSvg: React.FC<IconSvgProps> = ({ size: _size = 15, ...pr
 	</svg>
 );
 
-export const ProductInfoIconSvg: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const ProductInfoIconSvg: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		x="0px"
@@ -595,7 +610,7 @@ export const ProductInfoIconSvg: React.FC<IconSvgProps> = ({ size = 15, ...props
 	</svg>
 );
 
-export const ProductCheckIconSvg: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const ProductCheckIconSvg: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		x="0px"
@@ -616,7 +631,7 @@ export const ProductCheckIconSvg: React.FC<IconSvgProps> = ({ size = 15, ...prop
 	</svg>
 );
 
-export const UpdateIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const UpdateIcon: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="96px" height="96px">
 		{' '}
 		<path
@@ -626,7 +641,7 @@ export const UpdateIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
 	</svg>
 );
 
-export const DeliveryIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const DeliveryIcon: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="18px" height="18px">
 		<path
 			fill="currentColor"
@@ -636,7 +651,7 @@ export const DeliveryIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) =>
 	</svg>
 );
 
-export const PaymentIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const PaymentIcon: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg width="21" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
 			d="M22 9.25H2C1.59 9.25 1.25 8.91 1.25 8.5C1.25 8.09 1.59 7.75 2 7.75H22C22.41 7.75 22.75 8.09 22.75 8.5C22.75 8.91 22.41 9.25 22 9.25Z"
@@ -657,7 +672,7 @@ export const PaymentIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => 
 	</svg>
 );
 
-export const OrderIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const OrderIcon: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg
 		width="24px"
 		height="24px"
@@ -672,7 +687,7 @@ export const OrderIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
 	</svg>
 );
 
-export const SortIcon: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const SortIcon: React.FC<IconSvgProps> = ({ size: _size = 15, ..._props }) => (
 	<svg
 		width="25px"
 		height="25px"

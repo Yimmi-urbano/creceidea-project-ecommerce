@@ -1,54 +1,61 @@
 import React, { useState } from 'react';
 
-import { Eye, CreditCard, Truck, Search } from 'lucide-react';
+import { CreditCard, Eye, Search, Truck } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { updateOrderStatus, updatePaymentStatus } from '@/src/application/orders/orderServices';
+import { OrderStatus } from '@/src/domain/orders/Order';
 import OrderStatusModal from '@/src/presentation/components/client/orders/OrderStatusModal';
 import PaymentStatusModal from '@/src/presentation/components/client/orders/PaymentStatusModal';
 import withPermission from '@/src/presentation/components/client/withPermission';
 import {
-	StatCardSkeleton,
 	SkeletonList,
+	StatCardSkeleton,
 } from '@/src/presentation/components/shared/SkeletonLoaders';
 import useIsOrders from '@/src/presentation/hooks/orders/useIsOrders';
 
-const getStatusClass = (status: string) => {
+const getStatusClass = (status: string): string => {
 	switch (status) {
 		case 'completed':
+		case 'paid':
 			return 'bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 border-blue-200 dark:border-blue-500/20';
 		case 'pending':
 			return 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 border-amber-200 dark:border-amber-500/20';
 		case 'decline':
 		case 'cancelled':
+		case 'failed':
 			return 'bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border-rose-200 dark:border-rose-500/20';
 		default:
 			return 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700';
 	}
 };
 
-const getStatusLabel = (status: string) => {
+const getStatusLabel = (status: string): string => {
 	switch (status) {
 		case 'completed':
+		case 'paid':
 			return 'Completado';
 		case 'pending':
 			return 'Pendiente';
 		case 'decline':
 		case 'cancelled':
+		case 'failed':
 			return 'Cancelado';
 		default:
 			return status;
 	}
 };
 
-const getStatusDot = (status: string) => {
+const getStatusDot = (status: string): string => {
 	switch (status) {
 		case 'completed':
+		case 'paid':
 			return 'bg-blue-500';
 		case 'pending':
 			return 'bg-amber-500';
 		case 'decline':
 		case 'cancelled':
+		case 'failed':
 			return 'bg-rose-500';
 		default:
 			return 'bg-zinc-500';
@@ -74,7 +81,7 @@ const Orders: React.FC = () => {
 		orderId: string,
 		currentStatus: string,
 		currentMethod: string
-	) => {
+	): void => {
 		setSelectedOrderId(orderId);
 		setSelectedPaymentStatus(currentStatus);
 		setSelectedPaymentMethod(currentMethod);
@@ -82,20 +89,24 @@ const Orders: React.FC = () => {
 	};
 
 	// Handle opening order modal
-	const handleOpenOrderModal = (orderId: string, currentStatus: string) => {
+	const handleOpenOrderModal = (orderId: string, currentStatus: string): void => {
 		setSelectedOrderId(orderId);
 		setSelectedOrderStatus(currentStatus);
 		setIsOrderModalOpen(true);
 	};
 
 	// Handle saving payment status
-	const handleSavePaymentStatus = async (status: string, method: string) => {
-		if (!selectedOrderId) {
+	const handleSavePaymentStatus = async (status: string, method: string): Promise<void> => {
+		if (selectedOrderId === null || selectedOrderId === '') {
 			return;
 		}
 
 		try {
-			await updatePaymentStatus(selectedOrderId, status as any, method);
+			await updatePaymentStatus(
+				selectedOrderId,
+				status as 'pending' | 'paid' | 'failed' | 'refunded',
+				method
+			);
 			await refreshOrders();
 			toast.success('Estado de pago actualizado correctamente');
 		} catch (error) {
@@ -106,13 +117,13 @@ const Orders: React.FC = () => {
 	};
 
 	// Handle saving order status
-	const handleSaveOrderStatus = async (status: string) => {
-		if (!selectedOrderId) {
+	const handleSaveOrderStatus = async (status: string): Promise<void> => {
+		if (selectedOrderId === null || selectedOrderId === '') {
 			return;
 		}
 
 		try {
-			await updateOrderStatus(selectedOrderId, status as any);
+			await updateOrderStatus(selectedOrderId, status as OrderStatus);
 			await refreshOrders();
 			toast.success('Estado de orden actualizado correctamente');
 		} catch (error) {
@@ -137,7 +148,7 @@ const Orders: React.FC = () => {
 		);
 	}
 
-	if (error) {
+	if (error !== null && error !== '') {
 		return (
 			<div className="p-6 text-center">
 				<p className="text-rose-500">Error: {error}</p>
@@ -145,7 +156,7 @@ const Orders: React.FC = () => {
 		);
 	}
 
-	if (!orders || orders.length === 0) {
+	if (orders === undefined || orders === null || orders.length === 0) {
 		return (
 			<div className="p-12 text-center">
 				<p className="text-zinc-500 dark:text-zinc-400">No hay pedidos disponibles</p>
@@ -156,10 +167,8 @@ const Orders: React.FC = () => {
 	// Filter orders by search term
 	const filteredOrders = orders.filter((order) => {
 		const searchLower = searchTerm.toLowerCase();
-		const clientName =
-			(order as any).clientInfo?.first_name || (order as any).clientInfo?.name || '';
-		const clientLastName = (order as any).clientInfo?.last_name || '';
-		const fullName = `${clientName} ${clientLastName}`.toLowerCase();
+		const customerName = order.customer?.name || '';
+		const fullName = customerName.toLowerCase();
 
 		return (
 			order.orderNumber.toLowerCase().includes(searchLower) ||
@@ -177,9 +186,7 @@ const Orders: React.FC = () => {
 	// Calculate stats
 	const totalOrders = orders.length;
 	const visibleOrders = filteredOrders.length;
-	const completedOrders = filteredOrders.filter(
-		(o) => (o as any).paymentStatus?.typeStatus === 'completed'
-	).length;
+	const completedOrders = filteredOrders.filter((o) => o.payment?.status === 'paid').length;
 
 	return (
 		<>
@@ -213,9 +220,9 @@ const Orders: React.FC = () => {
 							{searchTerm ? 'Visibles' : 'Total de Pedidos'}
 						</p>
 						<p
-							className={`text-2xl font-bold ${searchTerm ? 'text-primary' : 'text-zinc-900 dark:text-white'}`}
+							className={`text-2xl font-bold ${searchTerm !== '' ? 'text-primary' : 'text-zinc-900 dark:text-white'}`}
 						>
-							{searchTerm ? visibleOrders : totalOrders}
+							{searchTerm !== '' ? visibleOrders : totalOrders}
 						</p>
 					</div>
 					<div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
@@ -248,14 +255,11 @@ const Orders: React.FC = () => {
 						</thead>
 						<tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
 							{currentOrders.map((order) => {
-								const orderAny = order as any;
-								const productCount = orderAny.products?.length || 0;
-								const clientName =
-									orderAny.clientInfo?.first_name || orderAny.clientInfo?.name || '';
-								const clientLastName = orderAny.clientInfo?.last_name || '';
-								const paymentStatus = orderAny.paymentStatus?.typeStatus || 'pending';
-								const paymentMethod = orderAny.paymentStatus?.method || 'credit_card';
-								const orderStatus = orderAny.orderStatus || 'pending';
+								const productCount = order.products?.length || 0;
+								const customerName = order.customer?.name || '';
+								const paymentStatus = order.payment?.status || 'pending';
+								const paymentMethod = order.payment?.method || 'credit_card';
+								const orderStatus = order.status || 'pending';
 
 								return (
 									<tr
@@ -267,7 +271,7 @@ const Orders: React.FC = () => {
 										</td>
 										<td className="px-6 py-4">
 											<div className="font-medium text-zinc-900 dark:text-zinc-200">
-												{clientName} {clientLastName}
+												{customerName}
 											</div>
 											<div className="text-xs text-zinc-600 dark:text-zinc-400">
 												{productCount} producto{productCount !== 1 ? 's' : ''}
@@ -277,26 +281,26 @@ const Orders: React.FC = () => {
 											{order.createdAt}
 										</td>
 										<td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
-											{orderAny.paymentStatus?.date || '-'}
+											{order.payment?.paidAt || '-'}
 										</td>
 										<td className="px-6 py-4 font-bold text-zinc-900 dark:text-white">
-											{orderAny.currency === 'PEN' ? 'S/' : '$'} {order.total.toFixed(2)}
+											S/ {order.total.toFixed(2)}
 										</td>
 										<td className="px-6 py-4">
 											<span
-												className={`px-2.5 py-0.5 rounded-full text-xs font-medium border flex items-center gap-1.5 w-fit ${getStatusClass(paymentStatus)}`}
+												className={`px-2.5 py-0.5 rounded-full text-xs font-medium border flex items-center gap-1.5 w-fit ${getStatusClass(String(paymentStatus))}`}
 											>
 												<span
-													className={`w-1.5 h-1.5 rounded-full ${getStatusDot(paymentStatus)}`}
+													className={`w-1.5 h-1.5 rounded-full ${getStatusDot(String(paymentStatus))}`}
 												/>
-												{getStatusLabel(paymentStatus)}
+												{getStatusLabel(String(paymentStatus))}
 											</span>
 										</td>
 										<td className="px-6 py-4">
 											<div className="flex items-center justify-center gap-2">
 												{/* Edit Order Status */}
 												<button
-													onClick={() => handleOpenOrderModal(order._id, orderStatus)}
+													onClick={() => handleOpenOrderModal(order._id, String(orderStatus))}
 													className="p-2 rounded-lg text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors"
 													title="Editar estado de orden"
 												>
@@ -306,7 +310,11 @@ const Orders: React.FC = () => {
 												{/* Edit Payment Status */}
 												<button
 													onClick={() =>
-														handleOpenPaymentModal(order._id, paymentStatus, paymentMethod)
+														handleOpenPaymentModal(
+															order._id,
+															String(paymentStatus),
+															String(paymentMethod)
+														)
 													}
 													className="p-2 rounded-lg text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
 													title="Editar estado de pago"

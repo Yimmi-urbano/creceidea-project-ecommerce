@@ -9,10 +9,10 @@
 
 'use client';
 
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
+import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 import { getProducts } from '@/src/application/products/productServices';
-import { Product } from '@/src/domain/products/Product';
+import { Product, ProductListResponse } from '@/src/domain/products/Product';
 
 interface ProductContextProps {
 	products: Product[];
@@ -35,7 +35,7 @@ const ProductContext = createContext<ProductContextProps | undefined>(undefined)
  * Product Provider Component
  * Manages product list state and pagination
  */
-export const ProductProvider = ({ children }: { children: ReactNode }) => {
+export const ProductProvider = ({ children }: { children: ReactNode }): React.ReactElement => {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
@@ -45,7 +45,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 	const [orderedProducts, setOrderedProducts] = useState<Product[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const fetchProductsData = async () => {
+	const fetchProductsData = async (): Promise<void> => {
 		try {
 			setIsLoading(true);
 			const response = await getProducts({ page });
@@ -55,12 +55,15 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 				setProducts(response);
 				setTotalProducts(response.length);
 				setTotalPages(Math.ceil(response.length / limit));
-			} else if (response && 'products' in response) {
+			} else if (response !== null && typeof response === 'object' && 'products' in response) {
 				// If response has pagination data
-				setProducts((response as any).products);
-				setTotalPages((response as any).totalPages || 1);
-				setLimit((response as any).limit || 10);
-				setTotalProducts((response as any).totalProducts || 0);
+				const paginatedResponse = response as ProductListResponse;
+				setProducts(paginatedResponse.products);
+				setTotalPages(
+					paginatedResponse.totalPages !== undefined ? paginatedResponse.totalPages : 1
+				);
+				setLimit(paginatedResponse.page !== undefined ? 10 : 10); // Adjust according to interface
+				setTotalProducts(paginatedResponse.total !== undefined ? paginatedResponse.total : 0);
 			}
 		} catch (error) {
 			console.error('Error fetching products:', error);
@@ -70,8 +73,8 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	useEffect(() => {
-		fetchProductsData();
-	}, [page]);
+		void fetchProductsData();
+	}, [page]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<ProductContext.Provider
@@ -101,13 +104,13 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
  * @returns Product context
  * @throws Error if used outside ProductProvider
  */
-export const useProductContext = () => {
+export const useProductContext = (): ProductContextProps => {
 	const context = useContext(ProductContext);
-	if (!context) {
+	if (context === undefined) {
 		// More descriptive error for debugging
 		if (typeof window !== 'undefined') {
 			const hasDomain = localStorage.getItem('domainSelect');
-			if (!hasDomain) {
+			if (hasDomain === null || hasDomain === '') {
 				throw new Error('Session expired: No domain found. Please log in again.');
 			}
 		}

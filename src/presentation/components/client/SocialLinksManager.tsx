@@ -1,45 +1,45 @@
-import React, { useEffect, useReducer, useCallback, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 
 import {
-	Card,
 	Button,
-	Input,
+	Card,
 	CardBody,
+	Input,
 	Modal,
-	ModalContent,
-	ModalHeader,
 	ModalBody,
+	ModalContent,
 	ModalFooter,
+	ModalHeader,
 	Select,
 	SelectItem,
 } from '@nextui-org/react';
 
-import { SocialLink, IconOption } from '@/src/domain/social/SocialLink';
+import { IconOption, SocialLink } from '@/src/domain/social/SocialLink';
 import {
+	EditProductIcon,
 	EyeFilledIcon,
 	EyeSlashFilledIcon,
-	EditProductIcon,
 	MiniTrashIcon,
 } from '@/src/presentation/components/shared/Icons';
 import {
-	fetchSocialLinks,
 	addSocialLink,
-	updateSocialLink,
 	deleteSocialLink,
 	fetchAvailableIcons,
+	fetchSocialLinks,
+	updateSocialLink,
 } from '@/src/presentation/hooks/socialsLinksService';
-import { socialLinksReducer, initialState } from '@/src/presentation/reducers/socialLinksReducer';
+import { initialState, socialLinksReducer } from '@/src/presentation/reducers/socialLinksReducer';
 
-const SocialLinksManager = () => {
+const SocialLinksManager: React.FC = () => {
 	const [state, dispatch] = useReducer(socialLinksReducer, initialState);
 	const [availableIcons, setAvailableIcons] = useState<IconOption[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	// Refresh links and fetch icons
-	const refreshLinks = useCallback(async () => {
+	const refreshLinks = useCallback(async (): Promise<void> => {
 		try {
 			const fetchedLinks = await fetchSocialLinks();
-			dispatch({ type: 'SET_LINKS', payload: fetchedLinks });
+			dispatch({ type: 'SET_LINKS', payload: fetchedLinks as SocialLink[] });
 		} catch (error) {
 			console.error('Error fetching links:', error);
 		} finally {
@@ -48,7 +48,7 @@ const SocialLinksManager = () => {
 	}, []);
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchData = async (): Promise<void> => {
 			await refreshLinks();
 			try {
 				const icons = await fetchAvailableIcons();
@@ -57,39 +57,43 @@ const SocialLinksManager = () => {
 				console.error('Error fetching icons:', error);
 			}
 		};
-		fetchData();
+		void fetchData();
 	}, [refreshLinks]);
 
 	// Handle icon change
-	const handleIconChange = (selectedKeys: Set<string> | any) => {
-		const selectedIconKey =
-			selectedKeys instanceof Set ? Array.from(selectedKeys)[0] : selectedKeys;
+	const handleIconChange = (selectedKeys: Selection): void => {
+		if (typeof selectedKeys === 'string') {
+			return;
+		}
+		const keysArray = Array.from(selectedKeys as unknown as Iterable<any>);
+		const selectedIconKey = keysArray.length > 0 ? String(keysArray[0]) : '';
 		const selectedIcon = availableIcons.find((icon) => icon.key === selectedIconKey);
-		if (selectedIcon) {
+		if (selectedIcon !== undefined) {
 			dispatch({ type: 'SET_NEW_LINK_ICON', payload: selectedIcon });
 		}
 	};
 
 	// Get disabled keys for icon select
-	const getDisabledKeys = () => {
-		return new Set(
-			state.links
-				.filter((link) => !state.editingLink || link._id !== state.editingLink._id)
-				.map((link) => link.icon)
-		);
+	const getDisabledKeys = (): string[] => {
+		return state.links
+			.filter((link) => state.editingLink === null || link._id !== state.editingLink._id)
+			.map((link) => link.icon);
 	};
 
 	// Handle Add or Edit link
-	const handleAddOrEditLink = async () => {
-		const actionType = state.editingLink ? 'update' : 'add';
+	const handleAddOrEditLink = async (): Promise<void> => {
+		const actionType = state.editingLink !== null ? 'update' : 'add';
 		try {
-			if (state.editingLink) {
-				await updateSocialLink({ ...state.newLink, _id: state.editingLink._id });
+			if (state.editingLink !== null) {
+				await updateSocialLink({
+					...state.newLink,
+					_id: state.editingLink._id,
+				});
 			} else {
 				await addSocialLink(state.newLink);
 			}
 			dispatch({ type: 'RESET_NEW_LINK' });
-			refreshLinks();
+			void refreshLinks();
 			dispatch({ type: 'CLOSE_MODAL' });
 		} catch (error) {
 			console.error(`Error during ${actionType} link:`, error);
@@ -97,37 +101,37 @@ const SocialLinksManager = () => {
 	};
 
 	// Handle link edit
-	const handleEditLink = (link: SocialLink) => {
+	const handleEditLink = (link: SocialLink): void => {
 		dispatch({ type: 'SET_EDITING_LINK', payload: link });
 	};
 
 	// Handle link delete
-	const handleDeleteLink = async () => {
-		if (!state.selectedLinkId) {
+	const handleDeleteLink = async (): Promise<void> => {
+		if (state.selectedLinkId === null || state.selectedLinkId === '') {
 			return;
 		}
 		try {
 			await deleteSocialLink(state.selectedLinkId);
 			dispatch({ type: 'RESET_SELECTED_LINK' });
-			refreshLinks();
+			void refreshLinks();
 		} catch (error) {
 			console.error('Error deleting link:', error);
 		}
 	};
 
 	// Handle toggle link active status
-	const handleToggleActive = async (link: SocialLink) => {
+	const handleToggleActive = async (link: SocialLink): Promise<void> => {
 		try {
 			const updatedLink = { ...link, is_active: !link.is_active };
 			await updateSocialLink(updatedLink);
-			refreshLinks();
+			void refreshLinks();
 		} catch (error) {
 			console.error('Error toggling link active state:', error);
 		}
 	};
 
 	// Open delete confirmation modal
-	const openDeleteModal = (linkId: string) => {
+	const openDeleteModal = (linkId: string): void => {
 		dispatch({ type: 'SET_SELECTED_LINK_ID', payload: linkId });
 	};
 

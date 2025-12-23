@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Spinner } from '@nextui-org/react';
 import { Trash2, UploadCloud } from 'lucide-react';
@@ -13,7 +13,7 @@ interface UploadQrImageProps {
 
 const UploadQrImage: React.FC<UploadQrImageProps> = ({ onImageUpload, initialImage }) => {
 	const [imageUrl, setImageUrl] = useState<string | null>(initialImage || null);
-	const [_loading, setLoading] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	useEffect(() => {

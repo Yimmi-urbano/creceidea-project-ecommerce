@@ -5,9 +5,9 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { LayoutDashboard, Layers, ShoppingCart, ShoppingBag, Globe } from 'lucide-react';
+import { Globe, Layers, LayoutDashboard, ShoppingBag, ShoppingCart } from 'lucide-react';
 
-export default function OptionsToolbar() {
+export default function OptionsToolbar(): React.ReactElement {
 	const pathname = usePathname();
 
 	const menuItems = [
@@ -38,7 +38,7 @@ export default function OptionsToolbar() {
 		},
 	];
 
-	const isActive = (path: string) => {
+	const isActive = (path: string): boolean => {
 		if (path === '/dashboard' && pathname === '/dashboard') {
 			return true;
 		}

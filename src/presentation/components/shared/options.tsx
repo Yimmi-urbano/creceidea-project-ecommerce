@@ -4,12 +4,12 @@ import { Link } from '@nextui-org/react';
 
 import { siteConfig } from '@/config/site';
 import {
-	DashboardIcon,
 	CategoriesIcon,
-	PagesIcon,
-	ProductIcon,
-	PaymentIcon,
+	DashboardIcon,
 	OrderIcon,
+	PagesIcon,
+	PaymentIcon,
+	ProductIcon,
 } from '@/src/presentation/components/shared/Icons';
 
 type IconKey =
@@ -29,7 +29,7 @@ const iconsMap: Record<IconKey, JSX.Element> = {
 	PaymentIcon: <PaymentIcon size={20} />,
 };
 
-export default function Options() {
+export default function Options(): React.ReactElement {
 	return (
 		<div className="flex flex-col items-center w-full">
 			{siteConfig.navItems.map((item) => (

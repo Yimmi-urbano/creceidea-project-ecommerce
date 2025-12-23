@@ -20,7 +20,18 @@ import { Product, ProductFilters } from '@/src/domain/products/Product';
  * @param initialFilters - Initial filter state
  * @returns Product data and operations
  */
-export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
+export const useProducts = (
+	initialFilters: ProductFilters = { page: 1 }
+): {
+	products: Product[];
+	loading: boolean;
+	error: string | null;
+	filters: ProductFilters;
+	searchProducts: (title: string) => void;
+	filterByCategory: (category: string) => void;
+	changePage: (page: number) => void;
+	refresh: () => void;
+} => {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -29,7 +40,7 @@ export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
 	/**
 	 * Fetch products with current filters
 	 */
-	const fetchProducts = async () => {
+	const fetchProducts = async (): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -46,34 +57,37 @@ export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
 	/**
 	 * Search products by title
 	 */
-	const searchProducts = (title: string) => {
+	const searchProducts = (title: string): void => {
 		setFilters({ ...filters, title, page: 1 });
 	};
 
 	/**
 	 * Filter by category
 	 */
-	const filterByCategory = (category: string) => {
+	const filterByCategory = (category: string): void => {
 		setFilters({ ...filters, category, page: 1 });
 	};
 
 	/**
 	 * Change page
 	 */
-	const changePage = (page: number) => {
+	const changePage = (page: number): void => {
 		setFilters({ ...filters, page });
 	};
 
 	/**
 	 * Refresh products
 	 */
-	const refresh = () => {
+	const refresh = (): void => {
 		void fetchProducts();
 	};
 
 	useEffect(() => {
-		void fetchProducts();
-	}, [filters]);
+		const load = async (): Promise<void> => {
+			await fetchProducts();
+		};
+		void load();
+	}, [filters]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return {
 		products,
@@ -93,13 +107,19 @@ export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
  * @param productId - Product ID
  * @returns Product data and loading state
  */
-export const useProduct = (productId: string) => {
+export const useProduct = (
+	productId: string
+): {
+	product: Product | null;
+	loading: boolean;
+	error: string | null;
+} => {
 	const [product, setProduct] = useState<Product | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const fetchProduct = async () => {
+		const fetchProduct = async (): Promise<void> => {
 			setLoading(true);
 			setError(null);
 
@@ -113,8 +133,8 @@ export const useProduct = (productId: string) => {
 			}
 		};
 
-		if (productId) {
-			fetchProduct();
+		if (productId !== '') {
+			void fetchProduct();
 		}
 	}, [productId]);
 
@@ -126,14 +146,20 @@ export const useProduct = (productId: string) => {
  *
  * @returns Product mutation functions
  */
-export const useProductMutations = () => {
+export const useProductMutations = (): {
+	createProduct: (productData: Partial<Product>) => Promise<Product>;
+	updateProduct: (productId: string, productData: Partial<Product>) => Promise<Product>;
+	deleteProduct: (productId: string) => Promise<void>;
+	loading: boolean;
+	error: string | null;
+} => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
 	/**
 	 * Create new product
 	 */
-	const createProduct = async (productData: Partial<Product>) => {
+	const createProduct = async (productData: Partial<Product>): Promise<Product> => {
 		setLoading(true);
 		setError(null);
 
@@ -152,7 +178,10 @@ export const useProductMutations = () => {
 	/**
 	 * Update existing product
 	 */
-	const updateProduct = async (productId: string, productData: Partial<Product>) => {
+	const updateProduct = async (
+		productId: string,
+		productData: Partial<Product>
+	): Promise<Product> => {
 		setLoading(true);
 		setError(null);
 
@@ -171,7 +200,7 @@ export const useProductMutations = () => {
 	/**
 	 * Delete product
 	 */
-	const deleteProduct = async (productId: string) => {
+	const deleteProduct = async (productId: string): Promise<void> => {
 		setLoading(true);
 		setError(null);
 

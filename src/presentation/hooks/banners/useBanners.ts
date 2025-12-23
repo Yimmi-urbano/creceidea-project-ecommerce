@@ -9,7 +9,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as bannerServices from '@/src/application/banners/bannerServices';
 import { Banner } from '@/src/domain/banners/Banner';
@@ -19,7 +19,29 @@ import { Banner } from '@/src/domain/banners/Banner';
  *
  * @returns Banner data and operations
  */
-export const useBanners = () => {
+export const useBanners = (): {
+	banners: Banner[];
+	loading: boolean;
+	error: string | null;
+	createBanner: (
+		file: File,
+		text: string,
+		action: string,
+		destino: string,
+		text_button: string
+	) => Promise<void>;
+	updateBanner: (
+		bannerId: string,
+		file: File | null,
+		imageUrl: string,
+		text: string,
+		action: string,
+		destino: string,
+		text_button: string
+	) => Promise<void>;
+	deleteBanner: (bannerId: string) => Promise<void>;
+	refresh: () => Promise<void>;
+} => {
 	const [banners, setBanners] = useState<Banner[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -27,7 +49,7 @@ export const useBanners = () => {
 	/**
 	 * Fetch all banners
 	 */
-	const fetchBanners = async () => {
+	const fetchBanners = async (): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -50,7 +72,7 @@ export const useBanners = () => {
 		action: string,
 		destino: string,
 		text_button: string
-	) => {
+	): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -77,7 +99,7 @@ export const useBanners = () => {
 		action: string,
 		destino: string,
 		text_button: string
-	) => {
+	): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -104,7 +126,7 @@ export const useBanners = () => {
 	/**
 	 * Delete banner
 	 */
-	const deleteBanner = async (bannerId: string) => {
+	const deleteBanner = async (bannerId: string): Promise<void> => {
 		setLoading(true);
 		setError(null);
 
@@ -121,8 +143,8 @@ export const useBanners = () => {
 	};
 
 	useEffect(() => {
-		fetchBanners();
-	}, []);
+		void fetchBanners();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return {
 		banners,
@@ -141,13 +163,19 @@ export const useBanners = () => {
  * @param bannerId - Banner ID
  * @returns Banner data and loading state
  */
-export const useBanner = (bannerId: string) => {
+export const useBanner = (
+	bannerId: string
+): {
+	banner: Banner | null;
+	loading: boolean;
+	error: string | null;
+} => {
 	const [banner, setBanner] = useState<Banner | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const fetchBanner = async () => {
+		const fetchBanner = async (): Promise<void> => {
 			setLoading(true);
 			setError(null);
 
@@ -161,8 +189,8 @@ export const useBanner = (bannerId: string) => {
 			}
 		};
 
-		if (bannerId) {
-			fetchBanner();
+		if (bannerId !== '') {
+			void fetchBanner();
 		}
 	}, [bannerId]);
 

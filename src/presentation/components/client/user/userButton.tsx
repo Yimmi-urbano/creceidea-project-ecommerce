@@ -45,7 +45,11 @@ export default function UserButton({
 			{isMenuOpen && (
 				<>
 					{/* Backdrop */}
-					<div className="fixed inset-0 z-40" onClick={() => setIsMenuOpen(false)} />
+					<button
+						aria-label="Cerrar menú"
+						className="fixed inset-0 z-40 cursor-default bg-transparent border-none outline-none"
+						onClick={() => setIsMenuOpen(false)}
+					/>
 
 					<div className="absolute bottom-full left-0 mb-2 w-64 ml-4 rounded-2xl shadow-2xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 py-2 animate-in fade-in zoom-in duration-200 z-50">
 						{/* Company Header */}

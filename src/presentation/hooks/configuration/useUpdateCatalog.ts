@@ -2,11 +2,16 @@ import { useState } from 'react';
 
 import { API_ENDPOINTS } from '@/src/infrastructure/http/apiConfig';
 
-const useUpdateCatalog = () => {
+const useUpdateCatalog = (): {
+	updateCatalog: (catalogo: any) => Promise<{ success: boolean; message: string }>;
+	updating: boolean;
+	currencies: { code: string; symbol: string }[];
+	getCurrencies: () => void;
+} => {
 	const [updating, setUpdating] = useState(false);
 	const [currencies, setCurrencies] = useState<{ code: string; symbol: string }[]>([]);
 
-	const updateCatalog = async (catalogo: any) => {
+	const updateCatalog = async (catalogo: any): Promise<{ success: boolean; message: string }> => {
 		setUpdating(true);
 		try {
 			const domain = localStorage.getItem('domainSelect');
@@ -14,13 +19,13 @@ const useUpdateCatalog = () => {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
-					domain: domain || '',
+					domain: domain ?? '',
 				},
 				body: JSON.stringify({ catalogo }),
 			});
 
-			const data = await response.json();
-			if (!response.ok) {
+			const data = (await response.json()) as { message: string };
+			if (response.ok === false) {
 				throw new Error(data.message);
 			}
 
@@ -33,7 +38,7 @@ const useUpdateCatalog = () => {
 		}
 	};
 
-	const getCurrencies = () => {
+	const getCurrencies = (): void => {
 		const simulatedCurrencies = [
 			{ code: 'USD', symbol: '$' },
 			{ code: 'PEN', symbol: 'S/' },

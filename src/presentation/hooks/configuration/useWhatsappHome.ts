@@ -13,12 +13,12 @@ export const updateWhatsappHome = async (data: WhatsappHome): Promise<boolean> =
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
-				domain: domain || '',
+				domain: domain ?? '',
 			},
 			body: JSON.stringify(data),
 		});
 
-		if (!response.ok) {
+		if (response.ok === false) {
 			throw new Error('Error al actualizar WhatsApp Home');
 		}
 

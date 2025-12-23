@@ -31,9 +31,9 @@ const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
  * @returns Configuration context
  * @throws Error if used outside ConfigProvider
  */
-export const useConfig = () => {
+export const useConfig = (): ConfigContextType => {
 	const context = useContext(ConfigContext);
-	if (!context) {
+	if (context === undefined) {
 		throw new Error('useConfig must be used within a ConfigProvider');
 	}
 	return context;
@@ -43,18 +43,18 @@ export const useConfig = () => {
  * Configuration Provider Component
  * Fetches and provides site configuration
  */
-export const ConfigProvider = ({ children }: { children: ReactNode }) => {
+export const ConfigProvider = ({ children }: { children: ReactNode }): React.ReactElement => {
 	const [config, setConfig] = useState<SiteConfiguration | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
 
 	useEffect(() => {
-		const fetchConfig = async () => {
+		const fetchConfig = async (): Promise<void> => {
 			try {
 				const domain = getDomainFromLocalStorage();
 
-				if (!domain) {
+				if (domain === null || domain === '') {
 					console.warn('No domain found in localStorage - session may have expired');
 					setError('No domain configured');
 					setLoading(false);
@@ -74,9 +74,11 @@ export const ConfigProvider = ({ children }: { children: ReactNode }) => {
 					},
 				});
 
-				if (response.ok) {
-					const data = await response.json();
-					setConfig(data[0]);
+				if (response.ok === true) {
+					const data = (await response.json()) as SiteConfiguration[];
+					if (data.length > 0) {
+						setConfig(data[0]);
+					}
 					setError(null);
 				} else if (response.status === 401 || response.status === 403) {
 					// Unauthorized - session expired
@@ -84,7 +86,7 @@ export const ConfigProvider = ({ children }: { children: ReactNode }) => {
 					setError('Session expired');
 					router.push('/login');
 				} else {
-					setError(`Failed to fetch configuration: ${response.status}`);
+					setError(`Failed to fetch configuration: ${String(response.status)}`);
 				}
 			} catch (err) {
 				const errorMessage = err instanceof Error ? err.message : 'Unknown error';
@@ -95,7 +97,7 @@ export const ConfigProvider = ({ children }: { children: ReactNode }) => {
 			}
 		};
 
-		fetchConfig();
+		void fetchConfig();
 	}, [router]);
 
 	return (

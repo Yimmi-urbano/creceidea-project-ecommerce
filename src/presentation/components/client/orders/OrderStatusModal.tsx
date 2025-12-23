@@ -3,16 +3,16 @@
 import React, { useState } from 'react';
 
 import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
 	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 	Select,
 	SelectItem,
 } from '@nextui-org/react';
-import { Truck, Package, Clock, XCircle, PackageCheck } from 'lucide-react';
+import { Clock, Package, PackageCheck, Truck, XCircle } from 'lucide-react';
 
 interface OrderStatusModalProps {
 	isOpen: boolean;
@@ -66,7 +66,7 @@ const OrderStatusModal: React.FC<OrderStatusModalProps> = ({
 	currentStatus = 'pending',
 }) => {
 	const [orderStatus, setOrderStatus] = useState(currentStatus);
-	const [_loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const handleSave = async () => {
 		setLoading(true);
@@ -121,14 +121,23 @@ const OrderStatusModal: React.FC<OrderStatusModalProps> = ({
 				<ModalBody className="py-6 space-y-5">
 					{/* Order Status */}
 					<div className="space-y-2">
-						<label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+						<label
+							htmlFor="order-status-select"
+							className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2"
+						>
 							<Package size={16} className="text-zinc-600 dark:text-zinc-400" />
 							Estado de la Orden
 							<span className="text-rose-500">*</span>
 						</label>
 						<Select
+							id="order-status-select"
 							selectedKeys={[orderStatus]}
-							onSelectionChange={(keys) => setOrderStatus(Array.from(keys)[0] as string)}
+							onSelectionChange={(keys) => {
+								const selected = Array.from(keys)[0];
+								if (selected) {
+									setOrderStatus(selected as string);
+								}
+							}}
 							variant="bordered"
 							classNames={{
 								trigger: 'border-zinc-300 dark:border-zinc-700 data-[hover=true]:border-primary',

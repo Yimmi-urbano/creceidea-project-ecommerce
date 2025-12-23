@@ -56,7 +56,7 @@ export function fuzzySearch(
 	query: string,
 	maxResults: number = 8
 ): SearchableItem[] {
-	if (!query.trim()) {
+	if (query.trim() === '') {
 		return [];
 	}
 
@@ -71,13 +71,13 @@ export function fuzzySearch(
 		score += titleScore * 3; // El título tiene más peso
 
 		// Buscar en descripción
-		if (item.description) {
+		if (item.description !== undefined && item.description !== null && item.description !== '') {
 			const descScore = calculateSimilarity(item.description, normalizedQuery);
 			score += descScore;
 		}
 
 		// Buscar en keywords
-		if (item.keywords) {
+		if (item.keywords !== undefined && item.keywords !== null && item.keywords.length > 0) {
 			const keywordScores = item.keywords.map((keyword) =>
 				calculateSimilarity(keyword, normalizedQuery)
 			);
@@ -106,7 +106,7 @@ export function highlightMatch(
 	text: string,
 	query: string
 ): Array<{ text: string; highlight: boolean }> {
-	if (!query.trim()) {
+	if (query.trim() === '') {
 		return [{ text, highlight: false }];
 	}
 

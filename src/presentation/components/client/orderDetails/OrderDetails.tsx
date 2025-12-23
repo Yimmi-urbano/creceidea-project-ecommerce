@@ -1,23 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 
+import Image from 'next/image';
 import Link from 'next/link';
 
 import {
 	ArrowLeft,
-	Package,
-	CreditCard,
-	Truck,
-	User,
-	Mail,
-	Phone,
-	MapPin,
-	Hash,
-	Edit3,
-	Download,
 	CheckCircle,
 	Clock,
+	CreditCard,
+	Download,
+	Edit3,
+	Hash,
+	Mail,
+	MapPin,
+	Package,
+	Phone,
+	Truck,
+	User,
 	XCircle,
 } from 'lucide-react';
 
@@ -25,8 +26,11 @@ import { OrderDetailSkeleton } from '@/src/presentation/components/shared/Skelet
 import useOrderDetails from '@/src/presentation/hooks/orders/useOrderDetails';
 
 const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
-	const { orderData, loading, error } = useOrderDetails(orderId);
-	const [_activeTab, _setActiveTab] = useState<'details' | 'timeline'>('details');
+	const { orderData, loading, error } = useOrderDetails(orderId) as {
+		orderData: any;
+		loading: boolean;
+		error: string | null;
+	};
 
 	if (loading) {
 		return <OrderDetailSkeleton />;
@@ -46,7 +50,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 		);
 	}
 
-	if (!orderData) {
+	if (orderData === null || orderData === undefined) {
 		return (
 			<div className="p-6 text-center">
 				<p className="text-zinc-500 dark:text-zinc-400">No se encontró el pedido</p>
@@ -54,7 +58,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 		);
 	}
 
-	const getStatusIcon = (status: string) => {
+	const getStatusIcon = (status: string): React.ReactNode => {
 		switch (status) {
 			case 'completed':
 				return <CheckCircle className="w-5 h-5" />;
@@ -68,7 +72,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 		}
 	};
 
-	const getStatusClass = (status: string) => {
+	const getStatusClass = (status: string): string => {
 		switch (status) {
 			case 'completed':
 				return 'bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 border-blue-200 dark:border-blue-500/20';
@@ -82,7 +86,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 		}
 	};
 
-	const getStatusLabel = (status: string) => {
+	const getStatusLabel = (status: string): string => {
 		switch (status) {
 			case 'completed':
 				return 'Completado';
@@ -148,15 +152,15 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 						<h3 className="font-semibold text-zinc-900 dark:text-white">Estado de Pago</h3>
 					</div>
 					<div
-						className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border ${getStatusClass(orderData.paymentStatus?.typeStatus || 'pending')}`}
+						className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border ${getStatusClass(String(orderData.paymentStatus?.typeStatus || 'pending'))}`}
 					>
-						{getStatusIcon(orderData.paymentStatus?.typeStatus || 'pending')}
-						{getStatusLabel(orderData.paymentStatus?.typeStatus || 'pending')}
+						{getStatusIcon(String(orderData.paymentStatus?.typeStatus || 'pending'))}
+						{getStatusLabel(String(orderData.paymentStatus?.typeStatus || 'pending'))}
 					</div>
 					<p className="text-xs text-zinc-500 dark:text-zinc-400 mt-3">
 						{orderData.paymentStatus?.message || 'Sin mensaje'}
 					</p>
-					{orderData.paymentStatus?.date && (
+					{orderData.paymentStatus?.date !== undefined && (
 						<p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
 							Fecha: {orderData.paymentStatus.date}
 						</p>
@@ -171,10 +175,10 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 						<h3 className="font-semibold text-zinc-900 dark:text-white">Estado de Envío</h3>
 					</div>
 					<div
-						className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border ${getStatusClass(orderData.orderStatus?.typeStatus || 'pending')}`}
+						className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border ${getStatusClass(String(orderData.orderStatus?.typeStatus || 'pending'))}`}
 					>
-						{getStatusIcon(orderData.orderStatus?.typeStatus || 'pending')}
-						{getStatusLabel(orderData.orderStatus?.typeStatus || 'pending')}
+						{getStatusIcon(String(orderData.orderStatus?.typeStatus || 'pending'))}
+						{getStatusLabel(String(orderData.orderStatus?.typeStatus || 'pending'))}
 					</div>
 					<p className="text-xs text-zinc-500 dark:text-zinc-400 mt-3">
 						{orderData.orderStatus?.message || 'Sin mensaje'}
@@ -205,9 +209,11 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 								>
 									<div className="flex gap-4">
 										<div className="flex-shrink-0">
-											<img
+											<Image
 												src={product.image}
 												alt={product.title}
+												width={80}
+												height={80}
 												className="w-20 h-20 rounded-lg object-cover border border-zinc-200 dark:border-zinc-800"
 											/>
 										</div>
@@ -316,7 +322,7 @@ const OrderDetails: React.FC<{ orderId: string }> = ({ orderId }) => {
 					</div>
 
 					{/* Shipping Address */}
-					{orderData.shippingInfo?.street_address && (
+					{orderData.shippingInfo?.street_address !== undefined && (
 						<div className="rounded-xl border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800 p-6">
 							<div className="flex items-center gap-3 mb-4">
 								<div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/20">

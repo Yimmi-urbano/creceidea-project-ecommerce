@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
-	Input,
 	Button,
 	Card,
-	CardHeader,
 	CardBody,
+	CardHeader,
+	Input,
 	Select,
 	SelectItem,
 	Switch,
@@ -33,9 +33,9 @@ const UpdateCatalogForm: React.FC = () => {
 	});
 
 	// Estado para controlar el modal
-	const [_isModalOpen, _setIsModalOpen] = useState(false);
-	const [_modalMessage, _setModalMessage] = useState('');
-	const [_isModalLoading, _setIsModalLoading] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalMessage, setModalMessage] = useState('');
+	const [isModalLoading, setIsModalLoading] = useState(false);
 
 	// Efecto para cargar la configuración
 	useEffect(() => {
@@ -54,11 +54,11 @@ const UpdateCatalogForm: React.FC = () => {
 	// Efecto para obtener monedas
 	useEffect(() => {
 		if (currencies.length === 0) {
-			getCurrencies();
+			void getCurrencies();
 		}
 	}, [currencies.length, getCurrencies]);
 
-	const handleUpdate = async () => {
+	const handleUpdate = async (): Promise<void> => {
 		const catalogo = {
 			button: {
 				text: buttonText,
@@ -82,11 +82,11 @@ const UpdateCatalogForm: React.FC = () => {
 		setIsModalLoading(false); // Finaliza la carga
 	};
 
-	const handleSelectionChange = (keys: Set<string> | any) => {
+	const handleSelectionChange = (keys: any): void => {
 		// NextUI Select returns a Set or string depending on selection mode, handling keys safely
 		const selectedKey = keys instanceof Set ? Array.from(keys)[0] : keys;
 		const currency = currencies.find((curr) => curr.code === selectedKey);
-		if (currency) {
+		if (currency !== undefined) {
 			setSelectedCurrency(currency);
 		}
 	};

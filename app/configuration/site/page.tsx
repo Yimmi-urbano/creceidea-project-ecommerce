@@ -1,6 +1,5 @@
 'use client';
 
-
 import { Card, CardBody, CardHeader, Skeleton } from '@nextui-org/react';
 import { Image as ImageIcon, MessageCircle, Palette, Search } from 'lucide-react';
 

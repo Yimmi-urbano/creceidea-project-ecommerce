@@ -32,7 +32,9 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
 		onChange,
 	});
 
-	if (!mounted) return <div className="p-1 w-6 h-6" />;
+	if (!mounted) {
+		return <div className="p-1 w-6 h-6" />;
+	}
 
 	return (
 		<Component

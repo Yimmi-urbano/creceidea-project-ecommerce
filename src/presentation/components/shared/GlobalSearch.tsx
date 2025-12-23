@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, Search } from 'lucide-react';
 
 import {
-    categoryLabels,
-    searchableItems,
-    type SearchableItem,
+	categoryLabels,
+	searchableItems,
+	type SearchableItem,
 } from '@/src/presentation/data/searchableItems';
 import { useGlobalSearchShortcut } from '@/src/presentation/hooks/useKeyboardShortcut';
 import { fuzzySearch, highlightMatch } from '@/src/presentation/utils/fuzzySearch';
@@ -69,10 +69,18 @@ export const GlobalSearch: React.FC = () => {
 		return () => document.removeEventListener('mousedown', handleClickOutside);
 	}, []);
 
+	// Navegar a la ruta seleccionada
+	const handleNavigate = (path: string): void => {
+		router.push(path);
+		setIsOpen(false);
+		setQuery('');
+		inputRef.current?.blur();
+	};
+
 	// Navegación por teclado
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (!isOpen) {
+		const handleKeyDown = (event: KeyboardEvent): void => {
+			if (isOpen === false) {
 				return;
 			}
 
@@ -87,7 +95,7 @@ export const GlobalSearch: React.FC = () => {
 					break;
 				case 'Enter':
 					event.preventDefault();
-					if (results[selectedIndex]) {
+					if (results[selectedIndex] !== undefined) {
 						handleNavigate(results[selectedIndex].path);
 					}
 					break;
@@ -100,21 +108,18 @@ export const GlobalSearch: React.FC = () => {
 		};
 
 		window.addEventListener('keydown', handleKeyDown);
-		return () => window.removeEventListener('keydown', handleKeyDown);
-	}, [isOpen, results, selectedIndex]);
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [isOpen, results, selectedIndex, handleNavigate]);
 
-	// Navegar a la ruta seleccionada
-	const handleNavigate = (path: string) => {
-		router.push(path);
-		setIsOpen(false);
-		setQuery('');
-		inputRef.current?.blur();
-	};
+	// Detectar si es Mac para mostrar el atajo correcto (evita error de hidratación)
+	const [shortcutKey, setShortcutKey] = useState('Ctrl');
 
-	// Detectar si es Mac para mostrar el atajo correcto
-	const isMac =
-		typeof window !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-	const shortcutKey = isMac ? '⌘' : 'Ctrl';
+	useEffect(() => {
+		const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+		setShortcutKey(isMac ? '⌘' : 'Ctrl');
+	}, []);
 
 	return (
 		<div className="relative w-full max-w-md hidden md:block">
@@ -162,7 +167,7 @@ export const GlobalSearch: React.FC = () => {
 					<div className="relative">
 						{results.length > 0 ? (
 							<>
-								{Object.entries(groupedResults).map(([category, items], groupIndex) => (
+								{Object.entries(groupedResults).map(([category, items], _groupIndex) => (
 									<div key={category}>
 										{/* Categoría */}
 										<div className="px-4 py-2 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
@@ -170,7 +175,7 @@ export const GlobalSearch: React.FC = () => {
 										</div>
 
 										{/* Items */}
-										{items.map((item, itemIndex) => {
+										{items.map((item, _itemIndex) => {
 											const globalIndex = results.indexOf(item);
 											const isSelected = globalIndex === selectedIndex;
 											const Icon = item.icon;
@@ -210,11 +215,13 @@ export const GlobalSearch: React.FC = () => {
 																</span>
 															))}
 														</div>
-														{item.description && (
-															<div className="text-xs text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
-																{item.description}
-															</div>
-														)}
+														{item.description !== undefined &&
+															item.description !== null &&
+															item.description !== '' && (
+																<div className="text-xs text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
+																	{item.description}
+																</div>
+															)}
 													</div>
 
 													{/* Flecha */}

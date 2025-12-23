@@ -5,29 +5,29 @@ import { Input } from '@nextui-org/input';
 import { Kbd } from '@nextui-org/kbd';
 import { Link } from '@nextui-org/link';
 import {
-	Navbar as NextUINavbar,
-	NavbarContent,
-	NavbarMenu,
-	NavbarMenuToggle,
 	NavbarBrand,
+	NavbarContent,
 	NavbarItem,
+	NavbarMenu,
 	NavbarMenuItem,
-} from '@nextui-org/Navbar';
+	NavbarMenuToggle,
+	Navbar as NextUINavbar,
+} from '@nextui-org/navbar';
 import { link as linkStyles } from '@nextui-org/theme';
 import clsx from 'clsx';
 
 import { siteConfig } from '@/config/site';
 import { ThemeSwitch } from '@/src/presentation/components/client/ThemeSwitch';
 import {
-	TwitterIcon,
-	GithubIcon,
 	DiscordIcon,
+	GithubIcon,
 	HeartFilledIcon,
-	SearchIcon,
 	Logo,
+	SearchIcon,
+	TwitterIcon,
 } from '@/src/presentation/components/shared/Icons';
 
-export const Navbar = () => {
+export const Navbar = (): React.ReactElement => {
 	const searchInput = (
 		<Input
 			aria-label="Search"
@@ -116,7 +116,7 @@ export const Navbar = () => {
 				{searchInput}
 				<div className="mx-4 mt-2 flex flex-col gap-2">
 					{siteConfig.navMenuItems.map((item, index) => (
-						<NavbarMenuItem key={`${item}-${index}`}>
+						<NavbarMenuItem key={`${item.label}-${index}`}>
 							<Link
 								color={
 									index === 2

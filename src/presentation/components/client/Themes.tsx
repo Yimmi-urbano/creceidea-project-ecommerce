@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, Image } from '@nextui-org/react';
 
 import {
-    NotificationModal,
-    PaymentModal,
+	NotificationModal,
+	PaymentModal,
 } from '@/src/presentation/components/client/utils/NotificationModal';
 import { useConfig } from '@/src/presentation/contexts';
 import { useThemes } from '@/src/presentation/hooks/configuration/useThemes';
@@ -22,8 +22,8 @@ const ThemesList: React.FC = () => {
 	const [notificationMessage, setNotificationMessage] = useState('');
 
 	useEffect(() => {
-		if (config?.theme) {
-			setSelected(config.theme.toString());
+		if (config?.theme !== undefined && config?.theme !== null) {
+			setSelected(String(config.theme));
 		}
 	}, [config?.theme]);
 
@@ -32,36 +32,39 @@ const ThemesList: React.FC = () => {
 			setIsLoading(false);
 			if (updateSuccess) {
 				setNotificationMessage('El tema ha sido seleccionado correctamente');
-				setSelected(pendingSelection!);
+				if (pendingSelection !== null) {
+					setSelected(pendingSelection);
+				}
 			} else {
 				setNotificationMessage('Error al seleccionar el tema');
 			}
-			setTimeout(() => {
+			const timer = setTimeout(() => {
 				setIsNotificationOpen(false);
 			}, 2000);
+			return () => clearTimeout(timer);
 		}
-	}, [updateSuccess]);
+	}, [updateSuccess, pendingSelection]);
 
-	const openNotificationModal = (message: string) => {
+	const openNotificationModal = (message: string): void => {
 		setNotificationMessage(message);
 		setIsLoading(true);
 		setIsNotificationOpen(true);
 	};
 
-	const closeNotificationModal = () => {
+	const closeNotificationModal = (): void => {
 		setIsNotificationOpen(false);
 	};
 
-	const openPaymentModal = (themeTitle: string) => {
+	const openPaymentModal = (themeTitle: string): void => {
 		setPayThemeName(themeTitle);
 		setIsPaymentOpen(true);
 	};
 
-	const closePaymentModal = () => {
+	const closePaymentModal = (): void => {
 		setIsPaymentOpen(false);
 	};
 
-	const handleThemeSelection = (themeName: string, themeType: string, themeTitle: string) => {
+	const handleThemeSelection = (themeName: string, themeType: string, themeTitle: string): void => {
 		if (selected === themeName) {
 			return;
 		} // Ya esta seleccionado
@@ -137,7 +140,16 @@ const ThemesList: React.FC = () => {
 
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-1">
 				{themes.map((theme) => {
-					const { _id, images, title, type_theme, sale_price, price, name, url_demo } = theme;
+					const {
+						_id,
+						images,
+						title,
+						type_theme: typeTheme,
+						sale_price: salePrice,
+						price,
+						name,
+						url_demo: urlDemo,
+					} = theme;
 					const isSelected = selected === name;
 
 					return (
@@ -170,7 +182,7 @@ const ThemesList: React.FC = () => {
 									</div>
 								)}
 								<div className="absolute top-2 left-2 flex gap-1">
-									{type_theme === 'free' ? (
+									{typeTheme === 'free' ? (
 										<div className="bg-zinc-900/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded border border-white/10">
 											GRATIS
 										</div>
@@ -188,17 +200,17 @@ const ThemesList: React.FC = () => {
 										<h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-lg line-clamp-1">
 											{title}
 										</h3>
-										{type_theme !== 'free' && (
-											<p className="text-sm text-zinc-500">
+										{typeTheme !== 'free' && (
+											<div className="text-sm text-zinc-500">
 												{price > 0 ? (
 													<span className="flex items-center gap-2">
-														<span className="font-bold text-primary">${sale_price}</span>
+														<span className="font-bold text-primary">${salePrice}</span>
 														<span className="line-through text-xs">${price}</span>
 													</span>
 												) : (
 													'Gratis'
 												)}
-											</p>
+											</div>
 										)}
 									</div>
 								</div>
@@ -209,7 +221,7 @@ const ThemesList: React.FC = () => {
 											className="w-full font-medium"
 											color="primary"
 											size="sm"
-											onClick={() => handleThemeSelection(name, type_theme, title)}
+											onClick={() => handleThemeSelection(name, typeTheme, title)}
 										>
 											Seleccionar Diseño
 										</Button>
@@ -220,11 +232,11 @@ const ThemesList: React.FC = () => {
 											className="flex-1 border-zinc-200 dark:border-zinc-700 font-medium"
 											variant="bordered"
 											size="sm"
-											onClick={() => window.open(url_demo, '_blank')}
+											onClick={() => window.open(urlDemo, '_blank')}
 										>
 											Ver Demo
 										</Button>
-										{type_theme !== 'free' && (
+										{typeTheme !== 'free' && (
 											<Button
 												className="flex-1 font-medium"
 												color="danger"

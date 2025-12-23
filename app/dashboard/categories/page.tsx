@@ -1,21 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Skeleton } from '@nextui-org/react';
 import { Search } from 'lucide-react';
 
+import { Category } from '@/src/domain/categories/Category';
 import AddCategory from '@/src/presentation/components/client/category/addCategory';
 import {
 	CategoryProvider,
 	useCategoryContext,
 } from '@/src/presentation/components/client/category/CategoryContext';
 import {
-	CategoryRow,
 	CategoryModals,
+	CategoryRow,
 } from '@/src/presentation/components/client/category/components';
 
-function CategoriesContent() {
+function CategoriesContent(): JSX.Element {
 	const {
 		categories,
 		handleDeleteCategory,
@@ -43,23 +44,23 @@ function CategoriesContent() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	// Función de búsqueda avanzada
-	const searchInCategory = (category: any, searchLower: string): boolean => {
+	const searchInCategory = (category: Category, searchLower: string): boolean => {
 		// Buscar en el título de la categoría
-		if (category.title?.toLowerCase().includes(searchLower)) {
+		if (category.title !== undefined && category.title.toLowerCase().includes(searchLower)) {
 			return true;
 		}
 
 		// Buscar en el slug de la categoría
-		if (category.slug?.toLowerCase().includes(searchLower)) {
+		if (category.slug !== undefined && category.slug.toLowerCase().includes(searchLower)) {
 			return true;
 		}
 
 		// Buscar en las subcategorías (título y slug)
-		if (category.children && category.children.length > 0) {
+		if (category.children !== undefined && category.children.length > 0) {
 			return category.children.some(
-				(child: any) =>
-					child.title?.toLowerCase().includes(searchLower) ||
-					child.slug?.toLowerCase().includes(searchLower)
+				(child: Category) =>
+					(child.title !== undefined && child.title.toLowerCase().includes(searchLower)) ||
+					(child.slug !== undefined && child.slug.toLowerCase().includes(searchLower))
 			);
 		}
 
@@ -67,25 +68,25 @@ function CategoriesContent() {
 	};
 
 	// Función para detectar si hay coincidencias solo en subcategorías
-	const hasSubcategoryMatch = (category: any, searchLower: string): boolean => {
-		if (!searchLower) {
+	const hasSubcategoryMatch = (category: Category, searchLower: string): boolean => {
+		if (searchLower === '') {
 			return false;
 		}
 
 		// Si la categoría padre coincide, no es solo subcategoría
 		if (
-			category.title?.toLowerCase().includes(searchLower) ||
-			category.slug?.toLowerCase().includes(searchLower)
+			(category.title !== undefined && category.title.toLowerCase().includes(searchLower)) ||
+			(category.slug !== undefined && category.slug.toLowerCase().includes(searchLower))
 		) {
 			return false;
 		}
 
 		// Verificar si alguna subcategoría coincide
-		if (category.children && category.children.length > 0) {
+		if (category.children !== undefined && category.children.length > 0) {
 			return category.children.some(
-				(child: any) =>
-					child.title?.toLowerCase().includes(searchLower) ||
-					child.slug?.toLowerCase().includes(searchLower)
+				(child: Category) =>
+					(child.title !== undefined && child.title.toLowerCase().includes(searchLower)) ||
+					(child.slug !== undefined && child.slug.toLowerCase().includes(searchLower))
 			);
 		}
 
@@ -95,7 +96,7 @@ function CategoriesContent() {
 	// Filtrar categorías con búsqueda avanzada
 	const filteredCategories =
 		categories?.filter((cat) => {
-			if (!searchTerm.trim()) {
+			if (searchTerm.trim() === '') {
 				return true;
 			}
 			const searchLower = searchTerm.toLowerCase();
@@ -105,17 +106,19 @@ function CategoriesContent() {
 	// Calcular estadísticas
 	const totalCategories = categories?.length || 0;
 	const visibleCategories = filteredCategories.length;
-	const activeCategories = filteredCategories.filter((cat: any) => cat.is_active)?.length || 0;
+	const activeCategories = filteredCategories.filter(
+		(cat) => (cat as any).is_active === true
+	).length;
 
 	// Función auxiliar para encontrar categoría por ID
-	const findCategoryById = (cats: any[], id: string): any => {
+	const findCategoryById = (cats: Category[], id: string): Category | null => {
 		for (const cat of cats) {
 			if (cat._id === id) {
 				return cat;
 			}
-			if (cat.children && cat.children.length > 0) {
+			if (cat.children !== undefined && cat.children.length > 0) {
 				const found = findCategoryById(cat.children, id);
-				if (found) {
+				if (found !== null) {
 					return found;
 				}
 			}
@@ -124,9 +127,9 @@ function CategoriesContent() {
 	};
 
 	// Abrir modal de edición
-	const handleEdit = (id: string) => {
-		const category = findCategoryById(categories, id);
-		if (category) {
+	const handleEdit = (id: string): void => {
+		const category = findCategoryById((categories as Category[]) || [], id);
+		if (category !== null) {
 			setSelectedCategoryId(id);
 			setSelectedCategoryTitle(category.title);
 			setSelectedParentId(category.parent);
@@ -135,21 +138,21 @@ function CategoriesContent() {
 	};
 
 	// Abrir modal de eliminación
-	const handleDeleteClick = (id: string) => {
+	const handleDeleteClick = (id: string): void => {
 		setSelectedCategoryId(id);
 		setIsDeleteModalOpen(true);
 	};
 
 	// Abrir modal de agregar subcategoría
-	const handleAddSubcategory = (parentId: string) => {
+	const handleAddSubcategory = (parentId: string): void => {
 		setSubcategoryParentId(parentId);
 		setNewSubcategoryTitle('');
 		setIsSubcategoryModalOpen(true);
 	};
 
 	// Guardar edición
-	const handleSaveEdit = async () => {
-		if (!selectedCategoryId || !selectedCategoryTitle.trim()) {
+	const handleSaveEdit = async (): Promise<void> => {
+		if (selectedCategoryId === null || selectedCategoryTitle.trim() === '') {
 			return;
 		}
 
@@ -168,8 +171,8 @@ function CategoriesContent() {
 	};
 
 	// Confirmar eliminación
-	const handleConfirmDelete = async () => {
-		if (!selectedCategoryId) {
+	const handleConfirmDelete = async (): Promise<void> => {
+		if (selectedCategoryId === null) {
 			return;
 		}
 
@@ -186,8 +189,8 @@ function CategoriesContent() {
 	};
 
 	// Guardar nueva subcategoría
-	const handleSaveSubcategory = async () => {
-		if (!newSubcategoryTitle.trim() || !subcategoryParentId) {
+	const handleSaveSubcategory = async (): Promise<void> => {
+		if (newSubcategoryTitle.trim() === '' || subcategoryParentId === null) {
 			return;
 		}
 
@@ -232,7 +235,7 @@ function CategoriesContent() {
 						className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-transparent border transition-all duration-200 outline-none border-zinc-200 dark:border-zinc-800 focus:border-primary bg-white dark:bg-dark-card"
 					/>
 				</div>
-				{searchTerm && (
+				{searchTerm !== '' && (
 					<p className="text-xs text-zinc-500 dark:text-zinc-400 ml-1">
 						Buscando en categorías, subcategorías y slugs...
 					</p>
@@ -260,9 +263,9 @@ function CategoriesContent() {
 								{searchTerm ? 'Visibles' : 'Total de Categorías'}
 							</p>
 							<p
-								className={`text-2xl font-bold ${searchTerm ? 'text-primary' : 'text-zinc-900 dark:text-zinc-100'}`}
+								className={`text-2xl font-bold ${searchTerm !== '' ? 'text-primary' : 'text-zinc-900 dark:text-zinc-100'}`}
 							>
-								{searchTerm ? visibleCategories : totalCategories}
+								{searchTerm !== '' ? visibleCategories : totalCategories}
 							</p>
 						</div>
 						<div className="p-4 rounded-lg border bg-white dark:bg-dark-card border-zinc-200 dark:border-zinc-800">
@@ -277,8 +280,9 @@ function CategoriesContent() {
 							</p>
 							<p className="text-2xl font-bold text-primary">
 								{
-									filteredCategories.filter((cat: any) => cat.children && cat.children.length > 0)
-										.length
+									filteredCategories.filter(
+										(cat) => cat.children !== undefined && cat.children.length > 0
+									).length
 								}
 							</p>
 						</div>
@@ -307,7 +311,7 @@ function CategoriesContent() {
 						))}
 					</>
 				) : filteredCategories.length > 0 ? (
-					filteredCategories.map((category: any) => (
+					filteredCategories.map((category) => (
 						<CategoryRow
 							key={category._id}
 							item={category}
@@ -326,7 +330,7 @@ function CategoriesContent() {
 							No se encontraron categorías
 						</h3>
 						<p className="text-zinc-500 dark:text-zinc-400">
-							{searchTerm
+							{searchTerm !== ''
 								? 'Intenta con otro término de búsqueda.'
 								: 'Comienza agregando tu primera categoría'}
 						</p>
@@ -358,7 +362,7 @@ function CategoriesContent() {
 	);
 }
 
-export default function PageCategories() {
+export default function PageCategories(): JSX.Element {
 	return (
 		<CategoryProvider>
 			<CategoriesContent />

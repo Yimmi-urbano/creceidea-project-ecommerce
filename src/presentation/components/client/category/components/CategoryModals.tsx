@@ -1,17 +1,17 @@
 import React from 'react';
 
 import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
 	Button,
 	Input,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 	Select,
 	SelectItem,
 } from '@nextui-org/react';
-import { Edit3, AlertTriangle, Plus } from 'lucide-react';
+import { AlertTriangle, Edit3, Plus } from 'lucide-react';
 
 interface CategoryModalsProps {
 	// Edit Modal
@@ -221,7 +221,6 @@ export const CategoryModals: React.FC<CategoryModalsProps> = ({
 					</ModalHeader>
 					<ModalBody>
 						<Input
-							autoFocus
 							label="Nombre de la subcategoría"
 							placeholder="Ej: Dulces, Salados, etc."
 							value={newSubcategoryTitle}

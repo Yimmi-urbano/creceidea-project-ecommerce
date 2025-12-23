@@ -83,7 +83,7 @@ export default function LoginPage() {
 				}
 			} else {
 				// Keep loading state active during successful login and redirect
-				const tokenValue = response.data.token.value;
+				const tokenValue = String(response.data.token.value);
 				localStorage.setItem(STORAGE_KEYS.TOKEN, tokenValue);
 				localStorage.setItem(
 					STORAGE_KEYS.PERMISSIONS,
@@ -95,7 +95,7 @@ export default function LoginPage() {
 
 				try {
 					const domainResponse = await getDomain();
-					const mainDomain = domainResponse[0].domain;
+					const mainDomain = String(domainResponse[0].domain);
 
 					localStorage.setItem(STORAGE_KEYS.DOMAIN_SELECT, mainDomain);
 					localStorage.setItem(STORAGE_KEYS.DOMAIN_ASSIGNED, JSON.stringify(domainResponse));

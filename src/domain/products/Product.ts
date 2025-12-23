@@ -142,13 +142,23 @@ export interface ProductFormData {
 	/** Sale price */
 	sale: string;
 	/** Categories */
-	category: ProductCategory[];
+	category: any[];
 	/** Stock quantity */
 	stock: string;
 	/** Image URLs */
 	imageUrls: string[];
 	/** Integrations */
 	integrations: any[];
+	/** Whether the product is visible in the shop */
+	visible: boolean;
+	/** Stock keeping unit */
+	sku?: string;
+	/** Weight of the product */
+	weight?: string;
+	/** SEO Title */
+	seoTitle?: string;
+	/** SEO Description */
+	seoDescription?: string;
 }
 
 /**

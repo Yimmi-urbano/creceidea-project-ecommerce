@@ -12,7 +12,7 @@ const CardProducts: React.FC = () => {
 	const { products } = useProductContext();
 	const router = useRouter();
 
-	const handlePress = (id: string) => {
+	const handlePress = (id: string): void => {
 		if (typeof window !== 'undefined') {
 			localStorage.setItem('selectedCardId', id);
 		}

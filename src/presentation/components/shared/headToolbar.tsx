@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import { Bell, Sun, Moon } from 'lucide-react';
+import { Bell, Moon, Sun } from 'lucide-react';
 
 import { useTheme } from '@/src/presentation/contexts';
 
 import { GlobalSearch } from './GlobalSearch';
 import { Logo } from './Icons';
 
-export const HeadToolbar = () => {
+export const HeadToolbar = (): React.ReactElement => {
 	const { theme, toggleTheme } = useTheme();
 
 	return (

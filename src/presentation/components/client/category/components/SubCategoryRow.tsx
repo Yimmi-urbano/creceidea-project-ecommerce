@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { Edit3, Trash2, FolderOpen } from 'lucide-react';
+import { Edit3, FolderOpen, Trash2 } from 'lucide-react';
+
+import { Category, CategoryWithCount } from '@/src/domain/categories/Category';
 
 interface SubCategoryRowProps {
-	item: any;
+	item: Category | CategoryWithCount;
 	onEdit: (id: string) => void;
 	onDelete: (id: string) => void;
 }
@@ -21,7 +23,7 @@ export const SubCategoryRow: React.FC<SubCategoryRowProps> = ({ item, onEdit, on
 				<div>
 					<h4 className="font-medium text-zinc-700 dark:text-zinc-300 text-sm">{item.title}</h4>
 					<span className="text-xs text-zinc-400 dark:text-zinc-500">
-						{item.productCount || 0} productos
+						{(item as any).productCount || 0} productos
 					</span>
 				</div>
 			</div>

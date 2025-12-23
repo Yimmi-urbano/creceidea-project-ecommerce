@@ -1,21 +1,27 @@
-import { useState, useRef, ChangeEvent } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 
 import { toast } from 'sonner';
 
 import { uploadLogo } from '@/src/infrastructure/repositories/uploadRepository';
 
-export const useUploadLogo = () => {
+export const useUploadLogo = (): {
+	handleFileChange: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
+	handleAddImageClick: () => void;
+	loading: boolean;
+	imageUrl: string | null;
+	fileInputRef: React.RefObject<HTMLInputElement>;
+} => {
 	const [loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const handleAddImageClick = () => {
+	const handleAddImageClick = (): void => {
 		fileInputRef.current?.click();
 	};
 
-	const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+	const handleFileChange = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
 		const file = event.target.files?.[0];
-		if (!file) {
+		if (file === undefined) {
 			return;
 		}
 
