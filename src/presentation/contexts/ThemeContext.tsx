@@ -40,10 +40,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 		setTheme(newTheme);
 	};
 
-	// Prevent flash of unstyled content
-	if (!mounted) {
-		return null;
-	}
+	// We no longer return null here to avoid hydration mismatches.
+	// The useEffect will handle any theme changes once mounted.
 
 	return (
 		<ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>

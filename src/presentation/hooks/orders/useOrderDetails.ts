@@ -4,8 +4,8 @@ import { getOrderById } from '@/src/application/orders/orderServices';
 
 const useOrderDetails = (orderId: string) => {
 	const [orderData, setOrderData] = useState<any | null>(null);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const getOrderDetails = async () => {

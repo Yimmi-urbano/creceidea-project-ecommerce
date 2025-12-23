@@ -10,7 +10,7 @@ import {
 	ProductIcon,
 	PaymentIcon,
 	OrderIcon,
-} from '@/src/presentation/components/shared/icons';
+} from '@/src/presentation/components/shared/Icons';
 
 type IconKey =
 	| 'DashboardIcon'

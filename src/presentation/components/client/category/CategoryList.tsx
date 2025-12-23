@@ -16,7 +16,7 @@ import {
 	SelectItem,
 } from '@nextui-org/react';
 
-import { MiniTrashIcon, EditProductIcon } from '@/src/presentation/components/shared/icons';
+import { MiniTrashIcon, EditProductIcon } from '@/src/presentation/components/shared/Icons';
 
 import { useCategoryContext } from './CategoryContext';
 

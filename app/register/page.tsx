@@ -30,7 +30,7 @@ export default function RegisterPage() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [_error, setError] = useState('');
+	const [error, setError] = useState('');
 	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const [formData, setFormData] = useState({
@@ -80,7 +80,7 @@ export default function RegisterPage() {
 		return true;
 	};
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		if (!validateForm()) {

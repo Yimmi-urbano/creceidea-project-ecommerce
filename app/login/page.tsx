@@ -1,29 +1,29 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { Eye, EyeOff, AlertCircle, Loader2, TrendingUp, Shield, Sparkles, Zap } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, Loader2, Shield, Sparkles, TrendingUp, Zap } from 'lucide-react';
 
 import { COOKIE_KEYS } from '@/src/infrastructure/storage/cookieConfig';
 import { setCookie } from '@/src/infrastructure/storage/cookies.server';
 import { STORAGE_KEYS } from '@/src/infrastructure/storage/localStorage';
-import { Logo } from '@/src/presentation/components/shared/icons';
+import { Logo } from '@/src/presentation/components/shared/Icons';
 
 import { getDomain, login } from './api';
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [_error, setError] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
 	const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
 	const [isLoading, setIsLoading] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
-	const _router = useRouter();
+	const router = useRouter();
 
 	useEffect(() => {
 		document.body.classList.remove('login-page');

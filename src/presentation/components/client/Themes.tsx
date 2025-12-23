@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { Card, Image, Button, CardBody } from '@nextui-org/react';
+import { Button, Card, CardBody, Image } from '@nextui-org/react';
 
 import {
-	NotificationModal,
-	PaymentModal,
+    NotificationModal,
+    PaymentModal,
 } from '@/src/presentation/components/client/utils/NotificationModal';
 import { useConfig } from '@/src/presentation/contexts';
 import { useThemes } from '@/src/presentation/hooks/configuration/useThemes';
@@ -61,7 +61,7 @@ const ThemesList: React.FC = () => {
 		setIsPaymentOpen(false);
 	};
 
-	const handleThemeSelection = async (themeName: string, themeType: string, themeTitle: string) => {
+	const handleThemeSelection = (themeName: string, themeType: string, themeTitle: string) => {
 		if (selected === themeName) {
 			return;
 		} // Ya esta seleccionado

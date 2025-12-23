@@ -1,21 +1,21 @@
 // Tipos temporalmente relajados - TODO: agregar tipos correctos
-import React, { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 
 import {
-	Input,
+	BreadcrumbItem,
+	Breadcrumbs,
 	Button,
-	Textarea,
 	Card,
 	CardBody,
 	CardHeader,
-	Breadcrumbs,
-	BreadcrumbItem,
+	Input,
 	Switch,
+	Textarea,
 } from '@nextui-org/react';
-import { CameraIcon, ChevronLeft, Save, Eye, Info } from 'lucide-react';
+import { CameraIcon, ChevronLeft, Eye, Info, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
@@ -25,11 +25,11 @@ import {
 } from '@/src/application/products/productServices';
 import CategorySelector from '@/src/presentation/components/client/CategorySelect';
 import {
-	handleChange,
+	FormData,
 	handleAddImageClick,
+	handleChange,
 	handleFileChange,
 	handleRemoveImage,
-	FormData,
 } from '@/src/presentation/forms/productFormHandlers';
 
 import LivePreview from './LivePreview';
@@ -50,13 +50,12 @@ interface Category {
 
 function ProductForm() {
 	const [categories, setCategories] = useState<Category[]>([]);
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-	const [_loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [submitting, setSubmittingEdit] = useState(false);
 	const [detailproduct, setGetProductById] = useState<any>(null);
 	const [productId, setProductId] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
-	const _router = useRouter();
+	const router = useRouter();
 
 	// Extended Form Data including new fields
 	const [formData, setFormData] = useState<
@@ -598,7 +597,13 @@ function ProductForm() {
 										style={{ display: 'none' }}
 										ref={fileInputRef}
 										onChange={(e) =>
-											handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)
+											handleFileChange(
+												e,
+												() => {},
+												() => {},
+												setFormData,
+												formData
+											)
 										}
 									/>
 

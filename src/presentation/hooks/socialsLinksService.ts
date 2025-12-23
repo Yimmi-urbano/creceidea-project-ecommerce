@@ -8,7 +8,7 @@ const getDomainFromLocalStorage = (): string => {
 };
 
 // Obtener los enlaces sociales
-export const fetchSocialLinks = async () => {
+export const fetchSocialLinks = async (): Promise<any[]> => {
 	const domain = getDomainFromLocalStorage();
 	const response = await fetch(`${API_URL}`, {
 		method: 'GET',
@@ -21,7 +21,7 @@ export const fetchSocialLinks = async () => {
 	if (!response.ok) {
 		throw new Error('Error al obtener los enlaces sociales');
 	}
-	return await response.json();
+	return response.json();
 };
 
 // Agregar un nuevo enlace social
@@ -39,7 +39,7 @@ export const addSocialLink = async (newLink: any) => {
 	if (!response.ok) {
 		throw new Error('Error al agregar el enlace social');
 	}
-	return await response.json();
+	return response.json();
 };
 
 // Editar un enlace social existente
@@ -58,7 +58,7 @@ export const updateSocialLink = async (updatedLink: any) => {
 	if (!response.ok) {
 		throw new Error('Error al actualizar el enlace social');
 	}
-	return await response.json();
+	return response.json();
 };
 
 // Eliminar un enlace social
@@ -75,7 +75,7 @@ export const deleteSocialLink = async (linkId: string) => {
 	if (!response.ok) {
 		throw new Error('Error al eliminar el enlace social');
 	}
-	return await response.json();
+	return response.json();
 };
 
 // Cambiar el estado activo/inactivo de un enlace social
@@ -92,12 +92,12 @@ export const toggleSocialLinkActive = async (linkId: string) => {
 	if (!response.ok) {
 		throw new Error('Error al cambiar el estado del enlace social');
 	}
-	return await response.json();
+	return response.json();
 };
 
 // hooks/socialsLinksService.ts
 
-export const fetchAvailableIcons = async () => {
+export const fetchAvailableIcons = () => {
 	// Array estático de iconos
 	const icons = [
 		{ key: 'facebook', value: 'Facebook' },

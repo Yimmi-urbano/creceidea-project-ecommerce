@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { CreditCard, Settings, ChevronRight, AlertCircle, Search } from 'lucide-react';
+import { AlertCircle, ChevronRight, CreditCard, Search, Settings } from 'lucide-react';
 
 import { getDomainFromLocalStorage } from '@/config/utils';
 import { getModules } from '@/src/application/modules/getModules';
@@ -12,11 +12,11 @@ import { Module } from '@/src/domain/modules/Module';
 
 export default function PaymentMethodsList() {
 	const [modules, setModules] = useState<Module[]>([]);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const domain = getDomainFromLocalStorage();
-	const _router = useRouter();
+	const router = useRouter();
 
 	useEffect(() => {
 		const loadModules = async () => {

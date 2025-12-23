@@ -9,7 +9,7 @@
 
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -45,9 +45,9 @@ export const useConfig = () => {
  */
 export const ConfigProvider = ({ children }: { children: ReactNode }) => {
 	const [config, setConfig] = useState<SiteConfiguration | null>(null);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
-	const _router = useRouter();
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+	const router = useRouter();
 
 	useEffect(() => {
 		const fetchConfig = async () => {

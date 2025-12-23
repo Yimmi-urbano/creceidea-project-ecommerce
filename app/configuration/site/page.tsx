@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
 
-import { Card, CardHeader, CardBody, Skeleton } from '@nextui-org/react';
-import { Palette, Image as ImageIcon, Search, MessageCircle } from 'lucide-react';
+import { Card, CardBody, CardHeader, Skeleton } from '@nextui-org/react';
+import { Image as ImageIcon, MessageCircle, Palette, Search } from 'lucide-react';
 
 import ColorPicker from '@/src/presentation/components/client/ColorPicker';
-import UpdateMetadata from '@/src/presentation/components/client/updateMetaSeo';
-import UploadLogo from '@/src/presentation/components/client/uploadLogo';
-import WhatsappSettings from '@/src/presentation/components/client/whatsappHome';
+import UpdateMetadata from '@/src/presentation/components/client/UpdateMetaSeo';
+import UploadLogo from '@/src/presentation/components/client/UploadLogo';
+import WhatsappSettings from '@/src/presentation/components/client/WhatsappHome';
 import { ConfigProvider, useConfig } from '@/src/presentation/contexts';
 
 // Skeleton Component

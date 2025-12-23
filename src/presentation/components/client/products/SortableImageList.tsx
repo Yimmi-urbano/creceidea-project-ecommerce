@@ -20,7 +20,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Image, Button } from '@nextui-org/react';
 import { GripVertical } from 'lucide-react';
 
-import { MiniTrashIcon } from '@/src/presentation/components/shared/icons';
+import { MiniTrashIcon } from '@/src/presentation/components/shared/Icons';
 
 interface SortableImageListProps {
 	images: string[];

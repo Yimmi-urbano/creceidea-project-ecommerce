@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { API_ENDPOINTS, buildUrl } from '@/src/infrastructure/http/apiConfig';
 
@@ -17,7 +17,7 @@ interface Theme {
 
 export const useThemes = () => {
 	const [themes, setThemes] = useState<Theme[]>([]);
-	const [_loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(true);
 	const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
 	const [updateSuccess, setUpdateSuccess] = useState<boolean | null>(null);
 

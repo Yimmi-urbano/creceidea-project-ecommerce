@@ -22,8 +22,8 @@ import { Order, OrderStatus } from '@/src/domain/orders/Order';
 export const useOrders = () => {
 	const [orders, setOrders] = useState<Order[]>([]);
 	const [stats, setStats] = useState<any>(null);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	/**
 	 * Fetch all orders
@@ -111,8 +111,8 @@ export const useOrders = () => {
  */
 export const useOrderDetails = (orderId: string) => {
 	const [order, setOrder] = useState<Order | null>(null);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchOrder = async () => {

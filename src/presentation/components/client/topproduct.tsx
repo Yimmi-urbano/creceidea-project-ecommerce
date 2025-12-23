@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, CardBody, Card } from '@nextui-org/react';
 
 import withPermission from '@/src/presentation/components/client/withPermission';
-import { ProductIcon, EyeIcon } from '@/src/presentation/components/shared/icons'; // Asegúrate que estos iconos están correctamente definidos
+import { ProductIcon, EyeIcon } from '@/src/presentation/components/shared/Icons'; // Asegúrate que estos iconos están correctamente definidos
 
 interface Product {
 	name: string;

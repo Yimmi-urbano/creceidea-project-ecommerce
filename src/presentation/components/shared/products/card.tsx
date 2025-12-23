@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
-import { Card, Button } from '@nextui-org/react';
+import { Button, Card } from '@nextui-org/react';
 
 import withPermission from '@/src/presentation/components/client/withPermission';
-import { MiniEyeIcon, MiniTrashIcon } from '@/src/presentation/components/shared/icons';
+import { MiniEyeIcon, MiniTrashIcon } from '@/src/presentation/components/shared/Icons';
 import { useProductContext } from '@/src/presentation/contexts';
 
 const CardProducts: React.FC = () => {
 	const { products } = useProductContext();
-	const _router = useRouter();
+	const router = useRouter();
 
 	const handlePress = (id: string) => {
 		if (typeof window !== 'undefined') {

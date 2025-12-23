@@ -1,37 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 
 import {
-	Input,
+	BreadcrumbItem,
+	Breadcrumbs,
 	Button,
-	Textarea,
 	Card,
 	CardBody,
 	CardHeader,
-	Breadcrumbs,
-	BreadcrumbItem,
+	Input,
 	Switch,
+	Textarea,
 } from '@nextui-org/react';
-import { CameraIcon, ChevronLeft, Save, Eye, Info } from 'lucide-react';
+import { CameraIcon, ChevronLeft, Eye, Info, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { fetchCategories } from '@/src/application/products/productServices';
 import CategorySelector from '@/src/presentation/components/client/CategorySelect';
 import {
+	CardSkeleton,
 	FormInputSkeleton,
 	ImageUploadSkeleton,
-	CardSkeleton,
 } from '@/src/presentation/components/shared/SkeletonLoaders';
 import { useConfig } from '@/src/presentation/contexts';
 import {
-	handleChange,
+	FormData,
 	handleAddImageClick,
+	handleChange,
 	handleFileChange,
 	handleRemoveImage,
 	handleSubmit,
-	FormData,
 } from '@/src/presentation/forms/productFormHandlers';
 
 import LivePreview from './LivePreview';
@@ -52,12 +52,11 @@ interface Category {
 
 function ProductForm() {
 	const [categories, setCategories] = useState<Category[]>([]);
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-	const [_loading, setLoading] = useState(true); // Changed to true for initial load
+	const [loading, setLoading] = useState(true); // Changed to true for initial load
 	const [submitting, setSubmitting] = useState(false);
 	const [successcreate, setSuccessCreate] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
-	const _router = useRouter();
+	const router = useRouter();
 	const { config } = useConfig();
 	const integrations = config?.integrations;
 
@@ -503,7 +502,7 @@ function ProductForm() {
 										ref={fileInputRef}
 										// @ts-expect-error - Handler accepts extended FormData type
 										onChange={(e) =>
-											handleFileChange(e, setSelectedFile, setLoading, setFormData, formData)
+											handleFileChange(e, () => {}, setLoading, setFormData, formData)
 										}
 									/>
 

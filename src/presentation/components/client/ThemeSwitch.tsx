@@ -1,14 +1,13 @@
 'use client';
 
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 import { SwitchProps, useSwitch } from '@nextui-org/switch';
-import { useIsSSR } from '@react-aria/ssr';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 import clsx from 'clsx';
 import { useTheme } from 'next-themes';
 
-import { SunFilledIcon, MoonFilledIcon } from '@/src/presentation/components/shared/icons';
+import { MoonFilledIcon, SunFilledIcon } from '@/src/presentation/components/shared/Icons';
 
 export interface ThemeSwitchProps {
 	className?: string;
@@ -17,17 +16,23 @@ export interface ThemeSwitchProps {
 
 export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
 	const { theme, setTheme } = useTheme();
-	const isSSR = useIsSSR();
+	const [mounted, setMounted] = React.useState(false);
+
+	React.useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	const onChange = () => {
 		theme === 'light' ? setTheme('dark') : setTheme('light');
 	};
 
 	const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
-		isSelected: theme === 'light' || isSSR,
-		'aria-label': `Switch to ${theme === 'light' || isSSR ? 'dark' : 'light'} mode`,
+		isSelected: theme === 'light',
+		'aria-label': `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`,
 		onChange,
 	});
+
+	if (!mounted) return <div className="p-1 w-6 h-6" />;
 
 	return (
 		<Component
@@ -61,7 +66,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
 					),
 				})}
 			>
-				{!isSelected || isSSR ? <SunFilledIcon size={22} /> : <MoonFilledIcon size={22} />}
+				{!isSelected ? <MoonFilledIcon size={22} /> : <SunFilledIcon size={22} />}
 			</div>
 		</Component>
 	);

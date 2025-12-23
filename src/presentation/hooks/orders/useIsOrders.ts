@@ -10,8 +10,8 @@ const useIsOrders = (): {
 	refreshOrders: () => Promise<void>;
 } => {
 	const [orders, setOrders] = useState<Order[]>([]);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchOrders = async (): Promise<void> => {

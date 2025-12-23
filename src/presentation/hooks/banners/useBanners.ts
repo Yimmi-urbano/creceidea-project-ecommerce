@@ -21,8 +21,8 @@ import { Banner } from '@/src/domain/banners/Banner';
  */
 export const useBanners = () => {
 	const [banners, setBanners] = useState<Banner[]>([]);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	/**
 	 * Fetch all banners
@@ -143,8 +143,8 @@ export const useBanners = () => {
  */
 export const useBanner = (bannerId: string) => {
 	const [banner, setBanner] = useState<Banner | null>(null);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchBanner = async () => {

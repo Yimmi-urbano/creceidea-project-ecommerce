@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, PointerSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core';
 import {
-	arrayMove,
 	SortableContext,
+	arrayMove,
 	useSortable,
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import {
 	Button,
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
 	Image,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 	Spinner,
 	Tooltip,
 } from '@nextui-org/react';
@@ -25,7 +25,7 @@ import {
 import { deleteProduct } from '@/src/application/products/productServices';
 import { API_ENDPOINTS, buildUrl } from '@/src/infrastructure/http/apiConfig';
 import withPermission from '@/src/presentation/components/client/withPermission';
-import { MiniEyeIcon, MiniTrashIcon } from '@/src/presentation/components/shared/icons';
+import { MiniEyeIcon, MiniTrashIcon } from '@/src/presentation/components/shared/Icons';
 import { useProductContext } from '@/src/presentation/contexts';
 
 async function updateOrderApi(id_product: string, order: number, order_type: string) {
@@ -216,18 +216,18 @@ const CardProducts: React.FC = () => {
 		setOrderedProducts,
 	} = useProductContext();
 	const [isLoading, setIsLoading] = useState(true);
-	const [_isModalOpen, _setIsModalOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-	const _router = useRouter();
+	const router = useRouter();
 
 	useEffect(() => {
-		const loadProducts = async () => {
+		const loadProducts = () => {
 			setIsLoading(true);
 			fetchProducts();
 			setIsLoading(false);
 		};
 		loadProducts();
-	}, []);
+	}, [fetchProducts]);
 
 	useEffect(() => {
 		if (products && products.length > 0) {

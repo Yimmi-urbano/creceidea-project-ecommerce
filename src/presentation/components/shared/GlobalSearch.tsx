@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Search, ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 
 import {
-	searchableItems,
-	categoryLabels,
-	type SearchableItem,
+    categoryLabels,
+    searchableItems,
+    type SearchableItem,
 } from '@/src/presentation/data/searchableItems';
 import { useGlobalSearchShortcut } from '@/src/presentation/hooks/useKeyboardShortcut';
 import { fuzzySearch, highlightMatch } from '@/src/presentation/utils/fuzzySearch';
@@ -20,7 +20,7 @@ export const GlobalSearch: React.FC = () => {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const dropdownRef = useRef<HTMLDivElement>(null);
-	const _router = useRouter();
+	const router = useRouter();
 
 	// Detectar Cmd/Ctrl + K para abrir búsqueda
 	useGlobalSearchShortcut(() => {

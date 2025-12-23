@@ -142,7 +142,7 @@ export const EditProductIcon: React.FC<IconSvgProps> = ({ size = 24, ...props })
 	</svg>
 );
 
-export const EyeFilledIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+export const EyeFilledIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
 	<svg
 		aria-hidden="true"
 		fill="none"
@@ -164,7 +164,7 @@ export const EyeFilledIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) =
 	</svg>
 );
 
-export const SearchIconProducts: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+export const SearchIconProducts: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
 	<svg
 		aria-hidden="true"
 		fill="none"
@@ -191,7 +191,7 @@ export const SearchIconProducts: React.FC<IconSvgProps> = ({ size = 24, ...props
 		/>
 	</svg>
 );
-export const WorldIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+export const WorldIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
 	<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
 			fillRule="evenodd"
@@ -202,7 +202,7 @@ export const WorldIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
 	</svg>
 );
 
-export const PlusIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+export const PlusIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
 	<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
 			d="M0 26C0 11.6406 11.6406 0 26 0C40.3594 0 52 11.6406 52 26C52 40.3594 40.3594 52 26 52C11.6406 52 0 40.3594 0 26Z"
@@ -244,7 +244,7 @@ export const CameraIcon: React.FC<IconSvgProps> = ({
 	);
 };
 
-export const EyeSlashFilledIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+export const EyeSlashFilledIcon: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
 	<svg
 		aria-hidden="true"
 		fill="none"
@@ -292,7 +292,7 @@ export const PagesIcon: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
 	</svg>
 );
 
-export const MenuMobile: React.FC<IconSvgProps> = ({ size = 24, ...props }) => (
+export const MenuMobile: React.FC<IconSvgProps> = ({ size: _size = 24, ...props }) => (
 	<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
 			fillRule="evenodd"
@@ -560,7 +560,7 @@ export const GalleryIcon = (
 	</svg>
 );
 
-export const ProductIconSvg: React.FC<IconSvgProps> = ({ size = 15, ...props }) => (
+export const ProductIconSvg: React.FC<IconSvgProps> = ({ size: _size = 15, ...props }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		x="0px"

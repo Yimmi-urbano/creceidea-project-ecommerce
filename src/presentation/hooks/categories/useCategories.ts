@@ -31,8 +31,8 @@ export const useCategories = (): {
 } => {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [categoryTree, setCategoryTree] = useState<Category[]>([]);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	/**
 	 * Fetch all categories

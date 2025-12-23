@@ -9,7 +9,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as productServices from '@/src/application/products/productServices';
 import { Product, ProductFilters } from '@/src/domain/products/Product';
@@ -22,8 +22,8 @@ import { Product, ProductFilters } from '@/src/domain/products/Product';
  */
 export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
 	const [products, setProducts] = useState<Product[]>([]);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 	const [filters, setFilters] = useState<ProductFilters>(initialFilters);
 
 	/**
@@ -46,14 +46,14 @@ export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
 	/**
 	 * Search products by title
 	 */
-	const searchProducts = async (title: string) => {
+	const searchProducts = (title: string) => {
 		setFilters({ ...filters, title, page: 1 });
 	};
 
 	/**
 	 * Filter by category
 	 */
-	const filterByCategory = async (category: string) => {
+	const filterByCategory = (category: string) => {
 		setFilters({ ...filters, category, page: 1 });
 	};
 
@@ -95,8 +95,8 @@ export const useProducts = (initialFilters: ProductFilters = { page: 1 }) => {
  */
 export const useProduct = (productId: string) => {
 	const [product, setProduct] = useState<Product | null>(null);
-	const [_loading, setLoading] = useState(true);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchProduct = async () => {
@@ -127,8 +127,8 @@ export const useProduct = (productId: string) => {
  * @returns Product mutation functions
  */
 export const useProductMutations = () => {
-	const [_loading, setLoading] = useState(false);
-	const [_error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	/**
 	 * Create new product

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Card, CardBody, Image, Chip } from '@nextui-org/react';
+import { Card, CardBody, Chip, Image } from '@nextui-org/react';
 
 interface LivePreviewProps {
 	name: string;
@@ -8,7 +8,6 @@ interface LivePreviewProps {
 	price: number | string;
 	salePrice?: number | string;
 	imageUrl?: string;
-	loading?: boolean;
 }
 
 const LivePreview: React.FC<LivePreviewProps> = ({
@@ -17,7 +16,6 @@ const LivePreview: React.FC<LivePreviewProps> = ({
 	price,
 	salePrice,
 	imageUrl,
-	loading = false,
 }) => {
 	// Format price to currency
 	const formatPrice = (val: number | string) => {

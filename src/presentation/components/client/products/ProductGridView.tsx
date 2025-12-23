@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import {
-	Image,
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
-	Button,
+    Button,
+    Image,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
 } from '@nextui-org/react';
 import { Edit3, Trash2 } from 'lucide-react';
 
@@ -25,8 +25,8 @@ interface ProductGridViewProps {
 
 export const ProductGridView: React.FC<ProductGridViewProps> = ({ searchTerm = '' }) => {
 	const { products, isLoading, fetchProducts } = useProductContext();
-	const _router = useRouter();
-	const [_isModalOpen, _setIsModalOpen] = useState(false);
+	const router = useRouter();
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 	const [isDeleting, setIsDeleting] = useState(false);
 

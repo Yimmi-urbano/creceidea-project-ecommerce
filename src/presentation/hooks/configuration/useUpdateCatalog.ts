@@ -33,7 +33,7 @@ const useUpdateCatalog = () => {
 		}
 	};
 
-	const getCurrencies = async () => {
+	const getCurrencies = () => {
 		const simulatedCurrencies = [
 			{ code: 'USD', symbol: '$' },
 			{ code: 'PEN', symbol: 'S/' },
