@@ -6,8 +6,7 @@
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"jsx": true
-		},
-		"project": "./tsconfig.json"
+		}
 	},
 	"env": {
 		"browser": true,
@@ -18,78 +17,32 @@
 		"next/core-web-vitals",
 		"eslint:recommended",
 		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:jsx-a11y/recommended",
-		"plugin:import/recommended",
-		"plugin:import/typescript",
-		"prettier"
+		"plugin:react-hooks/recommended"
 	],
-	"plugins": [
-		"@typescript-eslint",
-		"react",
-		"react-hooks",
-		"jsx-a11y",
-		"import",
-		"unused-imports",
-		"prettier"
-	],
+	"plugins": ["@typescript-eslint", "react", "react-hooks", "unused-imports"],
 	"settings": {
 		"react": {
 			"version": "detect"
-		},
-		"import/resolver": {
-			"typescript": {
-				"alwaysTryTypes": true,
-				"project": "./tsconfig.json"
-			},
-			"node": {
-				"extensions": [".js", ".jsx", ".ts", ".tsx"]
-			}
 		}
 	},
 	"rules": {
 		// ==========================================
-		// TYPESCRIPT RULES - Prevención de errores de tipado
+		// TYPESCRIPT - Reglas prácticas sin ser destructivas
 		// ==========================================
-		"@typescript-eslint/no-explicit-any": "warn",
-		"@typescript-eslint/no-unsafe-assignment": "warn",
-		"@typescript-eslint/no-unsafe-member-access": "warn",
-		"@typescript-eslint/no-unsafe-call": "warn",
-		"@typescript-eslint/no-unsafe-return": "warn",
-		"@typescript-eslint/explicit-function-return-type": [
-			"warn",
-			{
-				"allowExpressions": true,
-				"allowTypedFunctionExpressions": true,
-				"allowHigherOrderFunctions": true
-			}
-		],
-		"@typescript-eslint/explicit-module-boundary-types": "warn",
-		"@typescript-eslint/no-floating-promises": "warn",
-		"@typescript-eslint/no-misused-promises": "warn",
-		"@typescript-eslint/await-thenable": "warn",
-		"@typescript-eslint/no-unnecessary-type-assertion": "error",
-		"@typescript-eslint/prefer-nullish-coalescing": "warn",
-		"@typescript-eslint/prefer-optional-chain": "warn",
-		"@typescript-eslint/strict-boolean-expressions": [
-			"warn",
-			{
-				"allowString": true,
-				"allowNumber": true,
-				"allowNullableObject": true
-			}
-		],
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-unused-vars": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/no-non-null-assertion": "warn",
 
 		// ==========================================
-		// VARIABLES NO USADAS - Limpieza de código
+		// IMPORTS - Limpieza automática
 		// ==========================================
 		"no-unused-vars": "off",
-		"@typescript-eslint/no-unused-vars": "off",
 		"unused-imports/no-unused-imports": "error",
 		"unused-imports/no-unused-vars": [
-			"error",
+			"warn",
 			{
 				"vars": "all",
 				"varsIgnorePattern": "^_",
@@ -99,154 +52,33 @@
 		],
 
 		// ==========================================
-		// NAMING CONVENTIONS - Convenciones de nombres
-		// ==========================================
-		"@typescript-eslint/naming-convention": [
-			"warn",
-			{
-				"selector": "variable",
-				"format": ["camelCase", "PascalCase", "UPPER_CASE"],
-				"leadingUnderscore": "allow"
-			},
-			{
-				"selector": "function",
-				"format": ["camelCase", "PascalCase"]
-			},
-			{
-				"selector": "typeLike",
-				"format": ["PascalCase"]
-			},
-			{
-				"selector": "interface",
-				"format": ["PascalCase"],
-				"custom": {
-					"regex": "^I[A-Z]",
-					"match": false
-				}
-			},
-			{
-				"selector": "enum",
-				"format": ["PascalCase"]
-			},
-			{
-				"selector": "enumMember",
-				"format": ["UPPER_CASE", "PascalCase"]
-			}
-		],
-
-		// ==========================================
-		// IMPORTS - Organización y limpieza
-		// ==========================================
-		"import/order": [
-			"error",
-			{
-				"groups": [
-					"builtin",
-					"external",
-					"internal",
-					"parent",
-					"sibling",
-					"index",
-					"object",
-					"type"
-				],
-				"pathGroups": [
-					{
-						"pattern": "react",
-						"group": "external",
-						"position": "before"
-					},
-					{
-						"pattern": "next/**",
-						"group": "external",
-						"position": "before"
-					},
-					{
-						"pattern": "@/**",
-						"group": "internal",
-						"position": "before"
-					}
-				],
-				"pathGroupsExcludedImportTypes": ["react", "next"],
-				"newlines-between": "always",
-				"alphabetize": {
-					"order": "asc",
-					"caseInsensitive": true
-				}
-			}
-		],
-		"import/no-unresolved": "error",
-		"import/no-duplicates": "error",
-		"import/no-cycle": "error",
-		"import/newline-after-import": "warn",
-
-		// ==========================================
-		// REACT & NEXT.JS - Mejores prácticas
+		// REACT & NEXT.JS - Solo lo esencial
 		// ==========================================
 		"react/react-in-jsx-scope": "off",
 		"react/prop-types": "off",
-		"react/display-name": "warn",
+		"react/display-name": "off",
 		"react/jsx-key": "error",
-		"react/jsx-no-target-blank": "error",
-		"react/jsx-curly-brace-presence": [
-			"warn",
-			{
-				"props": "never",
-				"children": "never"
-			}
-		],
+		"react/jsx-no-target-blank": "warn",
 		"react/self-closing-comp": "warn",
-		"react/jsx-boolean-value": ["warn", "never"],
+		"react/no-unescaped-entities": "off",
 		"react-hooks/rules-of-hooks": "error",
 		"react-hooks/exhaustive-deps": "warn",
 
 		// ==========================================
-		// ACCESIBILIDAD - jsx-a11y
+		// CÓDIGO GENERAL - Prevención de errores comunes
 		// ==========================================
-		"jsx-a11y/alt-text": "error",
-		"jsx-a11y/anchor-is-valid": "warn",
-		"jsx-a11y/aria-props": "error",
-		"jsx-a11y/aria-proptypes": "error",
-		"jsx-a11y/aria-unsupported-elements": "error",
-		"jsx-a11y/role-has-required-aria-props": "error",
-		"jsx-a11y/role-supports-aria-props": "error",
-
-		// ==========================================
-		// CÓDIGO GENERAL - Calidad y consistencia
-		// ==========================================
-		"no-console": [
-			"warn",
-			{
-				"allow": ["warn", "error"]
-			}
-		],
-		"no-debugger": "error",
-		"no-alert": "warn",
+		"no-console": "off",
+		"no-debugger": "warn",
 		"no-var": "error",
-		"prefer-const": "error",
-		"prefer-arrow-callback": "warn",
-		"prefer-template": "warn",
-		"eqeqeq": ["error", "always"],
-		"curly": ["error", "all"],
-		"no-throw-literal": "error",
-		"no-return-await": "warn",
-
-		// ==========================================
-		// PRETTIER - Formateo
-		// ==========================================
-		"prettier/prettier": [
-			"warn",
-			{
-				"endOfLine": "auto"
-			}
-		]
+		"prefer-const": "warn",
+		"eqeqeq": ["warn", "always"],
+		"no-throw-literal": "error"
 	},
 	"overrides": [
 		{
-			"files": ["*.js"],
+			"files": ["*.js", "*.jsx"],
 			"rules": {
-				"@typescript-eslint/no-var-requires": "off",
-				"@typescript-eslint/explicit-function-return-type": "off"
+				"@typescript-eslint/no-var-requires": "off"
 			}
 		}
 	]

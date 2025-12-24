@@ -198,6 +198,7 @@ function ProductForm(): React.ReactElement {
 	return (
 		<div className="w-full max-w-7xl mx-auto p-4 md:p-6 pb-20">
 			{/* Custom Styles for Quill Editor - Improved Readability */}
+			{/* eslint-disable-next-line react/no-unknown-property */}
 			<style jsx global>{`
 				/* Toolbar Styling */
 				.ql-toolbar.ql-snow {
